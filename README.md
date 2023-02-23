@@ -1,0 +1,1 @@
+TODO: update licensing in package.json to reflect what we need legally
