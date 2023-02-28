@@ -1,5 +1,3 @@
-function returnSomething(): string {
-  return 'something';
-}
+import StardustApp from './stardust/StardustApp';
 
-export default { returnSomething };
+export { StardustApp };
