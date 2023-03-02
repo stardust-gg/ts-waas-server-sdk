@@ -10,7 +10,7 @@ export default class StardustCustodialSdk {
     name: string,
     email: string,
     description: string | null
-  ): Promise<{ stardustApp: StardustApp; apiKey: string }> {
+  ): Promise<StardustApp> {
     return StardustApp.create(URL, name, email, description);
   }
 

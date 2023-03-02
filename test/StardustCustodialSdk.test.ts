@@ -10,12 +10,12 @@ describe('StardustCustodialSdk', () => {
   const email = 'trex@asdf.gg';
   const description = "It's a test app";
   it('Should create an app and return an api key', async () => {
-    const { stardustApp, apiKey: key } = await StardustCustodialSdk.createApp(
+    const stardustApp = await StardustCustodialSdk.createApp(
       name,
       email,
       description
     );
-    apiKey = key;
+    apiKey = stardustApp.getApiKey();
     appId = stardustApp.id;
     expect(stardustApp).toBeDefined();
     expect(apiKey).toMatch(uuidRegex);

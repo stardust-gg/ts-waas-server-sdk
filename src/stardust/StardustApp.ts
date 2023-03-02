@@ -18,12 +18,12 @@ export default class StardustApp {
     name: string,
     email: string,
     description: string | null
-  ): Promise<{ stardustApp: StardustApp; apiKey: string }> {
+  ): Promise<StardustApp> {
     const response = await axios.post(`${url}/application`, { name, email, description });
     if (response.status !== HttpStatusCode.Created) throw new Error('Failed to create app');
     const { apiKeys, id: appId } = response.data;
-    const stardustApp = new StardustApp(apiKeys[0], url, appId, name, email, description);
-    return { stardustApp, apiKey: apiKeys[0] };
+
+    return new StardustApp(apiKeys[0], url, appId, name, email, description);
   }
 
   public static async get(url: string, apiKey: string): Promise<StardustApp> {
@@ -34,5 +34,9 @@ export default class StardustApp {
 
   public async createWallet(): Promise<StardustWallet> {
     return StardustWallet.create(this._url, this._apiKey);
+  }
+
+  public getApiKey(): string {
+    return this._apiKey;
   }
 }

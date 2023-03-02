@@ -7,12 +7,12 @@ describe('StardustApp', () => {
   let apiKey: string;
   let appId: string;
   it('Should create an app with all properties set properly', async () => {
-    const { stardustApp, apiKey: key } = await StardustCustodialSdk.createApp(
+    const stardustApp = await StardustCustodialSdk.createApp(
       'name',
       'email',
       'description'
     );
-    apiKey = key;
+    apiKey = stardustApp.getApiKey();
     appId = stardustApp.id;
     expect(stardustApp).toBeDefined();
     expect(stardustApp.id).toEqual(appId);
