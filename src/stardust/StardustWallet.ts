@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { HttpStatusCode } from 'axios';
 import StardustApp from './StardustApp';
 import { Signers } from '../signers/types';
 import EthersSigner from '../signers/EthersSigner';
@@ -13,9 +13,9 @@ export default class StardustWallet {
   private constructor(_parent: StardustApp, id: string) {
     this._parent = _parent;
     this.id = id;
-    this.signers = { 
-      ethers: new EthersSigner(this.id), 
-      placeholder: new PlaceHolderSigner(this.id) 
+    this.signers = {
+      ethers: new EthersSigner(this.id),
+      placeholder: new PlaceHolderSigner(this.id),
     };
   }
 
@@ -23,6 +23,7 @@ export default class StardustWallet {
     const response = await axios.post(`${parent.getUrl()}/wallet`, null, {
       headers: { 'x-api-key': parent.getApiKey() },
     });
+    if (response.status !== HttpStatusCode.Created) throw new Error('Failed to create app');
     const { id } = response.data;
     return new StardustWallet(parent, id);
   }

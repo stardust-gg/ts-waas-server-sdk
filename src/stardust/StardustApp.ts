@@ -9,9 +9,7 @@ export default class StardustApp {
     public readonly name: string,
     public readonly email: string,
     public readonly description?: string | null
-  ) {
-    const appParams = { _apiKey, id, _url, name, email, description };
-  }
+  ) {}
 
   public static async create(
     url: string,
