@@ -1,5 +1,3 @@
-TODO: update licensing in package.json to reflect what we need legally
-
 Expected use
 StardustCustodialSdk is our entry point to creating and gettting apps
 
