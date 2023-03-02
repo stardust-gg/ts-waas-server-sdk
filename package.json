@@ -5,6 +5,7 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
+    "clean": "rm -rf dist/ node_modules/ yarn.lock && yarn install",
     "prepare": "yarn run build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
@@ -18,6 +19,11 @@
   ],
   "author": "andrew.gutierrez@stardust.gg",
   "license": "MIT",
+  "dependencies": {
+    "@ethersproject/abstract-signer": "^5.7.0",
+    "@ethersproject/bytes": "^5.7.0",
+    "axios": "^1.3.4"
+  },
   "devDependencies": {
     "@types/jest": "^29.4.0",
     "@typescript-eslint/eslint-plugin": "^5.53.0",
@@ -48,8 +54,5 @@
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
-  },
-  "dependencies": {
-    "axios": "^1.3.4"
   }
 }
