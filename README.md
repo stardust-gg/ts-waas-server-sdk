@@ -18,7 +18,7 @@ Assuming we already created an app, and saved an api key. This is how we get the
 
 ```ts
 const apiKey = await clientDb.loadApiKey();
-const stardustApp: StardustApp = StardustCustodialSdk.getApp(apiKey);
+const stardustApp: StardustApp = await StardustCustodialSdk.getApp(apiKey);
 ```
 
 One we have an app, this is how we create a wallet. make sure to save wallet id
