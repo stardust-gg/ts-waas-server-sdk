@@ -7,11 +7,7 @@ describe('StardustApp', () => {
   let apiKey: string;
   let appId: string;
   it('Should create an app with all properties set properly', async () => {
-    const stardustApp = await StardustCustodialSdk.createApp(
-      'name',
-      'email',
-      'description'
-    );
+    const stardustApp = await StardustCustodialSdk.createApp('name', 'email', 'description');
     apiKey = stardustApp.getApiKey();
     appId = stardustApp.id;
     expect(stardustApp).toBeDefined();
@@ -30,10 +26,12 @@ describe('StardustApp', () => {
     expect(stardustApp.description).toEqual(description);
   });
 
-  it("Should create a wallet instace", async () => {
+  it('Should create a wallet instace', async () => {
     const stardustApp = await StardustCustodialSdk.getApp(apiKey);
     const stardustWallet = await stardustApp.createWallet();
     expect(stardustWallet).toBeDefined();
-    expect(stardustWallet.id).toMatch(/^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/);
-  })
+    expect(stardustWallet.id).toMatch(
+      /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/
+    );
+  });
 });

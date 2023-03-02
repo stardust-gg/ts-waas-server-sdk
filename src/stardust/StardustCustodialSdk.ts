@@ -9,7 +9,7 @@ export default class StardustCustodialSdk {
   static async createApp(
     name: string,
     email: string,
-    description: string | null
+    description?: string | null
   ): Promise<StardustApp> {
     return StardustApp.create(URL, name, email, description);
   }

@@ -8,7 +8,7 @@ export default class StardustApp {
     public readonly id: string,
     public readonly name: string,
     public readonly email: string,
-    public readonly description: string | null
+    public readonly description?: string | null
   ) {
     const appParams = { _apiKey, id, _url, name, email, description };
   }
@@ -17,7 +17,7 @@ export default class StardustApp {
     url: string,
     name: string,
     email: string,
-    description: string | null
+    description?: string | null
   ): Promise<StardustApp> {
     const response = await axios.post(`${url}/application`, { name, email, description });
     if (response.status !== HttpStatusCode.Created) throw new Error('Failed to create app');
