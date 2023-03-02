@@ -33,10 +33,14 @@ export default class StardustApp {
   }
 
   public async createWallet(): Promise<StardustWallet> {
-    return StardustWallet.create(this._url, this._apiKey);
+    return StardustWallet.create(this);
   }
 
   public getApiKey(): string {
     return this._apiKey;
+  }
+
+  public getUrl(): string {
+    return this._url;
   }
 }
