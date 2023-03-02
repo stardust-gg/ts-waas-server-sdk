@@ -3,10 +3,8 @@ import StardustApp from './StardustApp';
 const URL = 'http://34.205.37.173:443';
 
 export default class StardustCustodialSdk {
-  readonly name: string;
-  constructor() {
-    this.name = 'StardustCustodialSdk';
-  }
+  readonly name: string = 'StardustCustodialSdk';
+  constructor() {}
 
   static async createApp(
     name: string,
