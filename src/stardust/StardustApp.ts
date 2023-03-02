@@ -1,42 +1,37 @@
 import axios, { HttpStatusCode } from 'axios';
-import { CreateApplicationPayload } from '../types';
 
 export default class StardustApp {
-  constructor(
+  private constructor(
     private readonly _apiKey: string,
-    private _appId: string,
+    private readonly _appId: string,
+    private readonly _url: string,
     private _name: string,
     private _email: string,
     private _description: string | null
-  ) {}
-
-  // creates a new app
-  static async createApp(
-    app: CreateApplicationPayload
-  ): Promise<{ appId: string; stardustApp: StardustApp; apiKey: string }> {
-    const response = await axios.post('http://127.0.0.1:3000/application', app);
-    if (response.status != HttpStatusCode.Created) {
-      throw 'Error creating app!';
-    }
-    const apiKey = response.data.apiKeys[0];
-    const { id, name, email, description } = response.data;
-    const stardustApp = new StardustApp(apiKey, id, name, email, description);
-
-    return {
-      appId: id,
-      stardustApp,
-      apiKey,
-    };
+  ) {
+    const appParams = { _apiKey, _appId, _url, _name, _email, _description };
   }
 
-  getId(): string {
+  public static async create(
+    url: string,
+    name: string,
+    email: string,
+    description: string | null
+  ): Promise<{ stardustApp: StardustApp; apiKey: string }> {
+    const response = await axios.post(`${url}/application`, { name, email, description });
+    if(response.status !== HttpStatusCode.Created) throw new Error('Failed to create app');
+    const { apiKeys, id: appId } = response.data;
+    const stardustApp = new StardustApp(apiKeys[0], appId, url, name, email, description);
+    return { stardustApp, apiKey: apiKeys[0] };
+  }
+
+  public static async get(url: string, apiKey: string): Promise<StardustApp> {
+    const response = await axios.get(`${url}/application`, { headers: { 'x-api-key': apiKey } });
+    const { name, email, description, id: appId } = response.data;
+    return new StardustApp(apiKey, appId, url, name, email, description);
+  }
+
+  public getId(): string {
     return this._appId;
   }
-
-  //   static async getApp(apiKey: string): Promise<StardustApp> {
-  //     const response = await axios.get(`http://127.0.0.1:3000/application/${}`,{headers: {'x-api-key': this.}});
-  //     if (response.status != HttpStatusCode.Created) {
-  //       throw 'Error creating app!';
-  //     }
-  //   }
 }
