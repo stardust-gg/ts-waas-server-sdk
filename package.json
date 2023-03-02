@@ -17,7 +17,7 @@
     "stardust"
   ],
   "author": "andrew.gutierrez@stardust.gg",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "@types/jest": "^29.4.0",
     "@typescript-eslint/eslint-plugin": "^5.53.0",
