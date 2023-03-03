@@ -1,29 +1,21 @@
 TODO: coverage tests
 
 Expected use
-StardustCustodialSdk is our entry point to creating and gettting apps
+StardustCustodialSDK is our entry point to creating and getting apps
 
-Create a fresh app
+brand new app/ user etc
 
 ```ts
-const stardustApp: StardustApp = await StardustCustodialSdk.createApp(
-  'name',
-  'email',
-  'description'
-);
-await clientDb.save(stardustApp.apiKey);
+let stardustApp = new StardustApp('name', 'email', 'description');
+stardustApp = await StardustCustodialSDK.createApp(stardustApp);
+await clientDb.save(stardustApp.getApiKey());
 ```
 
-Assuming we already created an app, and saved an api key. This is how we get the app
+existing app
 
 ```ts
-const apiKey = await clientDb.loadApiKey();
-const stardustApp: StardustApp = await StardustCustodialSdk.getApp(apiKey);
-```
-
-One we have an app, this is how we create a wallet. make sure to save wallet id
-
-```ts
-const wallet: StardustWallet = await stardustApp.createWallet();
-await clientDb.saveWallet(wallet.id);
+const sdk = new StardustCustodialSDK('apiKey');
+const stardustApp = await sdk.getApp();
+const walletId = 'wallet-id'; // loaded in
+const stardustWallet = await sdk.getWallet(walletId);
 ```
