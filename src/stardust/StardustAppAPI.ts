@@ -5,7 +5,8 @@ export default class StardustAppAPI extends AbstractStardustAPI {
   constructor(apiKey: string) {
     super(apiKey);
   }
-  // creates a new app in the Stardust database
+  // creates a new app in the stardust database.
+  // Also sets the id and apiKey of the supplied app and returns it
   static async create(stardustApp: StardustApp) {
     const appData = await super.post('application', {
       name: stardustApp.name,
