@@ -1,5 +1,5 @@
-function returnSomething(): string {
-  return 'something';
-}
+import StardustCustodialSdk from './stardust/StardustCustodialSdk';
+import StardustApp from './stardust/StardustApp';
+import StardustWallet from './stardust/StardustWallet';
 
-export default { returnSomething };
+export { StardustCustodialSdk, StardustApp, StardustWallet };
