@@ -3,6 +3,7 @@ const uuidRegex =
   /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/;
 describe('e2e', () => {
   let apiKey: string;
+  let walletId: string;
   it('should create an app in the Stardust database', async () => {
     const app: StardustApp = new StardustApp('name', 'email', 'description');
     await StardustCustodialSDK.createApp(app);
@@ -29,7 +30,17 @@ describe('e2e', () => {
   it('should create a wallet in the Stardust database', async () => {
     const sdk = new StardustCustodialSDK(apiKey);
     const wallet = await sdk.createWallet();
+    walletId = wallet.id;
     expect(wallet).toBeDefined();
     expect(wallet.id).toMatch(uuidRegex);
+    expect(wallet.createdAt).toBeInstanceOf(Date);
+  });
+
+  it('should retrieve a wallet from the Stardust database', async () => {
+    const sdk = new StardustCustodialSDK(apiKey);
+    const wallet = await sdk.getWallet(walletId);
+    expect(wallet).toBeDefined();
+    expect(wallet.id).toMatch(walletId);
+    expect(wallet.createdAt).toBeInstanceOf(Date);
   });
 });

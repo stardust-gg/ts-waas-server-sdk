@@ -23,7 +23,7 @@ export default class StardustCustodialSdk {
     return await this.stardustWalletAPI.create();
   }
 
-  // async getWallet(walletId: string): Promise<StardustWallet> {
-  //   return await this.stardustWalletAPI.get(walletId);
-  // }
+  async getWallet(walletId: string): Promise<StardustWallet> {
+    return await this.stardustWalletAPI.get(walletId);
+  }
 }
