@@ -1,4 +1,4 @@
-import { StardustCustodialSdk, StardustApp } from '../src/index';
+import { StardustCustodialSdk, StardustApp } from '../../src/index';
 
 describe('StardustApp', () => {
   const name = 'name';
