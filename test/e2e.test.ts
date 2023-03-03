@@ -25,4 +25,11 @@ describe('e2e', () => {
     expect(app.id).toMatch(uuidRegex);
     expect(app.apiKey).toMatch(uuidRegex);
   });
+
+  it('should create a wallet in the Stardust database', async () => {
+    const sdk = new StardustCustodialSDK(apiKey);
+    const wallet = await sdk.createWallet();
+    expect(wallet).toBeDefined();
+    expect(wallet.id).toMatch(uuidRegex);
+  });
 });

@@ -6,17 +6,27 @@ export default class AbstractStardustAPI {
   static async post(endpoint: string, data: any) {
     // console.log('POST:', `${URL}/${endpoint}`);
     const response = await axios.post(`${URL}/${endpoint}`, data);
-    if (response.status !== HttpStatusCode.Created) throw new Error('Failed to create app');
+    if (response.status !== HttpStatusCode.Created)
+      throw new Error(`Failed to POST to ${endpoint} with data: ${data}`);
     return response.data;
   }
 
-  async apiGet(endpoint: string, data: any = {}) {
+  async apiGet(endpoint: string) {
     // console.log('GET:', `${URL}/${endpoint}`);
     const response = await axios.get(`${URL}/${endpoint}`, {
-      ...data,
       headers: { 'x-api-key': this.apiKey },
     });
-    if (response.status !== HttpStatusCode.Ok) throw new Error('Failed to get app');
+    if (response.status !== HttpStatusCode.Ok) throw new Error(`Failed to GET from ${endpoint}`);
+    return response.data;
+  }
+
+  async apiPost(endpoint: string, data: any = {}) {
+    // console.log('apiPost:', `${URL}/${endpoint}\n`, 'data:', data);
+    const response = await axios.post(`${URL}/${endpoint}`, data, {
+      headers: { 'x-api-key': this.apiKey },
+    });
+    if (response.status !== HttpStatusCode.Created)
+      throw new Error(`Failed to POST to ${endpoint} with data: ${data}`);
     return response.data;
   }
 }
