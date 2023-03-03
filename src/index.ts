@@ -1,5 +1,4 @@
-import StardustCustodialSdk from './stardust/StardustCustodialSdk';
-import StardustApp from './stardust/old/StardustApp';
-import StardustWallet from './stardust/StardustWallet';
+import StardustCustodialSDK from './stardust/StardustCustodialSDK';
+import StardustApp from './stardust/StardustApp';
 
-export { StardustCustodialSdk, StardustApp, StardustWallet };
+export { StardustCustodialSDK, StardustApp };
