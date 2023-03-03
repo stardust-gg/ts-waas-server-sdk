@@ -1,6 +1,6 @@
 import StardustApp from './StardustApp';
 
-const URL = 'http://34.205.37.173:443';
+const URL = 'https://custodial-wallet.stardust.gg'
 
 export default class StardustCustodialSdk {
   readonly name: string = 'StardustCustodialSdk';
