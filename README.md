@@ -1,3 +1,5 @@
+TODO: coverage tests
+
 Expected use
 StardustCustodialSdk is our entry point to creating and gettting apps
 
