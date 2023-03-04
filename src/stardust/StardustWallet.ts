@@ -11,8 +11,8 @@ export default class StardustWallet {
     public readonly lastUsedAt: Date | null = null
   ) {
     this.signers = {
-      ethers: new EthersSigner(id),
-      placeholder: new PlaceHolderSigner(id),
+      ethers: new EthersSigner(this.id),
+      placeholder: new PlaceHolderSigner(this.id),
     };
   }
 }

@@ -2,14 +2,21 @@ import { Provider, TransactionRequest } from '@ethersproject/abstract-provider';
 import { Signer } from '@ethersproject/abstract-signer';
 import { Bytes } from '@ethersproject/bytes';
 import { Deferrable } from '@ethersproject/properties';
+import StardustWallet from '../stardust/StardustWallet';
 
 export default class EthersSigner extends Signer {
-  constructor(readonly stardustWalletId: string, readonly provider?: Provider) {
+  constructor(private stardustWalletId: string, readonly provider?: Provider) {
     super();
   }
 
   // Returns the checksum address
   async getAddress(): Promise<string> {
+    const getAddressPayload = {
+      walletId: this.stardustWalletId,
+      chainType: 'EVM',
+      chainId: await this.getChainId(),
+    };
+    console.log('getAddressPayload', getAddressPayload);
     return 'ethersAddress';
   }
 
@@ -30,7 +37,6 @@ export default class EthersSigner extends Signer {
   }
 
   // Returns a new instance of the Signer, connected to provider.
-  // This MAY throw if changing providers is not supported.
   connect(provider: Provider): EthersSigner {
     return new EthersSigner(this.stardustWalletId, provider);
   }
