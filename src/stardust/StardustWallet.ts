@@ -1,6 +1,6 @@
 import EthersSigner from '../signers/EthersSigner';
 import PlaceHolderSigner from '../signers/PlaceHolderSigner';
-import { Signers } from '../signers/types';
+import { Signers } from '../types';
 
 export default class StardustWallet {
   public signers: Signers;
@@ -11,7 +11,7 @@ export default class StardustWallet {
     public readonly lastUsedAt: Date | null = null
   ) {
     this.signers = {
-      ethers: new EthersSigner(this.id),
+      ethers: new EthersSigner(this),
       placeholder: new PlaceHolderSigner(this.id),
     };
   }

@@ -3,21 +3,21 @@ import { Signer } from '@ethersproject/abstract-signer';
 import { Bytes } from '@ethersproject/bytes';
 import { Deferrable } from '@ethersproject/properties';
 import StardustWallet from '../stardust/StardustWallet';
+import { SignerRequestPayload } from '../types';
 
 export default class EthersSigner extends Signer {
-  constructor(private stardustWalletId: string, readonly provider?: Provider) {
+  constructor(private stardustWallet: StardustWallet, readonly provider?: Provider) {
     super();
   }
 
   // Returns the checksum address
   async getAddress(): Promise<string> {
-    const getAddressPayload = {
-      walletId: this.stardustWalletId,
+    const payload: SignerRequestPayload = {
+      walletId: this.stardustWallet.id,
       chainType: 'EVM',
       chainId: await this.getChainId(),
     };
-    console.log('getAddressPayload', getAddressPayload);
-    return 'ethersAddress';
+    return '0x1234';
   }
 
   // Returns the signed prefixed-message. This MUST treat:
@@ -38,6 +38,6 @@ export default class EthersSigner extends Signer {
 
   // Returns a new instance of the Signer, connected to provider.
   connect(provider: Provider): EthersSigner {
-    return new EthersSigner(this.stardustWalletId, provider);
+    return new EthersSigner(this.stardustWallet, provider);
   }
 }
