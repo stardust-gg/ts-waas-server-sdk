@@ -3,6 +3,7 @@ import { Signer } from '@ethersproject/abstract-signer';
 import { Bytes } from '@ethersproject/bytes';
 import { Deferrable } from '@ethersproject/properties';
 import StardustWallet from '../stardust/StardustWallet';
+import StardustWalletAPI from '../stardust/StardustWalletAPI';
 import { SignerRequestPayload } from '../types';
 
 export default class EthersSigner extends Signer {
@@ -17,7 +18,7 @@ export default class EthersSigner extends Signer {
       chainType: 'EVM',
       chainId: await this.getChainId(),
     };
-    return '0x1234';
+    return StardustWalletAPI.getAddress(payload, this.stardustWallet.apiKey);
   }
 
   // Returns the signed prefixed-message. This MUST treat:

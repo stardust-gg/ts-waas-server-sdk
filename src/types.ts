@@ -14,5 +14,5 @@ export interface SignerRequestPayload {
   walletId: string;
   chainType: 'EVM';
   chainId: number;
-  digestToSign?: string;
+  digest?: string;
 }

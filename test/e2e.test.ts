@@ -62,10 +62,17 @@ describe('e2e', () => {
       expect(stardustWallet.signers.ethers).toBeDefined();
     });
 
-    it.skip('Should allow us to get our on chain address', async () => {
+    it('Should allow us to get our on chain address', async () => {
       const signer = stardustWallet.signers.ethers.connect(provider); // signer connected in last test
       const address = await signer.getAddress();
       expect(address).toMatch(/^0x[a-fA-F0-9]{40}$/);
+    });
+
+    it('Should return the same address if we call getAddress() twice', async () => {
+      const signer = stardustWallet.signers.ethers.connect(provider); // signer connected in last test
+      const address = await signer.getAddress();
+      const address2 = await signer.getAddress();
+      expect(address).toEqual(address2);
     });
   });
 });

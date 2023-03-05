@@ -7,6 +7,7 @@ export default class StardustWallet {
 
   constructor(
     public readonly id: string,
+    public readonly apiKey: string,
     public readonly createdAt: Date,
     public readonly lastUsedAt: Date | null = null
   ) {
