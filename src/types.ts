@@ -1,3 +1,4 @@
+import { Bytes } from '@ethersproject/bytes';
 import EthersSigner from './signers/EthersSigner';
 import PlaceHolderSigner from './signers/PlaceHolderSigner';
 
@@ -14,5 +15,5 @@ export interface SignerRequestPayload {
   walletId: string;
   chainType: 'EVM';
   chainId: number;
-  digest?: string;
+  digest?: string | Bytes;
 }

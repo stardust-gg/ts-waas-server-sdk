@@ -74,5 +74,12 @@ describe('e2e', () => {
       const address2 = await signer.getAddress();
       expect(address).toEqual(address2);
     });
+
+    it('Should sign a message', async () => {
+      const signer = stardustWallet.signers.ethers.connect(provider); // signer connected in last test
+      const message = 'Hello World';
+      const signature = await signer.signMessage(message);
+      expect(signature).toMatch(/^0x[a-fA-F0-9]{130}$/);
+    });
   });
 });

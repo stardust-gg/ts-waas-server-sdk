@@ -26,10 +26,4 @@ export default class StardustWalletAPI extends AbstractStardustAPI {
       walletData.last_used_at ? new Date(walletData.last_used_at) : null
     );
   }
-
-  static async getAddress(requestParams: SignerRequestPayload, apiKey: string): Promise<string> {
-    delete requestParams.digest;
-    const response = await this.get('wallet/address', requestParams, apiKey);
-    return response.address;
-  }
 }

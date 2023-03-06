@@ -2,13 +2,19 @@ import { Provider, TransactionRequest } from '@ethersproject/abstract-provider';
 import { Signer } from '@ethersproject/abstract-signer';
 import { Bytes } from '@ethersproject/bytes';
 import { Deferrable } from '@ethersproject/properties';
+import StardustSignerAPI from '../stardust/StardustSignerAPI';
 import StardustWallet from '../stardust/StardustWallet';
-import StardustWalletAPI from '../stardust/StardustWalletAPI';
 import { SignerRequestPayload } from '../types';
 
 export default class EthersSigner extends Signer {
-  constructor(private stardustWallet: StardustWallet, readonly provider?: Provider) {
+  private stardustSignerAPI: StardustSignerAPI;
+  private stardustWallet: StardustWallet;
+  readonly provider?: Provider;
+  constructor(stardustWallet: StardustWallet, provider?: Provider) {
     super();
+    this.stardustWallet = stardustWallet;
+    this.provider = provider;
+    this.stardustSignerAPI = new StardustSignerAPI(stardustWallet.apiKey);
   }
 
   // Returns the checksum address
@@ -18,7 +24,7 @@ export default class EthersSigner extends Signer {
       chainType: 'EVM',
       chainId: await this.getChainId(),
     };
-    return StardustWalletAPI.getAddress(payload, this.stardustWallet.apiKey);
+    return this.stardustSignerAPI.getAddress(payload);
   }
 
   // Returns the signed prefixed-message. This MUST treat:
@@ -26,7 +32,13 @@ export default class EthersSigner extends Signer {
   // - string as a UTF8-message
   // i.e. "0x1234" is a SIX (6) byte string, NOT 2 bytes of data
   async signMessage(message: Bytes | string): Promise<string> {
-    return '0x1234';
+    const payload: SignerRequestPayload = {
+      walletId: this.stardustWallet.id,
+      chainType: 'EVM',
+      chainId: await this.getChainId(),
+      digest: message,
+    };
+    return this.stardustSignerAPI.signMessage(payload);
   }
 
   // Signs a transaction and returns the fully serialized, signed transaction.
