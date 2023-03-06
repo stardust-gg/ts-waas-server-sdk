@@ -11,8 +11,8 @@ export default class StardustCustodialSdk {
     this.stardustWalletAPI = new StardustWalletAPI(apiKey);
   }
 
-  static async createApp(stardustApp: StardustApp): Promise<StardustApp> {
-    return await StardustAppAPI.create(stardustApp);
+  static async CreateApp(stardustApp: StardustApp): Promise<StardustApp> {
+    return await StardustAppAPI.Create(stardustApp);
   }
 
   async getApp(): Promise<StardustApp> {

@@ -9,7 +9,7 @@ describe('e2e', () => {
   describe('basic create and get flows', () => {
     it('should create an app in the Stardust database', async () => {
       const app: StardustApp = new StardustApp('name', 'email', 'description');
-      await StardustCustodialSDK.createApp(app);
+      await StardustCustodialSDK.CreateApp(app);
       apiKey = app.apiKey!;
       expect(app).toBeDefined();
       expect(app.name).toEqual('name');
