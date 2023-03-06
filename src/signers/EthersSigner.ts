@@ -36,7 +36,7 @@ export default class EthersSigner extends Signer {
       walletId: this.stardustWallet.id,
       chainType: 'EVM',
       chainId: await this.getChainId(),
-      digest: message,
+      message,
     };
     return this.stardustSignerAPI.signMessage(payload);
   }

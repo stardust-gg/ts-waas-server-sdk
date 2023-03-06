@@ -1,4 +1,6 @@
 TODO: coverage tests
+TODO: look into to webpack to obfuscate the code
+TODO: ncc for webpacking
 
 Expected use
 StardustCustodialSDK is our entry point to creating and getting apps

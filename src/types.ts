@@ -19,5 +19,5 @@ export interface ApiRequestPayload {
 }
 
 export interface SignRequestPayload extends ApiRequestPayload {
-  digest: string | Bytes;
+  message: string | Bytes;
 }

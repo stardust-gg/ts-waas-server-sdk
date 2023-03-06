@@ -1,5 +1,5 @@
 {
-  "name": "stardust-custodial-sdk",
+  "name": "@stardust-gg/stardust-custodial-sdk",
   "version": "0.0.1",
   "description": "",
   "main": "dist/index.js",
