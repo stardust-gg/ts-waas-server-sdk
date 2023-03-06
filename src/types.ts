@@ -11,9 +11,13 @@ type PlaceHolderType = {
 };
 
 export type Signers = EthersType & PlaceHolderType;
-export interface SignerRequestPayload {
+
+export interface ApiRequestPayload {
   walletId: string;
   chainType: 'EVM';
   chainId: number;
-  digest?: string | Bytes;
+}
+
+export interface SignRequestPayload extends ApiRequestPayload {
+  digest: string | Bytes;
 }

@@ -1,4 +1,4 @@
-import { SignerRequestPayload } from '../types';
+import { ApiRequestPayload, SignRequestPayload } from '../types';
 import AbstractStardustAPI from './AbstractStardustAPI';
 
 export default class StardustSignerAPI extends AbstractStardustAPI {
@@ -6,13 +6,12 @@ export default class StardustSignerAPI extends AbstractStardustAPI {
     super(apiKey);
   }
 
-  async getAddress(requestParams: SignerRequestPayload): Promise<string> {
-    delete requestParams.digest;
+  async getAddress(requestParams: ApiRequestPayload): Promise<string> {
     const response = await this.apiGet('wallet/address', requestParams);
     return response.address;
   }
 
-  async signMessage(requestParams: SignerRequestPayload): Promise<string> {
+  async signMessage(requestParams: SignRequestPayload): Promise<string> {
     const response = await this.apiPost('sign', requestParams);
     return response.signedMessage;
   }

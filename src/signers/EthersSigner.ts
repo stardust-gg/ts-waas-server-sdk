@@ -4,7 +4,7 @@ import { Bytes } from '@ethersproject/bytes';
 import { Deferrable } from '@ethersproject/properties';
 import StardustSignerAPI from '../stardust/StardustSignerAPI';
 import StardustWallet from '../stardust/StardustWallet';
-import { SignerRequestPayload } from '../types';
+import { ApiRequestPayload, SignRequestPayload } from '../types';
 
 export default class EthersSigner extends Signer {
   private stardustSignerAPI: StardustSignerAPI;
@@ -19,7 +19,7 @@ export default class EthersSigner extends Signer {
 
   // Returns the checksum address
   async getAddress(): Promise<string> {
-    const payload: SignerRequestPayload = {
+    const payload: ApiRequestPayload = {
       walletId: this.stardustWallet.id,
       chainType: 'EVM',
       chainId: await this.getChainId(),
@@ -32,7 +32,7 @@ export default class EthersSigner extends Signer {
   // - string as a UTF8-message
   // i.e. "0x1234" is a SIX (6) byte string, NOT 2 bytes of data
   async signMessage(message: Bytes | string): Promise<string> {
-    const payload: SignerRequestPayload = {
+    const payload: SignRequestPayload = {
       walletId: this.stardustWallet.id,
       chainType: 'EVM',
       chainId: await this.getChainId(),

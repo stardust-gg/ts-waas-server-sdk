@@ -1,4 +1,3 @@
-import { SignerRequestPayload } from '../types';
 import AbstractStardustAPI from './AbstractStardustAPI';
 import StardustWallet from './StardustWallet';
 
