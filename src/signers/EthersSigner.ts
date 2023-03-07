@@ -9,8 +9,11 @@ import { ApiRequestPayload, SignRequestPayload } from '../types';
 
 export default class EthersSigner extends Signer {
   private stardustSignerAPI: StardustSignerAPI;
+
   private stardustWallet: StardustWallet;
+
   readonly provider?: Provider;
+
   constructor(stardustWallet: StardustWallet, provider?: Provider) {
     super();
     this.stardustWallet = stardustWallet;
@@ -51,7 +54,7 @@ export default class EthersSigner extends Signer {
   async signTransaction(transaction: Deferrable<TransactionRequest>): Promise<string> {
     const tx = await resolveProperties(transaction);
     if (tx.from) {
-      if (tx.from != (await this.getAddress())) {
+      if (tx.from !== (await this.getAddress())) {
         throw new Error('from address mismatch');
       }
       delete tx.from;

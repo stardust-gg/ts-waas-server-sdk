@@ -3,6 +3,7 @@ import { ApiRequestPayload, SignRequestPayload } from '../types';
 import AbstractStardustAPI from './AbstractStardustAPI';
 
 export default class StardustSignerAPI extends AbstractStardustAPI {
+  // eslint-disable-next-line no-useless-constructor
   constructor(apiKey: string) {
     super(apiKey);
   }
