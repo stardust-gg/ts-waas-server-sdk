@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+
 import EthersSigner from '../signers/EthersSigner';
 import PlaceHolderSigner from '../signers/PlaceHolderSigner';
 import { Signers } from '../types';

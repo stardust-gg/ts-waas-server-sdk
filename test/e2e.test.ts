@@ -1,8 +1,8 @@
-import { StardustCustodialSDK, StardustApp, StardustWallet } from '../src';
 import { ethers } from 'ethers';
 import { hashMessage, keccak256, parseTransaction, splitSignature } from 'ethers/lib/utils';
 import { serialize, UnsignedTransaction } from '@ethersproject/transactions';
 import { SignatureLike } from '@ethersproject/bytes';
+import { StardustCustodialSDK, StardustApp, StardustWallet } from '../src';
 
 const uuidRegex =
   /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/;
@@ -60,7 +60,7 @@ describe('e2e', () => {
       const sdk = new StardustCustodialSDK(apiKey);
       stardustWallet = await sdk.getWallet(walletId);
 
-      let signer = stardustWallet.signers.ethers.connect(provider);
+      const signer = stardustWallet.signers.ethers.connect(provider);
       expect(await signer.getChainId()).not.toBeNull();
       expect(stardustWallet.signers.ethers).toBeDefined();
     });

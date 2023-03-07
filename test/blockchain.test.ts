@@ -5,15 +5,16 @@ import { StardustApp, StardustCustodialSDK } from '../src';
 const polygonUrl = `https://polygon-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_POLYGON_API_KEY}`;
 const polygonBlockNumber = 40041083;
 const hre = require('hardhat');
+
 const hardhatEthersProvider: Provider = hre.ethers.provider;
 
 const fundAccount = async (address: string, ether: string) => {
   const bank = (await hre.ethers.getSigners())[0];
-  await bank.sendTransaction({ to: address, value: hre.ethers.utils.parseEther('1') });
+  await bank.sendTransaction({ to: address, value: hre.ethers.utils.parseEther(ether) });
 };
 
 // TODO: use fixtures
-describe('Blockhain integration tests', () => {
+describe('Blockchain integration tests', () => {
   let apiKey: string;
   let walletId: string;
   beforeAll(async () => {
@@ -55,7 +56,7 @@ describe('Blockhain integration tests', () => {
     );
   });
 
-  it('should allow us to send eth from a custodied address to another', async () => {
+  it('should allow us to send eth from a custody address to another', async () => {
     //   first lets get the address of a custodial wallet
     const sdk = new StardustCustodialSDK(apiKey);
     const wallet = await sdk.getWallet(walletId);
