@@ -80,17 +80,9 @@ describe('e2e', () => {
       const signer = stardustWallet.signers.ethers.connect(provider); // signer connected in last test
       const message = '0x12456';
       const hashedMessage = hashMessage(message);
-      console.log('hashedMessage:', hashedMessage);
-
       const signature = await signer.signMessage(hashedMessage);
-      console.log('signature:', signature);
-
       const address = await signer.getAddress();
-      console.log('address:', address);
-
       const recoveredAddress = ethers.utils.verifyMessage(hashedMessage, signature);
-      console.log('recovered address:', recoveredAddress);
-
       expect(address).toEqual(recoveredAddress);
     });
   });
