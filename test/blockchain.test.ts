@@ -56,11 +56,22 @@ describe('Blockchain integration tests', () => {
     );
   });
 
-  it('should allow us to send eth from a custody address to another', async () => {
+  it('should allow us to send eth from a custody address and verify the recipients balance increase', async () => {
     //   first lets get the address of a custodial wallet
     const sdk = new StardustCustodialSDK(apiKey);
     const wallet = await sdk.getWallet(walletId);
     const signer = wallet.signers.ethers.connect(hardhatEthersProvider);
     const address = await signer.getAddress();
+    const recipient = hre.ethers.Wallet.createRandom().connect(hardhatEthersProvider);
+    const initialBalance = hre.ethers.utils.formatEther(await recipient.getBalance());
+    const sendValue: number = 0.1;
+    await fundAccount(address, '1');
+    const txn = await signer.sendTransaction({
+      to: recipient.address,
+      value: hre.ethers.utils.parseEther(sendValue.toString()),
+    });
+    await txn.wait(1);
+    const finalBalance = hre.ethers.utils.formatEther(await recipient.getBalance());
+    expect(finalBalance - initialBalance).toEqual(sendValue);
   });
 });
