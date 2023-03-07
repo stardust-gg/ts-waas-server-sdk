@@ -1,6 +1,8 @@
 import { StardustCustodialSDK, StardustApp, StardustWallet } from '../src';
 import { ethers } from 'ethers';
-import { arrayify, hashMessage } from 'ethers/lib/utils';
+import { hashMessage, keccak256, parseTransaction, splitSignature } from 'ethers/lib/utils';
+import { serialize, UnsignedTransaction } from '@ethersproject/transactions';
+import { SignatureLike } from '@ethersproject/bytes';
 
 const uuidRegex =
   /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/;
@@ -83,6 +85,27 @@ describe('e2e', () => {
       const signature = await signer.signMessage(hashedMessage);
       const address = await signer.getAddress();
       const recoveredAddress = ethers.utils.verifyMessage(hashedMessage, signature);
+      expect(address).toEqual(recoveredAddress);
+    });
+
+    it('Should sign a transaction and verify it was signed by the correct address', async () => {
+      const signer = stardustWallet.signers.ethers.connect(provider); // signer connected in last test
+      const address = await signer.getAddress();
+
+      const txn = {
+        nonce: 0,
+        gasPrice: '',
+        gasLimit: '',
+        to: '0x08505F42D5666225d5d73B842dAdB87CCA44d1AE',
+        value: '',
+        data: '',
+        chainId: 0,
+      };
+      const signature = await signer.signTransaction(txn);
+      const transaction = parseTransaction(signature);
+      const sig2 = splitSignature(<SignatureLike>transaction);
+      const recreatedDigest = keccak256(serialize(<UnsignedTransaction>txn));
+      const recoveredAddress = ethers.utils.recoverAddress(recreatedDigest, sig2);
       expect(address).toEqual(recoveredAddress);
     });
   });

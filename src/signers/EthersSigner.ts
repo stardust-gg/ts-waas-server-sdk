@@ -6,7 +6,6 @@ import { serialize, UnsignedTransaction } from '@ethersproject/transactions';
 import StardustSignerAPI from '../stardust/StardustSignerAPI';
 import StardustWallet from '../stardust/StardustWallet';
 import { ApiRequestPayload, SignRequestPayload } from '../types';
-import { keccak256 } from '@ethersproject/keccak256';
 
 export default class EthersSigner extends Signer {
   private stardustSignerAPI: StardustSignerAPI;
@@ -50,20 +49,22 @@ export default class EthersSigner extends Signer {
   // - This MAY throw if signing transactions is not supports, but if
   //   it does, sentTransaction MUST be overridden.
   async signTransaction(transaction: Deferrable<TransactionRequest>): Promise<string> {
-    // const tx = await resolveProperties(transaction);
-    // if (tx.from != (await this.getAddress())) {
-    //   throw new Error('from address mismatch');
-    // }
-    // const message = keccak256(serialize(<UnsignedTransaction>tx));
-    // const payload: SignRequestPayload = {
-    //   walletId: this.stardustWallet.id,
-    //   chainType: 'EVM',
-    //   chainId: await this.getChainId(),
-    //   message,
-    // };
-    // const signature = await this.stardustSignerAPI.signMessage(payload);
-    // return serialize(<UnsignedTransaction>tx, signature);
-    return '0x1234567890abcdef';
+    const tx = await resolveProperties(transaction);
+    if (tx.from) {
+      if (tx.from != (await this.getAddress())) {
+        throw new Error('from address mismatch');
+      }
+      delete tx.from;
+    }
+    const message = serialize(<UnsignedTransaction>tx);
+    const payload: SignRequestPayload = {
+      walletId: this.stardustWallet.id,
+      chainType: 'EVM',
+      chainId: String(await this.getChainId()),
+      message,
+    };
+    const signature = await this.stardustSignerAPI.signTransaction(payload);
+    return serialize(<UnsignedTransaction>tx, signature);
   }
 
   // Returns a new instance of the Signer, connected to provider.
