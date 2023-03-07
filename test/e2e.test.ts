@@ -1,5 +1,6 @@
 import { StardustCustodialSDK, StardustApp, StardustWallet } from '../src';
 import { ethers } from 'ethers';
+import { arrayify, hashMessage } from 'ethers/lib/utils';
 
 const uuidRegex =
   /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/;
@@ -75,11 +76,22 @@ describe('e2e', () => {
       expect(address).toEqual(address2);
     });
 
-    it('Should sign a message', async () => {
+    it('Should sign a message and verify it was signed by the correct address', async () => {
       const signer = stardustWallet.signers.ethers.connect(provider); // signer connected in last test
-      const message = 'Hello World';
-      const signature = await signer.signMessage(message);
-      expect(signature).toMatch(/^0x[a-fA-F0-9]{130}$/);
+      const message = '0x12456';
+      const hashedMessage = hashMessage(message);
+      console.log('hashedMessage:', hashedMessage);
+
+      const signature = await signer.signMessage(hashedMessage);
+      console.log('signature:', signature);
+
+      const address = await signer.getAddress();
+      console.log('address:', address);
+
+      const recoveredAddress = ethers.utils.verifyMessage(hashedMessage, signature);
+      console.log('recovered address:', recoveredAddress);
+
+      expect(address).toEqual(recoveredAddress);
     });
   });
 });

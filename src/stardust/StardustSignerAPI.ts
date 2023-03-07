@@ -1,3 +1,4 @@
+import { Signature } from '@ethersproject/bytes';
 import { ApiRequestPayload, SignRequestPayload } from '../types';
 import AbstractStardustAPI from './AbstractStardustAPI';
 
@@ -11,7 +12,13 @@ export default class StardustSignerAPI extends AbstractStardustAPI {
     return response.address;
   }
 
-  async signMessage(requestParams: SignRequestPayload): Promise<string> {
+  async signMessage(requestParams: SignRequestPayload): Promise<Signature> {
+    const { signature } = await this.apiPost('sign/message', requestParams);
+    return signature;
+  }
+
+  // returns signature
+  async signTransaction(requestParams: SignRequestPayload): Promise<string> {
     const response = await this.apiPost('sign', requestParams);
     return response.signedMessage;
   }

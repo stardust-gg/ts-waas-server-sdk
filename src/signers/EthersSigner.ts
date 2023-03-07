@@ -1,10 +1,12 @@
 import { Provider, TransactionRequest } from '@ethersproject/abstract-provider';
 import { Signer } from '@ethersproject/abstract-signer';
-import { Bytes } from '@ethersproject/bytes';
-import { Deferrable } from '@ethersproject/properties';
+import { Bytes, joinSignature, Signature } from '@ethersproject/bytes';
+import { Deferrable, resolveProperties } from '@ethersproject/properties';
+import { serialize, UnsignedTransaction } from '@ethersproject/transactions';
 import StardustSignerAPI from '../stardust/StardustSignerAPI';
 import StardustWallet from '../stardust/StardustWallet';
 import { ApiRequestPayload, SignRequestPayload } from '../types';
+import { keccak256 } from '@ethersproject/keccak256';
 
 export default class EthersSigner extends Signer {
   private stardustSignerAPI: StardustSignerAPI;
@@ -38,7 +40,9 @@ export default class EthersSigner extends Signer {
       chainId: await this.getChainId(),
       message,
     };
-    return this.stardustSignerAPI.signMessage(payload);
+
+    const signature: Signature = await this.stardustSignerAPI.signMessage(payload);
+    return joinSignature(signature);
   }
 
   // Signs a transaction and returns the fully serialized, signed transaction.
@@ -46,7 +50,20 @@ export default class EthersSigner extends Signer {
   // - This MAY throw if signing transactions is not supports, but if
   //   it does, sentTransaction MUST be overridden.
   async signTransaction(transaction: Deferrable<TransactionRequest>): Promise<string> {
-    return '0x1234';
+    // const tx = await resolveProperties(transaction);
+    // if (tx.from != (await this.getAddress())) {
+    //   throw new Error('from address mismatch');
+    // }
+    // const message = keccak256(serialize(<UnsignedTransaction>tx));
+    // const payload: SignRequestPayload = {
+    //   walletId: this.stardustWallet.id,
+    //   chainType: 'EVM',
+    //   chainId: await this.getChainId(),
+    //   message,
+    // };
+    // const signature = await this.stardustSignerAPI.signMessage(payload);
+    // return serialize(<UnsignedTransaction>tx, signature);
+    return '0x1234567890abcdef';
   }
 
   // Returns a new instance of the Signer, connected to provider.
