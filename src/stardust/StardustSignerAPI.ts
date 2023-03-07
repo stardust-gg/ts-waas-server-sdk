@@ -19,7 +19,7 @@ export default class StardustSignerAPI extends AbstractStardustAPI {
 
   // returns signature
   async signTransaction(requestParams: SignRequestPayload): Promise<Signature> {
-    const resp = await this.apiPost('sign/transaction', requestParams);
-    return resp.signature;
+    const { signature } = await this.apiPost('sign/transaction', requestParams);
+    return signature;
   }
 }
