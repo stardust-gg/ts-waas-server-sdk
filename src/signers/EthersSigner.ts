@@ -24,7 +24,7 @@ export default class EthersSigner extends Signer {
     const payload: ApiRequestPayload = {
       walletId: this.stardustWallet.id,
       chainType: 'EVM',
-      chainId: await this.getChainId(),
+      chainId: String(await this.getChainId()),
     };
     return this.stardustSignerAPI.getAddress(payload);
   }
@@ -37,7 +37,7 @@ export default class EthersSigner extends Signer {
     const payload: SignRequestPayload = {
       walletId: this.stardustWallet.id,
       chainType: 'EVM',
-      chainId: await this.getChainId(),
+      chainId: String(await this.getChainId()),
       message,
     };
 
