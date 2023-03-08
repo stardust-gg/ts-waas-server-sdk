@@ -2,6 +2,9 @@ import 'dotenv/config';
 import { Provider } from '@ethersproject/abstract-provider';
 import { StardustApp, StardustCustodialSDK } from '../src';
 
+if (!process.env.ALCHEMY_POLYGON_API_KEY) {
+  throw new Error('ALCHEMY_POLYGON_API_KEY is not set');
+}
 const polygonUrl = `https://polygon-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_POLYGON_API_KEY}`;
 const polygonBlockNumber = 40041083;
 const hre = require('hardhat');
