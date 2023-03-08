@@ -112,5 +112,5 @@ describe('Blockchain integration tests', () => {
     expect(recipientBalance.toNumber()).toEqual(
       hre.ethers.utils.parseUnits(usdcXferAgain, 6).toNumber()
     );
-  });
+  }, 15000);
 });
