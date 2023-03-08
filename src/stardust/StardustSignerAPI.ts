@@ -3,6 +3,7 @@ import { ApiRequestPayload, SignRequestPayload } from '../types';
 import AbstractStardustAPI from './AbstractStardustAPI';
 
 export default class StardustSignerAPI extends AbstractStardustAPI {
+  // eslint-disable-next-line no-useless-constructor
   constructor(apiKey: string) {
     super(apiKey);
   }
@@ -19,7 +20,7 @@ export default class StardustSignerAPI extends AbstractStardustAPI {
 
   // returns signature
   async signTransaction(requestParams: SignRequestPayload): Promise<Signature> {
-    const resp = await this.apiPost('sign/transaction', requestParams);
-    return resp.signature;
+    const { signature } = await this.apiPost('sign/transaction', requestParams);
+    return signature;
   }
 }

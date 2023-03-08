@@ -2,6 +2,7 @@ import axios, { HttpStatusCode } from 'axios';
 // const URL = 'https://custodial-wallet.stardust.gg';
 const URL = 'http://localhost:3000';
 export default class AbstractStardustAPI {
+  // eslint-disable-next-line no-useless-constructor, no-unused-vars, no-empty-function
   constructor(protected apiKey: string) {}
 
   static async Post(endpoint: string, data: any, apiKey: string = '') {
