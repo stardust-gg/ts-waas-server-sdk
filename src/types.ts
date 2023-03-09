@@ -13,9 +13,9 @@ type PlaceHolderType = {
 export type Signers = EthersType & PlaceHolderType;
 
 export interface ApiRequestPayload {
-  walletId: string;
-  chainType: 'EVM';
-  chainId: string;
+  walletId: string; // uuid: example 'b8d0b9e0-5d8c-11eb-ae93-0242ac130002'
+  chainType: 'EVM'; // only support 'EVM' for now
+  chainId: string; // chainId of the network
 }
 
 export interface SignRequestPayload extends ApiRequestPayload {

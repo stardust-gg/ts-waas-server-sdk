@@ -1,6 +1,8 @@
 # compiled output
 /dist
 /node_modules
+/cache
+stardust-gg-stardust-custodial-sdk-*.tgz
 
 # Logs
 logs
