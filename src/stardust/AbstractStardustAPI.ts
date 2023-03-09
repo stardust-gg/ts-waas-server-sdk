@@ -1,12 +1,12 @@
 import axios, { HttpStatusCode } from 'axios';
-// const URL = 'https://custodial-wallet.stardust.gg';
-const URL = 'http://localhost:3000';
+
+const URL = 'https://custodial-wallet.stardust.gg';
+// const URL = 'http://localhost:3000';
 export default class AbstractStardustAPI {
   // eslint-disable-next-line no-useless-constructor, no-unused-vars, no-empty-function
   constructor(protected apiKey: string) {}
 
   static async Post(endpoint: string, data: any, apiKey: string = '') {
-    // console.log('POST:', `${URL}/${endpoint}`);
     const response = await axios.post(`${URL}/${endpoint}`, data, {
       headers: { 'x-api-key': apiKey },
     });
@@ -16,7 +16,6 @@ export default class AbstractStardustAPI {
   }
 
   async apiGet(endpoint: string, query: any = {}) {
-    // console.log('GET:', `${URL}/${endpoint}`);
     const response = await axios.get(`${URL}/${endpoint}`, {
       headers: { 'x-api-key': this.apiKey },
       params: query,
@@ -27,7 +26,6 @@ export default class AbstractStardustAPI {
   }
 
   async apiPost(endpoint: string, data: any = {}) {
-    // console.log('apiPost:', `${URL}/${endpoint}\n`, 'data:', data);
     const response = await axios.post(`${URL}/${endpoint}`, data, {
       headers: { 'x-api-key': this.apiKey },
     });

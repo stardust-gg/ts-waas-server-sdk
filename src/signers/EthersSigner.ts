@@ -1,11 +1,12 @@
-import { Provider, TransactionRequest } from '@ethersproject/abstract-provider';
 import { Signer } from '@ethersproject/abstract-signer';
-import { Bytes, joinSignature, Signature } from '@ethersproject/bytes';
+import { joinSignature } from '@ethersproject/bytes';
 import { Deferrable, resolveProperties } from '@ethersproject/properties';
 import { serialize, UnsignedTransaction } from '@ethersproject/transactions';
 import StardustSignerAPI from '../stardust/StardustSignerAPI';
 import StardustWallet from '../stardust/StardustWallet';
-import { ApiRequestPayload, SignRequestPayload } from '../types';
+import type { Provider, TransactionRequest } from '@ethersproject/abstract-provider';
+import type { Bytes, Signature } from '@ethersproject/bytes';
+import type { ApiRequestPayload, SignRequestPayload } from '../types';
 
 export default class EthersSigner extends Signer {
   private stardustSignerAPI: StardustSignerAPI;
