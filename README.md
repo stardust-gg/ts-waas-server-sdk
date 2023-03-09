@@ -6,6 +6,7 @@
 ![badge]()
 -->
 
+[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![standard-readme compliant](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
 
 ## Table of Contents
@@ -18,7 +19,7 @@
 
 ## Background
 
-This sdk is intended for use with the Stardust Custodial Wallet API, and its main purpose is to easily allow its implementers to create Stardust custodial wallets. These wallet objects can be instantiated, and an EthersSigner (satisfying [Ethers.js](https://docs.ethers.org/v5/api/signer/#Signer)'s Signer requirements) can be accessed. More signers will be released in following updates.
+This SDK is intended for use with the Stardust Custodial Wallet API, and its main purpose is to easily allow its implementers to create Stardust custodial wallets. These wallet objects can be instantiated, and an EthersSigner (satisfying [Ethers.js](https://docs.ethers.org/v5/api/signer/#Signer)'s Signer requirements) can be accessed. More signers will be released in following updates.
 
 The EthersSigner can be used in place of any existing Ethers signers. See the examples in the later sections.
 
@@ -98,4 +99,4 @@ PRs accepted.
 
 ## License
 
-Apache-2.0
+[Apache-2.0](./LICENSE.md)
