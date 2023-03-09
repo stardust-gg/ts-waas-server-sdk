@@ -18,7 +18,7 @@
 
 ## Background
 
-This sdk is intended for use with the Stardust Custodial Wallet API, and its main purpose is to easily allow its implementers to create Stardust custodial wallets. These wallet objects can be instantiated, and an EthersSigner (satisfying [Ethers.js]()'s Signer requirements) can be accessed. More signers will be released in following updates.
+This sdk is intended for use with the Stardust Custodial Wallet API, and its main purpose is to easily allow its implementers to create Stardust custodial wallets. These wallet objects can be instantiated, and an EthersSigner (satisfying [Ethers.js](https://docs.ethers.org/v5/api/signer/#Signer)'s Signer requirements) can be accessed. More signers will be released in following updates.
 
 The EthersSigner can be used in place of any existing Ethers signers. See the examples in the later sections.
 
