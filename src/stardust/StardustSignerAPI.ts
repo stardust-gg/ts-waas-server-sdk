@@ -1,4 +1,4 @@
-import { Signature } from '@ethersproject/bytes';
+import type { Signature } from '@ethersproject/bytes';
 import { ApiRequestPayload, SignRequestPayload } from '../types';
 import AbstractStardustAPI from './AbstractStardustAPI';
 
