@@ -6,11 +6,10 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "clean": "rm -rf dist/ node_modules/ yarn.lock && yarn install",
-    "prepare": "yarn run build",
+    "postinstall": "yarn run build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
-    "build": "tsc",
-    "pretest": "npm pack && yarn add ./stardust-gg-stardust-custodial-sdk-1.0.0.tgz",
+    "build": "webpack --config webpack.config.js",
     "test": "jest"
   },
   "keywords": [
