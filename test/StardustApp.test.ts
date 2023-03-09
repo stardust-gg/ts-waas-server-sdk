@@ -1,4 +1,4 @@
-import { StardustApp } from '@stardust-gg/stardust-custodial-sdk';
+import { StardustApp } from '../src';
 
 describe('StardustApp', () => {
   it('Should allow creating with optional params', async () => {

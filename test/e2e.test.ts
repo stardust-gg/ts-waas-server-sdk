@@ -2,11 +2,7 @@ import { ethers } from 'ethers';
 import { hashMessage, keccak256, parseTransaction, splitSignature } from 'ethers/lib/utils';
 import { serialize, UnsignedTransaction } from '@ethersproject/transactions';
 import { SignatureLike } from '@ethersproject/bytes';
-import {
-  StardustCustodialSDK,
-  StardustApp,
-  StardustWallet,
-} from '@stardust-gg/stardust-custodial-sdk';
+import { StardustCustodialSDK, StardustApp, StardustWallet } from '../src';
 
 const uuidRegex =
   /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/;
