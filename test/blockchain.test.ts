@@ -1,7 +1,8 @@
 import 'dotenv/config';
 import { Provider } from '@ethersproject/abstract-provider';
-import { StardustApp, StardustCustodialSDK } from '../src';
+import { StardustApp, StardustCustodialSDK } from '@stardust-gg/stardust-custodial-sdk';
 
+// import { StardustApp, StardustCustodialSDK } from '../src';
 if (!process.env.ALCHEMY_POLYGON_API_KEY) {
   throw new Error('ALCHEMY_POLYGON_API_KEY is not set');
 }
