@@ -6,3 +6,4 @@ hardhat.config*
 .eslintrc*
 .prettierrc*
 tsconfig*
+webpack.config*
