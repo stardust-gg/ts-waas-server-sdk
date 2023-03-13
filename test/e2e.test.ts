@@ -89,25 +89,24 @@ describe('e2e', () => {
       expect(recoveredAddress).toEqual(expectedAddress);
     });
 
-    // it('Should sign a transaction and verify it was signed by the correct address', async () => {
-    //   const signer = stardustWallet.signers.ethers.connect(provider); // signer connected in last test
-    //   const address = await signer.getAddress();
+    it('Should sign a transaction and verify it was signed by the correct address', async () => {
+      const signer = stardustWallet.signers.ethers.connect(provider); // signer connected in last test
+      const address = await signer.getAddress();
 
-    //   const txn = {
-    //     nonce: 0,
-    //     gasPrice: '',
-    //     gasLimit: '',
-    //     to: '0x08505F42D5666225d5d73B842dAdB87CCA44d1AE',
-    //     value: '',
-    //     data: '',
-    //     chainId: 0,
-    //   };
-    //   const signature = await signer.signTransaction(txn);
-    //   const transaction = parseTransaction(signature);
-    //   const sig2 = splitSignature(<SignatureLike>transaction);
-    //   const recreatedDigest = keccak256(serialize(<UnsignedTransaction>txn));
-    //   const recoveredAddress = ethers.utils.recoverAddress(recreatedDigest, sig2);
-    //   expect(address).toEqual(recoveredAddress);
-    // });
+      const txn = {
+        gasPrice: '',
+        gasLimit: '',
+        to: '0x08505F42D5666225d5d73B842dAdB87CCA44d1AE',
+        value: '',
+        data: '',
+        chainId: 0,
+      };
+      const signature = await signer.signTransaction(txn);
+      const transaction = parseTransaction(signature);
+      const sig2 = splitSignature(<SignatureLike>transaction);
+      const recreatedDigest = keccak256(serialize(<UnsignedTransaction>txn));
+      const recoveredAddress = ethers.utils.recoverAddress(recreatedDigest, sig2);
+      expect(address).toEqual(recoveredAddress);
+    });
   });
 });
