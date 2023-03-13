@@ -2,6 +2,7 @@ import { Signer } from '@ethersproject/abstract-signer';
 import { joinSignature } from '@ethersproject/bytes';
 import { Deferrable, resolveProperties } from '@ethersproject/properties';
 import { serialize, UnsignedTransaction } from '@ethersproject/transactions';
+import { toUtf8Bytes } from '@ethersproject/strings';
 import StardustSignerAPI from '../stardust/StardustSignerAPI';
 import StardustWallet from '../stardust/StardustWallet';
 import type { Provider, TransactionRequest } from '@ethersproject/abstract-provider';
@@ -41,7 +42,9 @@ export default class EthersSigner extends Signer {
       walletId: this.stardustWallet.id,
       chainType: 'EVM',
       chainId: String(await this.getChainId()),
-      message,
+      message: Buffer.from(
+        typeof message === 'string' ? toUtf8Bytes(message) : (message as any)
+      ).toString('hex'),
     };
 
     const signature: Signature = await this.stardustSignerAPI.signMessage(payload);
