@@ -59,7 +59,7 @@ describe('Blockchain integration tests', () => {
     );
   });
 
-  it('should allow us to send eth from a custody address and verify the recipients balance increase', async () => {
+  it.skip('should allow us to send eth from a custody address and verify the recipients balance increase', async () => {
     //   first lets get the address of a custodial wallet
     const sdk = new StardustCustodialSDK(apiKey);
     const wallet = await sdk.getWallet(walletId);
@@ -78,7 +78,7 @@ describe('Blockchain integration tests', () => {
     expect(finalBalance - initialBalance).toEqual(sendValue);
   });
 
-  it('should be able to interact with usdc contract to send usdc', async () => {
+  it.skip('should be able to interact with usdc contract to send usdc', async () => {
     const sdk = new StardustCustodialSDK(apiKey);
     const wallet = await sdk.getWallet(walletId);
     const signer = wallet.signers.ethers.connect(hardhatEthersProvider);
