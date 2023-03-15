@@ -23,10 +23,12 @@ This SDK is intended for use with the Stardust Custodial Wallet API, and its mai
 
 The EthersSigner can be used in place of any existing Ethers signers. See the examples in the later sections.
 
+**Currently only supports Ethers.js v5**
+
 ## Install
 
 ```
-npm i @stardust-gg/stardust-custodial-sdk
+npm i @stardust-gg/stardust-custodial-sdk ethers@5
 ```
 
 ## Usage
