@@ -18,7 +18,7 @@ export default class StardustAppAPI extends AbstractStardustAPI {
     // eslint-disable-next-line no-param-reassign
     stardustApp.id = appData.id;
     // eslint-disable-next-line no-param-reassign, prefer-destructuring
-    stardustApp.apiKey = appData.apiKeys[0];
+    stardustApp.apiKey = appData.apiKey;
     return stardustApp;
   }
 
