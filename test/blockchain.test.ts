@@ -1,6 +1,7 @@
 import 'dotenv/config';
 import { Provider } from '@ethersproject/abstract-provider';
 import { StardustApp, StardustCustodialSDK } from '../src';
+import { activateApiKey } from './utils';
 
 if (!process.env.ALCHEMY_POLYGON_API_KEY) {
   throw new Error('ALCHEMY_POLYGON_API_KEY is not set');
@@ -36,6 +37,7 @@ describe('Blockchain integration tests', () => {
     const app = new StardustApp('name', 'email', 'description');
     await StardustCustodialSDK.CreateApp(app);
     apiKey = app.apiKey!;
+    await activateApiKey(apiKey);
     const sdk = new StardustCustodialSDK(apiKey);
     const wallet = await sdk.createWallet();
     walletId = wallet.id;
