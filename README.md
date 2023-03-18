@@ -28,7 +28,7 @@ The EthersSigner can be used in place of any existing Ethers signers. See the ex
 ## Install
 
 ```
-npm i @stardust-gg/stardust-custodial-sdk ethers@5
+npm i @stardust-gg/stardust-custodial-sdk ethers@^5.0.0
 ```
 
 ## Usage
@@ -49,6 +49,8 @@ await StardustCustodialSDK.CreateApp(app);
 // save the api key so you can access this app later
 const apiKey = app.apiKey;
 ```
+
+_For now, API Keys will need to be activated by the Stardust team. You must activate your key before being able to follow along with the sections below_
 
 ### Getting your app and creating wallet
 
