@@ -1,8 +1,10 @@
 import { ethers } from 'ethers';
-import { hashMessage, keccak256, parseTransaction, splitSignature } from 'ethers/lib/utils';
+import { keccak256, parseTransaction, splitSignature } from 'ethers/lib/utils';
 import { serialize, UnsignedTransaction } from '@ethersproject/transactions';
 import { SignatureLike } from '@ethersproject/bytes';
 import { StardustCustodialSDK, StardustApp, StardustWallet } from '../src';
+import { activateApiKey } from './utils';
+// import { getDbConnection } from './utils';
 
 const uuidRegex =
   /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/;
@@ -20,6 +22,9 @@ describe('e2e', () => {
       expect(app.description).toEqual('description');
       expect(app.id).toMatch(uuidRegex);
       expect(app.apiKey).toMatch(uuidRegex);
+
+      // enable api key
+      await activateApiKey(apiKey);
     });
 
     it('should retrieve an app from the Stardust database', async () => {
