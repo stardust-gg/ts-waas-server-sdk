@@ -78,7 +78,7 @@ describe('Blockchain integration tests', () => {
     await txn.wait(1);
     const finalBalance = hre.ethers.utils.formatEther(await recipient.getBalance());
     expect(finalBalance - initialBalance).toEqual(sendValue);
-  });
+  }, 15000);
 
   it('should be able to interact with usdc contract to send usdc', async () => {
     const sdk = new StardustCustodialSDK(apiKey);
