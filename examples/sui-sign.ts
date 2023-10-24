@@ -14,9 +14,10 @@ const main = async () => {
   const wallet = await stardust.getWallet(walletId);
 
   // sui supports 3 signing schemes we can pull out the signing scheme from our wallet's keypairs like so
-  const ed25519PublicKey = await wallet.keyPairs.ed25519.publicKey();
-  //   const secp256k1PublicKey = await wallet.keyPairs.secp256k1.publicKey();
-  //   const secp256r1PublicKey = wallet.keyPairs.secp256r1.publicKey(); // unsupported for now
+  const ed25519PublicKey = await wallet.sui.ed25519.publicKey();
+
+  const secp256k1PublicKey = await wallet.sui.secp256k1.publicKey();
+  const secp256r1PublicKey = await wallet.sui.secp256r1.publicKey(); // unsupported for now
 
   await requestSuiFromFaucetV0({
     host: getFaucetHost('devnet'),
@@ -32,7 +33,7 @@ const main = async () => {
   const builtTx = await tx.build();
 
   // lets sign for the built tx
-  const ed25519signature = await wallet.keyPairs.ed25519.sign(builtTx);
+  const ed25519signature = await wallet.sui.ed25519.sign(builtTx);
 
   // lets now send the tx to the network
   await client.executeTransaction(builtTx, ed25519signature);

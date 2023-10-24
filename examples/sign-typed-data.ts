@@ -1,4 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable prettier/prettier */
 
 import { joinSignature } from '@ethersproject/bytes';
