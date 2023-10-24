@@ -8,9 +8,9 @@ import { ethers } from 'ethers';
 
 import { StardustCustodialSDK, StardustWallet } from '../src';
 
-const apiKey = '5f787b24-e6cc-4963-9702-82cd18ced563';
-const walletId = 'a5c9790f-e4f9-45c9-aa84-268dbcf65568';
-const rpcUrl = 'https://eth-mainnet.g.alchemy.com/v2/ssNJKdz_3ZTmSpOx4oNz-0P2FDR26VH5';
+const apiKey = '';
+const walletId = '';
+const rpcUrl = '';
 
 const provider = new ethers.providers.JsonRpcProvider(rpcUrl);
 
