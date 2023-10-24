@@ -5,7 +5,6 @@ import StardustWalletAPI from './StardustWalletAPI';
 
 export default class StardustCustodialSdk {
   private stardustAppAPI: StardustAppAPI;
-
   private stardustWalletAPI: StardustWalletAPI;
 
   constructor(apiKey: string) {

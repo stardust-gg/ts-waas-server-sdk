@@ -40,6 +40,7 @@ describe('Blockchain integration tests', () => {
     const wallet = await sdk.createWallet();
     walletId = wallet.id;
   });
+
   it('should spin up hardhat network properly', async () => {
     const blockNumber = await hardhatEthersProvider.getBlockNumber();
     expect(blockNumber).toEqual(polygonBlockNumber);
