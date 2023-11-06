@@ -19,14 +19,6 @@ const main = async () => {
   const wallet: StardustWallet = await sdk.getWallet(walletId);
   const signer = wallet.signers.ethers.connect(provider);
 
-  //   const hexString = Buffer.from(
-  //     'Only sign this request if you’ve initiated an action with Immutable X.',
-  //     'utf-8'
-  //   ).toString('hex');
-
-  //   const sig = await signer.signMessage(hexString);
-  //   console.log(`sig`, sig);
-
   // Get the legacy Stark private key
   const starkPrivateKey = await generateLegacyStarkPrivateKey(signer);
   console.log(`starkprivateKey`, starkPrivateKey);

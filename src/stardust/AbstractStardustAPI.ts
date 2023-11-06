@@ -1,13 +1,13 @@
 import axios, { HttpStatusCode } from 'axios';
 
-const URL = 'https://custodial-wallet.stardust.gg';
-
 export default class AbstractStardustAPI {
-  // eslint-disable-next-line no-useless-constructor, no-unused-vars, no-empty-function
-  constructor(protected apiKey: string) {}
+  constructor(
+    protected apiKey: string,
+    protected url: string = 'https://custodial-wallet.stardust.gg'
+  ) {}
 
-  static async Post(endpoint: string, data: any, apiKey: string = '') {
-    const response = await axios.post(`${URL}/${endpoint}`, data, {
+  async Post(endpoint: string, data: any, apiKey: string = '') {
+    const response = await axios.post(`${this.url}/${endpoint}`, data, {
       headers: { 'x-api-key': apiKey },
     });
     if (response.status !== HttpStatusCode.Created)
@@ -16,7 +16,7 @@ export default class AbstractStardustAPI {
   }
 
   async apiGet(endpoint: string, query: any = {}) {
-    const response = await axios.get(`${URL}/${endpoint}`, {
+    const response = await axios.get(`${this.url}/${endpoint}`, {
       headers: { 'x-api-key': this.apiKey },
       params: query,
     });
@@ -26,7 +26,7 @@ export default class AbstractStardustAPI {
   }
 
   async apiPost(endpoint: string, data: any = {}) {
-    const response = await axios.post(`${URL}/${endpoint}`, data, {
+    const response = await axios.post(`${this.url}/${endpoint}`, data, {
       headers: { 'x-api-key': this.apiKey },
     });
     if (response.status !== HttpStatusCode.Created)

@@ -3,8 +3,8 @@ import StardustWallet from './StardustWallet';
 
 export default class StardustWalletAPI extends AbstractStardustAPI {
   // eslint-disable-next-line no-useless-constructor
-  constructor(apiKey: string) {
-    super(apiKey);
+  constructor(apiKey: string, url?: string) {
+    super(apiKey, url);
   }
 
   async create(): Promise<StardustWallet> {

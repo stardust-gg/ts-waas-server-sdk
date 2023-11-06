@@ -1,15 +1,14 @@
 import { convertToHex } from '../../../utils/convertStringtoHex';
-import { AbstractStardustKeyPair } from '../AbstractStardustKeyPair';
+import AbstractStardustKeyPair from '../AbstractStardustKeyPair';
 import AbstractStardustAPI from '../../AbstractStardustAPI';
 import { ApiRequestPayload, SignRequestPayload } from '../../../types';
 
 type SigningScheme = 'ed25519' | 'secp256k1' | 'secp256r1';
-type SuiChainType = 'sui-ed25519' | 'sui-secp256k1' | 'sui-secp256r1';
+type SuiChainType = 'sui' | 'SUI';
 
 export default class SuiKeyPair implements AbstractStardustKeyPair {
   public walletId;
   public api: AbstractStardustAPI;
-
   public chainType: SuiChainType;
 
   constructor(id: string, apiKey: string, private readonly signingScheme: SigningScheme) {
@@ -18,14 +17,10 @@ export default class SuiKeyPair implements AbstractStardustKeyPair {
 
     switch (signingScheme) {
       case 'ed25519':
-        this.chainType = 'sui-ed25519';
+        this.chainType = 'sui';
         break;
       case 'secp256k1':
-        this.chainType = 'sui-secp256k1';
-        break;
       case 'secp256r1':
-        this.chainType = 'sui-secp256r1';
-        break;
       default:
         throw new Error(`Unsupported signing scheme ${signingScheme}`);
     }

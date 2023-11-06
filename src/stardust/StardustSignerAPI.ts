@@ -4,8 +4,8 @@ import AbstractStardustAPI from './AbstractStardustAPI';
 
 export default class StardustSignerAPI extends AbstractStardustAPI {
   // eslint-disable-next-line no-useless-constructor
-  constructor(apiKey: string) {
-    super(apiKey);
+  constructor(apiKey: string, url?: string) {
+    super(apiKey, url);
   }
 
   async getAddress(requestParams: ApiRequestPayload): Promise<string> {
