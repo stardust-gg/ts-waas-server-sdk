@@ -118,10 +118,50 @@ describe('System: DEV Signing Parity', () => {
     });
   });
 
-  describe.skip('sui', () => {
-    it('should sign a utf8 string', async () => {});
-    it('should sign a hex encoded string', async () => {});
-    it('should return an address', async () => {});
-    it('should return a public key', async () => {});
+  describe('sui', () => {
+    it('should sign a utf8 string', async () => {
+      const params: SignRequestPayload = {
+        walletId: DEV_SYSTEM_VAULT_WALLET_ID,
+        message: 'hello world',
+        chainType: 'sui',
+      };
+
+      const signature = await signerAPI.signMessage(params);
+      expect(signature).toBe(
+        '0x6F36AE842539336BFFFFF68998923A68720F55DFE04209F5A8DECA8E7B311823031BBF3E43BE0D6CC9562C58F5EFC2CBB95C0AE2A910D4149371D0F66CB89500'
+      );
+    });
+
+    it('should sign a hex encoded string', async () => {
+      const params: SignRequestPayload = {
+        walletId: DEV_SYSTEM_VAULT_WALLET_ID,
+        message: '0x68656c6c6f20776f726c64',
+        chainType: 'sui',
+      };
+
+      const signature = await signerAPI.signMessage(params);
+      expect(signature).toBe(
+        '0x6F36AE842539336BFFFFF68998923A68720F55DFE04209F5A8DECA8E7B311823031BBF3E43BE0D6CC9562C58F5EFC2CBB95C0AE2A910D4149371D0F66CB89500'
+      );
+    });
+    it('should return an address', async () => {
+      const params: ApiRequestPayload = {
+        walletId: DEV_SYSTEM_VAULT_WALLET_ID,
+        chainType: 'sui',
+      };
+
+      const address = await signerAPI.getAddress(params);
+      expect(address).toBe('0x6be1c919bb05ba60d30731a1cbcb1d0f5943e6ef2a200563b50f104f9efae866');
+    });
+
+    it('should return a public key', async () => {
+      const params: ApiRequestPayload = {
+        walletId: DEV_SYSTEM_VAULT_WALLET_ID,
+        chainType: 'sui',
+      };
+
+      const pubKey = await signerAPI.getPublicKey(params);
+      expect(pubKey).toBe('0xeac4c4e272388a845b30849326e5049a070037e81ce8c14b7534026522c92b57');
+    });
   });
 });
