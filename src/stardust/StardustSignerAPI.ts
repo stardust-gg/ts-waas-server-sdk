@@ -13,12 +13,16 @@ export default class StardustSignerAPI extends AbstractStardustAPI {
     return response.address;
   }
 
+  async getPublicKey(requestParams: ApiRequestPayload): Promise<string> {
+    const response = await this.apiGet('wallet/public-key', requestParams);
+    return response.publicKey;
+  }
+
   async signMessage(requestParams: SignRequestPayload): Promise<Signature> {
     const { signature } = await this.apiPost('sign/message', requestParams);
     return signature;
   }
 
-  // returns signature
   async signTransaction(requestParams: SignRequestPayload): Promise<Signature> {
     const { signature } = await this.apiPost('sign/transaction', requestParams);
     return signature;

@@ -1,13 +1,10 @@
 import axios, { HttpStatusCode } from 'axios';
-
+const URL = 'https://custodial-wallet.stardust.gg';
 export default class AbstractStardustAPI {
-  constructor(
-    protected apiKey: string,
-    protected url: string = 'https://custodial-wallet.stardust.gg'
-  ) {}
+  constructor(protected apiKey: string, protected url: string = URL) {}
 
-  async Post(endpoint: string, data: any, apiKey: string = '') {
-    const response = await axios.post(`${this.url}/${endpoint}`, data, {
+  static async Post(endpoint: string, data: any, apiKey: string = '') {
+    const response = await axios.post(`${URL}/${endpoint}`, data, {
       headers: { 'x-api-key': apiKey },
     });
     if (response.status !== HttpStatusCode.Created)
