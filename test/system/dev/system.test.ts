@@ -128,7 +128,7 @@ describe('System: DEV Signing Parity', () => {
 
       const signature = await signerAPI.signMessage(params);
       expect(signature).toBe(
-        '0x6F36AE842539336BFFFFF68998923A68720F55DFE04209F5A8DECA8E7B311823031BBF3E43BE0D6CC9562C58F5EFC2CBB95C0AE2A910D4149371D0F66CB89500'
+        'AG82roQlOTNr///2iZiSOmhyD1Xf4EIJ9ajeyo57MRgjAxu/PkO+DWzJVixY9e/Cy7lcCuKpENQUk3HQ9my4lQDqxMTicjiKhFswhJMm5QSaBwA36BzowUt1NAJlIskrVw=='
       );
     });
 
@@ -141,7 +141,7 @@ describe('System: DEV Signing Parity', () => {
 
       const signature = await signerAPI.signMessage(params);
       expect(signature).toBe(
-        '0x6F36AE842539336BFFFFF68998923A68720F55DFE04209F5A8DECA8E7B311823031BBF3E43BE0D6CC9562C58F5EFC2CBB95C0AE2A910D4149371D0F66CB89500'
+        'AG82roQlOTNr///2iZiSOmhyD1Xf4EIJ9ajeyo57MRgjAxu/PkO+DWzJVixY9e/Cy7lcCuKpENQUk3HQ9my4lQDqxMTicjiKhFswhJMm5QSaBwA36BzowUt1NAJlIskrVw=='
       );
     });
     it('should return an address', async () => {

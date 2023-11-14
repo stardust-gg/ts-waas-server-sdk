@@ -1,5 +1,7 @@
 import axios, { HttpStatusCode } from 'axios';
-const URL = 'https://custodial-wallet.stardust.gg';
+const URL = 'https://vault-api.dev-stardust.gg';
+
+// ('https://custodial-wallet.stardust.gg');
 export default class AbstractStardustAPI {
   constructor(protected apiKey: string, protected url: string = URL) {}
 

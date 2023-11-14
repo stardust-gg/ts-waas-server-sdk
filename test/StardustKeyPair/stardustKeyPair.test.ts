@@ -9,7 +9,7 @@ describe('StardustKeyPair: sanitize message', () => {
 
       const app = await new StardustCustodialSDK(apiKey);
       const wallet = await app.getWallet(walletId);
-      const keyPair = wallet.keyPairs.ed25519;
+      const keyPair = wallet.sui;
 
       const message = 'hello world';
       const sanitizedMessage = keyPair.sanitizeMessage(message);
@@ -22,7 +22,7 @@ describe('StardustKeyPair: sanitize message', () => {
 
       const app = await new StardustCustodialSDK(apiKey);
       const wallet = await app.getWallet(walletId);
-      const keyPair = wallet.keyPairs.ed25519;
+      const keyPair = wallet.sui;
 
       const message = '0x68656c6c6f20776f726c64';
       const sanitizedMessage = keyPair.sanitizeMessage(message);
@@ -35,7 +35,7 @@ describe('StardustKeyPair: sanitize message', () => {
 
       const app = await new StardustCustodialSDK(apiKey);
       const wallet = await app.getWallet(walletId);
-      const keyPair = wallet.keyPairs.ed25519;
+      const keyPair = wallet.sui;
 
       const message = '68656c6c6f20776f726c64';
       const sanitizedMessage = keyPair.sanitizeMessage(message);
@@ -48,7 +48,7 @@ describe('StardustKeyPair: sanitize message', () => {
 
       const app = await new StardustCustodialSDK(apiKey);
       const wallet = await app.getWallet(walletId);
-      const keyPair = wallet.keyPairs.ed25519;
+      const keyPair = wallet.sui;
 
       const message = new Uint8Array([104, 101, 108, 108, 111, 32, 119, 111, 114, 108, 100]);
       const sanitizedMessage = keyPair.sanitizeMessage(message);

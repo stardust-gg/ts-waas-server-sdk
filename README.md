@@ -83,7 +83,6 @@ const wallet: StardustWallet = await sdk.getWallet(WALLET_ID);
 
 const signer = wallet.signers.ethers.connect(provider);
 
-// the below will get the chainId from the connected provider
 const txn = {
   to: '0xaBcDef1234567890Abcdef1234567890Abcdef12', // to address
   value: ethers.utils.parseEther('1.0'), // ether value to send with transaction

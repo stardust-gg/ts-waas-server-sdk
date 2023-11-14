@@ -2,13 +2,14 @@ import { Signer } from '@ethersproject/abstract-signer';
 import { joinSignature } from '@ethersproject/bytes';
 import { Deferrable, resolveProperties } from '@ethersproject/properties';
 import { serialize, UnsignedTransaction } from '@ethersproject/transactions';
-import StardustSignerAPI from '../stardust/StardustSignerAPI';
-import StardustWallet from '../stardust/StardustWallet';
+import StardustSignerAPI from '../../stardust/StardustSignerAPI';
+import StardustWallet from '../../stardust/StardustWallet';
 import type { Provider, TransactionRequest } from '@ethersproject/abstract-provider';
 import type { Bytes, Signature } from '@ethersproject/bytes';
-import type { ApiRequestPayload, SignRequestPayload } from '../types';
+import type { ApiRequestPayload, SignRequestPayload } from '../../types';
+import { sign } from 'crypto';
 
-export default class EthersSigner extends Signer {
+export default class EthersV5Signer extends Signer {
   private stardustSignerAPI: StardustSignerAPI;
 
   private stardustWallet: StardustWallet;
@@ -27,25 +28,36 @@ export default class EthersSigner extends Signer {
     const payload: ApiRequestPayload = {
       walletId: this.stardustWallet.id,
       chainType: 'EVM',
-      chainId: String(await this.getChainId()),
     };
     return this.stardustSignerAPI.getAddress(payload);
+  }
+
+  async signRaw(message: Bytes | string): Promise<string> {
+    const payload: SignRequestPayload = {
+      walletId: this.stardustWallet.id,
+      chainType: 'EVM',
+      message,
+    };
+
+    return await this.stardustSignerAPI.signMessage(payload);
   }
 
   // Returns the signed prefixed-message. This MUST treat:
   // - Bytes as a binary message
   // - string as a UTF8-message
   // i.e. "0x1234" is a SIX (6) byte string, NOT 2 bytes of data
-  async signMessage(message: Bytes | string): Promise<string> {
+  async signMessage(message: string): Promise<string> {
+    const messagePrefix = '\x19Ethereum Signed Message:\n';
+    const messageLen = String(message.length);
+    const prefixedMsg = messagePrefix + messageLen + message;
+
     const payload: SignRequestPayload = {
       walletId: this.stardustWallet.id,
       chainType: 'EVM',
-      chainId: String(await this.getChainId()),
-      message,
+      message: prefixedMsg,
     };
 
-    const signature: Signature = await this.stardustSignerAPI.signMessage(payload);
-    return joinSignature(signature);
+    return await this.stardustSignerAPI.signMessage(payload);
   }
 
   // Signs a transaction and returns the fully serialized, signed transaction.
@@ -64,7 +76,6 @@ export default class EthersSigner extends Signer {
     const payload: SignRequestPayload = {
       walletId: this.stardustWallet.id,
       chainType: 'EVM',
-      chainId: String(await this.getChainId()),
       message,
     };
     const signature = await this.stardustSignerAPI.signTransaction(payload);
@@ -72,7 +83,7 @@ export default class EthersSigner extends Signer {
   }
 
   // Returns a new instance of the Signer, connected to provider.
-  connect(provider: Provider): EthersSigner {
-    return new EthersSigner(this.stardustWallet, provider);
+  connect(provider: Provider): EthersV5Signer {
+    return new EthersV5Signer(this.stardustWallet, provider);
   }
 }

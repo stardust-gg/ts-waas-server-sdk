@@ -1,9 +1,9 @@
-export default class AbstractStardustKeyPair {
-  publicKey = async (message: string | Uint8Array): Promise<string> => {
+export default abstract class AbstractStardustKeyPair {
+  publicKey = async (): Promise<string> => {
     throw new Error('Method not implemented.');
   };
 
-  address = async (message: string | Uint8Array): Promise<string> => {
+  address = async (): Promise<string> => {
     throw new Error('Method not implemented.');
   };
 

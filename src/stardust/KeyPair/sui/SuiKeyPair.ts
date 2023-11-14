@@ -1,58 +1,64 @@
-import { convertToHex } from '../../../utils/convertStringtoHex';
+import { convertToHex } from '../../../index';
 import AbstractStardustKeyPair from '../AbstractStardustKeyPair';
-import AbstractStardustAPI from '../../AbstractStardustAPI';
 import { ApiRequestPayload, SignRequestPayload } from '../../../types';
+import { IntentScope, messageWithIntent } from '@mysten/sui.js/cryptography';
+import { blake2b } from '@noble/hashes/blake2b';
+import StardustSignerAPI from '../../StardustSignerAPI';
+import { bcs } from '@mysten/sui.js/bcs';
 
-type SigningScheme = 'ed25519' | 'secp256k1' | 'secp256r1';
-type SuiChainType = 'sui' | 'SUI';
+type SuiChainType = 'sui';
 
 export default class SuiKeyPair implements AbstractStardustKeyPair {
   public walletId;
-  public api: AbstractStardustAPI;
+  public api: StardustSignerAPI;
   public chainType: SuiChainType;
 
-  constructor(id: string, apiKey: string, private readonly signingScheme: SigningScheme) {
+  constructor(id: string, apiKey: string) {
     this.walletId = id;
-    this.api = new AbstractStardustAPI(apiKey);
-
-    switch (signingScheme) {
-      case 'ed25519':
-        this.chainType = 'sui';
-        break;
-      case 'secp256k1':
-      case 'secp256r1':
-      default:
-        throw new Error(`Unsupported signing scheme ${signingScheme}`);
-    }
+    this.api = new StardustSignerAPI(apiKey);
+    this.chainType = 'sui';
   }
 
-  publicKey = async (): Promise<string> => {
+  public publicKey = async (): Promise<string> => {
     const params: ApiRequestPayload = {
       walletId: this.walletId,
       chainType: this.chainType,
     };
-    return this.api.apiGet(`wallet/public-key`, params);
+    return await this.api.getPublicKey(params);
   };
 
-  sign = async (message: string | Uint8Array): Promise<string> => {
+  public sign = async (message: string | Uint8Array): Promise<string> => {
     const hexString = this.sanitizeMessage(message);
     const params: SignRequestPayload = {
       walletId: this.walletId,
       chainType: this.chainType,
       message: hexString,
     };
-    return this.api.apiPost(`sign/message`, params);
+    return String(await this.api.signMessage(params));
   };
 
-  address = async (): Promise<string> => {
+  public signTransactionBlock = async (builtTx: Uint8Array): Promise<string> => {
+    const intentMessage = messageWithIntent(IntentScope.TransactionData, builtTx);
+    const digest = blake2b(intentMessage, { dkLen: 32 });
+    return await this.sign(digest);
+  };
+
+  public signPersonalMessage = async (message: Uint8Array): Promise<string> => {
+    const serializedMessage = bcs.vector(bcs.u8()).serialize(message).toBytes(); // sui sdk magic
+    const intentMessage = messageWithIntent(IntentScope.PersonalMessage, serializedMessage);
+    const digest = blake2b(intentMessage, { dkLen: 32 });
+    return await this.sign(digest);
+  };
+
+  public address = async (): Promise<string> => {
     const params: ApiRequestPayload = {
       walletId: this.walletId,
       chainType: this.chainType,
     };
-    return this.api.apiGet(`wallet/address`, params);
+    return await this.api.getAddress(params);
   };
 
-  sanitizeMessage = (message: string | Uint8Array): string => {
+  private sanitizeMessage = (message: string | Uint8Array): string => {
     // If message is a string and is already a hex string, return it as is
     if (typeof message === 'string') {
       return convertToHex(message);

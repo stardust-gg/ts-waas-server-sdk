@@ -5,18 +5,20 @@ import { _TypedDataEncoder } from 'ethers/lib/utils';
 import { TypedDataDomain, TypedDataField } from 'ethers/lib/ethers';
 import { ethers } from 'ethers';
 
-import { StardustCustodialSDK, StardustWallet } from '../src';
+import { StardustCustodialSDK, StardustWallet } from '../../src';
+import dotenv from 'dotenv';
+dotenv.config();
 
-const apiKey = '';
-const walletId = '';
+// Setup constants
+const VAULT_API_KEY = process.env.DEV_SYSTEM_VAULT_API_KEY!;
+const VAULT_WALLET_ID = process.env.DEV_SYSTEM_VAULT_WALLET_ID!;
+const RPC_RUL = 'https://eth.public-rpc.com';
 
-const rpcUrl = '';
-const provider = new ethers.providers.JsonRpcProvider(rpcUrl);
+const provider = new ethers.providers.JsonRpcProvider(RPC_RUL);
 
 const domain: TypedDataDomain = {
   name: 'testing',
   version: '1',
-  chainId: 80001,
   verifyingContract: '0x355172E1AA17117DfCFDD2AcB4b0BFDA8308Cbc9',
 };
 
@@ -36,9 +38,9 @@ const recoverSigner = (order: any, signature: any) => {
 };
 
 const main = async () => {
-  const sdk = new StardustCustodialSDK(apiKey);
-  const wallet: StardustWallet = await sdk.getWallet(walletId);
-  const signer = wallet.signers.ethers.connect(provider);
+  const sdk = new StardustCustodialSDK(VAULT_API_KEY);
+  const wallet: StardustWallet = await sdk.getWallet(VAULT_WALLET_ID);
+  const signer = wallet.ethers.v5.signer.connect(provider);
 
   const value: Record<string, any> = {
     buyer: '0x355172E1AA17117DfCFDD2AcB4b0BFDA8308Cbc9',
@@ -58,11 +60,12 @@ const main = async () => {
   );
 
   const sig = joinSignature(
-    await signer.signMessage(_TypedDataEncoder.encode(populated.domain, types, populated.value))
+    await signer.signRaw(_TypedDataEncoder.encode(populated.domain, types, populated.value))
   );
 
   const recoveredAddress = recoverSigner(value, sig);
 
+  console.log('sig signed with', await signer.getAddress()); // Logs the address of the signer
   console.log('sig recovers to', recoveredAddress); // Logs the address of the signer
 };
 

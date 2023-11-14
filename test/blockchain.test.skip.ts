@@ -49,7 +49,7 @@ describe('Blockchain integration tests', () => {
   it('Should fund the custodial wallet to use for testing', async () => {
     const sdk = new StardustCustodialSDK(apiKey);
     const wallet = await sdk.getWallet(walletId);
-    const signer = wallet.signers.ethers.connect(hardhatEthersProvider);
+    const signer = wallet.ethers.v5.signer.connect(hardhatEthersProvider);
     const address = await signer.getAddress();
     const custodialBalancePreFunding = await signer.getBalance();
     await fundAccount(address, '1');
@@ -64,7 +64,7 @@ describe('Blockchain integration tests', () => {
     //   first lets get the address of a custodial wallet
     const sdk = new StardustCustodialSDK(apiKey);
     const wallet = await sdk.getWallet(walletId);
-    const signer = wallet.signers.ethers.connect(hardhatEthersProvider);
+    const signer = wallet.ethers.v5.signer.connect(hardhatEthersProvider);
     const address = await signer.getAddress();
     const recipient = hre.ethers.Wallet.createRandom().connect(hardhatEthersProvider);
     const initialBalance = hre.ethers.utils.formatEther(await recipient.getBalance());
@@ -82,7 +82,7 @@ describe('Blockchain integration tests', () => {
   it('should be able to interact with usdc contract to send usdc', async () => {
     const sdk = new StardustCustodialSDK(apiKey);
     const wallet = await sdk.getWallet(walletId);
-    const signer = wallet.signers.ethers.connect(hardhatEthersProvider);
+    const signer = wallet.ethers.v5.signer.connect(hardhatEthersProvider);
 
     const usdcAddress = '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174';
 

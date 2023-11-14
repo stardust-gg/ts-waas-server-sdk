@@ -1,16 +1,17 @@
 /* eslint-disable no-unused-vars */
-import EthersSigner from '../signers/EthersSigner';
-import StardustKeyPair from './KeyPair/AbstractStardustKeyPair';
+import { createStarkSigner, generateLegacyStarkPrivateKey } from '@imtbl/core-sdk';
 import SuiKeyPair from './KeyPair/sui/SuiKeyPair';
-
-type StardustKeyPairs = {
-  [key: string]: StardustKeyPair;
-};
+import ImxKeyPair from './KeyPair/imx/ImxKeyPair';
+import EthersV5Signer from '../ethers/V5/EthersV5Signer';
 
 export default class StardustWallet {
-  public signers: { ethers: EthersSigner };
-
-  public sui: StardustKeyPairs;
+  public ethers: {
+    v5: {
+      signer: EthersV5Signer;
+    };
+  };
+  public sui: SuiKeyPair;
+  public imx: ImxKeyPair;
 
   constructor(
     public readonly id: string,
@@ -18,12 +19,13 @@ export default class StardustWallet {
     public readonly createdAt: Date,
     public readonly lastUsedAt: Date | null = null
   ) {
-    this.signers = {
-      ethers: new EthersSigner(this),
+    this.ethers = {
+      v5: {
+        signer: new EthersV5Signer(this),
+      },
     };
 
-    this.sui = {
-      ed25519: new SuiKeyPair(id, apiKey, 'ed25519'),
-    };
+    this.sui = new SuiKeyPair(id, apiKey);
+    this.imx = new ImxKeyPair(this.ethers.v5.signer, id, apiKey);
   }
 }

@@ -60,26 +60,25 @@ describe('e2e', () => {
       const sdk = new StardustCustodialSDK(apiKey);
       stardustWallet = await sdk.getWallet(walletId);
 
-      const signer = stardustWallet.signers.ethers.connect(provider);
-      expect(await signer.getChainId()).not.toBeNull();
-      expect(stardustWallet.signers.ethers).toBeDefined();
+      const signer = stardustWallet.ethers.v5.signer.connect(provider);
+      expect(stardustWallet.ethers.v5.signer).toBeDefined();
     });
 
     it('Should allow us to get our on chain address', async () => {
-      const signer = stardustWallet.signers.ethers.connect(provider); // signer connected in last test
+      const signer = stardustWallet.ethers.v5.signer.connect(provider); // signer connected in last test
       const address = await signer.getAddress();
       expect(address).toMatch(/^0x[a-fA-F0-9]{40}$/);
     });
 
     it('Should return the same address if we call getAddress() twice', async () => {
-      const signer = stardustWallet.signers.ethers.connect(provider); // signer connected in last test
+      const signer = stardustWallet.ethers.v5.signer.connect(provider); // signer connected in last test
       const address = await signer.getAddress();
       const address2 = await signer.getAddress();
       expect(address).toEqual(address2);
     });
 
     it('Should sign a message and verify it was signed by the correct address', async () => {
-      const signer = stardustWallet.signers.ethers.connect(provider); // signer connected in last test
+      const signer = stardustWallet.ethers.v5.signer.connect(provider); // signer connected in last test
       const message = '0x12456';
       const hashedMessage = hashMessage(message);
       const signature = await signer.signMessage(hashedMessage);
@@ -89,7 +88,7 @@ describe('e2e', () => {
     });
 
     it('Should sign a transaction and verify it was signed by the correct address', async () => {
-      const signer = stardustWallet.signers.ethers.connect(provider); // signer connected in last test
+      const signer = stardustWallet.ethers.v5.signer.connect(provider); // signer connected in last test
       const address = await signer.getAddress();
 
       const txn = {
@@ -99,7 +98,6 @@ describe('e2e', () => {
         to: '0x08505F42D5666225d5d73B842dAdB87CCA44d1AE',
         value: '',
         data: '',
-        chainId: 0,
       };
       const signature = await signer.signTransaction(txn);
       const transaction = parseTransaction(signature);
