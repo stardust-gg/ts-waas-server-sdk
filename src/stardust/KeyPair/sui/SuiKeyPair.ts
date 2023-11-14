@@ -4,7 +4,6 @@ import { ApiRequestPayload, SignRequestPayload } from '../../../types';
 import { IntentScope, messageWithIntent } from '@mysten/sui.js/cryptography';
 import { blake2b } from '@noble/hashes/blake2b';
 import StardustSignerAPI from '../../StardustSignerAPI';
-import { bcs } from '@mysten/sui.js/bcs';
 
 type SuiChainType = 'sui';
 
@@ -44,7 +43,9 @@ export default class SuiKeyPair implements AbstractStardustKeyPair {
   };
 
   public signPersonalMessage = async (message: Uint8Array): Promise<string> => {
-    const serializedMessage = bcs.vector(bcs.u8()).serialize(message).toBytes(); // sui sdk magic
+    const serializedMessage = new Uint8Array(message.length + 1);
+    serializedMessage[0] = message.length;
+    serializedMessage.set(message, 1);
     const intentMessage = messageWithIntent(IntentScope.PersonalMessage, serializedMessage);
     const digest = blake2b(intentMessage, { dkLen: 32 });
     return await this.sign(digest);
