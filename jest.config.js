@@ -12,28 +12,10 @@ module.exports = {
   testMatch: ['**/*.test.ts'],
   setupFilesAfterEnv: [],
   collectCoverage: true,
-  rootDir: 'test',
-  coveragePathIgnorePatterns: ['node_modules'],
+  rootDir: '',
+  coveragePathIgnorePatterns: ['node_modules', 'examples'],
   testTimeout: 180000,
   testPathIgnorePatterns: ['__tests__/fixtures', 'build'],
   verbose: true,
   maxConcurrency: 1,
 };
-
-// "jest": {
-//   "moduleFileExtensions": [
-//     "js",
-//     "json",
-//     "ts"
-//   ],
-//   "rootDir": "test",
-//   "testRegex": ".*\\.test\\.ts$",
-//   "transform": {
-//     "^.+\\.(t|j)s$": "ts-jest"
-//   },
-//   "collectCoverageFrom": [
-//     "**/*.(t|j)s"
-//   ],
-//   "coverageDirectory": "../coverage",
-//   "testEnvironment": "node"
-// }

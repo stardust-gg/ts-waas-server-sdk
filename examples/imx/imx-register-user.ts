@@ -6,43 +6,48 @@ import { StardustCustodialSDK, StardustWallet } from '../../src';
 import dotenv from 'dotenv';
 dotenv.config();
 
-const apiKey = String(process.env.DEV_SYSTEM_VAULT_API_KEY);
-const walletId = String(process.env.DEV_SYSTEM_VAULT_WALLET_ID);
+const apiKey = String(process.env.DEV_SYSTEM_STARDUST_API_KEY);
+const walletId = String(process.env.DEV_SYSTEM_STARDUST_WALLET_ID);
 
 const rpcUrl = 'https://ethereum-sepolia.publicnode.com'; // SANDBOX: must match network for imx config
 // const rpcUrl = 'https://eth.public-rpc.com'; // PRODUCTION
 
 const provider = new ethers.providers.JsonRpcProvider(rpcUrl);
 
-const main = async () => {
+const main = async (apiKey: string, walletId: string) => {
   const sdk = new StardustCustodialSDK(apiKey);
   const wallet: StardustWallet = await sdk.getWallet(walletId);
 
-  // L1 Signer
-  const signer = wallet.ethers.v5.signer.connect(provider);
+  // L1 Signer - imx requires an ethers v5 signer
+  const signer = wallet.ethers.v5.getSigner().connect(provider);
 
   // L2 Imx Stark Signer
-  const imxSigner = await wallet.imx.getSigner();
+  const imxSigner = await wallet.imx.getSigner(signer);
 
   const walletConnection: WalletConnection = {
     ethSigner: signer,
     starkSigner: imxSigner,
   };
 
+  let response;
+
   // Register them/check registration
   try {
     const imxClient = new ImmutableX(Config.SANDBOX);
     await imxClient.registerOffchain(walletConnection);
-    console.log('Successfully registered user.');
+    // console.log('Successfully registered user.');
 
     const ethAddress = await walletConnection.ethSigner.getAddress();
-    const response = await imxClient.getUser(ethAddress);
+    response = await imxClient.getUser(ethAddress);
 
-    console.log('User account:', response);
+    // console.log('User account:', response);
+    return { accounts: response['accounts'] };
   } catch (error) {
     console.error(error);
     process.exit(1);
   }
 };
 
-main();
+main(apiKey, walletId);
+
+export default main;

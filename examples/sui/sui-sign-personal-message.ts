@@ -3,27 +3,25 @@ import StardustCustodialSdk from '../../src/stardust/StardustCustodialSDK';
 import { Ed25519PublicKey } from '@mysten/sui.js/keypairs/ed25519';
 
 import dotenv from 'dotenv';
+import { verifyPersonalMessage } from '@mysten/sui.js/verify';
 dotenv.config();
 
 type SuiNetwork = 'localnet' | 'devnet' | 'testnet' | 'mainnet';
 const network: SuiNetwork = 'localnet';
 
-const main = async () => {
-  // Establish connection to the SUI network
-  const client = new SuiClient({ url: getFullnodeUrl(network) });
+// Setup constants
+const STARDUST_API_KEY = process.env.DEV_SYSTEM_STARDUST_API_KEY!;
+const STARDUST_WALLET_ID = process.env.DEV_SYSTEM_STARDUST_WALLET_ID!;
 
-  // Setup constants
-  const VAULT_API_KEY = process.env.DEV_SYSTEM_VAULT_API_KEY!;
-  const VAULT_WALLET_ID = process.env.DEV_SYSTEM_VAULT_WALLET_ID!;
-
+const main = async (apiKey: string, walletId: string) => {
   // Create a StardustCustodialSdk instance
-  const stardust = new StardustCustodialSdk(VAULT_API_KEY);
+  const stardust = new StardustCustodialSdk(STARDUST_API_KEY);
 
   // grab relevant wallet
-  const wallet = await stardust.getWallet(VAULT_WALLET_ID);
+  const wallet = await stardust.getWallet(STARDUST_WALLET_ID);
 
   // Get the sui address of the wallet - sui specific
-  const address = await wallet.sui.address();
+  const address = await wallet.sui.getAddress();
 
   // message to sign - application specific
   const encoder = new TextEncoder();
@@ -33,13 +31,22 @@ const main = async () => {
   // sign the personal message
   const sig = await wallet.sui.signPersonalMessage(encodedMsg);
 
-  const hexPubKey = await wallet.sui.publicKey();
+  const hexPubKey = await wallet.sui.getPublicKey();
   const pubKeyBytes = Buffer.from(`${hexPubKey.replace(/^0x/, '')}`, 'hex'); // for usage with sui sdk
   const pubKey = new Ed25519PublicKey(pubKeyBytes);
-  console.log(`verified offchain signing: ${await pubKey.verifyPersonalMessage(encodedMsg, sig)}`);
+
+  const recoveredAddress = await verifyPersonalMessage(encodedMsg, sig);
+
+  return {
+    sig,
+    address,
+    recoveredAddress: recoveredAddress.toSuiAddress(),
+  };
 };
 
-main();
+main(STARDUST_API_KEY, STARDUST_WALLET_ID);
+
+export default main;
 
 // curl --location --request POST 'http://127.0.0.1:9123/gas' \
 // --header 'Content-Type: application/json' \

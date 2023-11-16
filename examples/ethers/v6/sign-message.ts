@@ -1,18 +1,18 @@
-import { ethers } from 'ethers';
+import { ethers } from 'ethers_v6';
 
-import { StardustCustodialSDK, StardustWallet } from '../../src';
+import { StardustCustodialSDK, StardustWallet } from '../../../src';
 
 // allow usage of env
 import dotenv from 'dotenv';
 dotenv.config();
 
-const apiKey = String(process.env.DEV_SYSTEM_VAULT_API_KEY);
-const walletId = String(process.env.DEV_SYSTEM_VAULT_WALLET_ID);
+const apiKey = String(process.env.DEV_SYSTEM_STARDUST_API_KEY);
+const walletId = String(process.env.DEV_SYSTEM_STARDUST_WALLET_ID);
 // imx rpc
 const rpcUrl = 'https://ethereum-sepolia.publicnode.com';
 // const rpcUrl = 'https://eth.public-rpc.com';
 
-const provider = new ethers.providers.JsonRpcProvider(rpcUrl);
+const provider = new ethers.JsonRpcProvider(rpcUrl);
 
 const convertToHexIfUtf8 = (str: string): string => {
   const hexPattern = /^(0x)?[0-9a-fA-F]+$/;
@@ -24,11 +24,11 @@ const convertToHexIfUtf8 = (str: string): string => {
   return `0x${buffer.toString('hex')}`;
 };
 
-const main = async () => {
+const main = async (apiKey: string, walletId: string, provider: ethers.Provider) => {
   const sdk = new StardustCustodialSDK(apiKey);
   const wallet: StardustWallet = await sdk.getWallet(walletId);
 
-  const signer = wallet.ethers.v5.signer.connect(provider);
+  const signer = wallet.ethers.v6.getSigner(provider);
 
   const ethAddress = await signer.getAddress();
 
@@ -36,10 +36,11 @@ const main = async () => {
 
   const sig = await signer.signMessage(message);
 
-  const recoveredAddress = ethers.utils.verifyMessage(message, sig);
+  const recoveredAddress = ethers.verifyMessage(message, sig);
 
-  console.log(ethAddress);
-  console.log(recoveredAddress);
+  return { sig, ethAddress, recoveredAddress };
 };
 
-main();
+main(apiKey, walletId, provider);
+
+export default main;

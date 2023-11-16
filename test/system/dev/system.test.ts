@@ -6,24 +6,24 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 describe('System: DEV Signing Parity', () => {
-  let DEV_SYSTEM_VAULT_API_URL: string;
-  let DEV_SYSTEM_VAULT_API_KEY: string;
-  let DEV_SYSTEM_VAULT_WALLET_ID: string;
+  let DEV_SYSTEM_STARDUST_API_URL: string;
+  let DEV_SYSTEM_STARDUST_API_KEY: string;
+  let DEV_SYSTEM_STARDUST_WALLET_ID: string;
 
   let signerAPI: StardustSignerAPI;
 
   beforeAll(async () => {
-    DEV_SYSTEM_VAULT_API_URL = String(process.env.DEV_SYSTEM_VAULT_API_URL);
-    DEV_SYSTEM_VAULT_API_KEY = String(process.env.DEV_SYSTEM_VAULT_API_KEY);
-    DEV_SYSTEM_VAULT_WALLET_ID = String(process.env.DEV_SYSTEM_VAULT_WALLET_ID);
+    DEV_SYSTEM_STARDUST_API_URL = String(process.env.DEV_SYSTEM_STARDUST_API_URL);
+    DEV_SYSTEM_STARDUST_API_KEY = String(process.env.DEV_SYSTEM_STARDUST_API_KEY);
+    DEV_SYSTEM_STARDUST_WALLET_ID = String(process.env.DEV_SYSTEM_STARDUST_WALLET_ID);
 
-    signerAPI = new StardustSignerAPI(DEV_SYSTEM_VAULT_API_KEY, DEV_SYSTEM_VAULT_API_URL);
+    signerAPI = new StardustSignerAPI(DEV_SYSTEM_STARDUST_API_KEY, DEV_SYSTEM_STARDUST_API_URL);
   });
 
   describe('evm', () => {
     it('should sign a utf8 string', async () => {
       const params: SignRequestPayload = {
-        walletId: DEV_SYSTEM_VAULT_WALLET_ID,
+        walletId: DEV_SYSTEM_STARDUST_WALLET_ID,
         message: 'hello world',
         chainType: 'EVM',
       };
@@ -36,7 +36,7 @@ describe('System: DEV Signing Parity', () => {
 
     it('should sign a hex encoded string', async () => {
       const params: SignRequestPayload = {
-        walletId: DEV_SYSTEM_VAULT_WALLET_ID,
+        walletId: DEV_SYSTEM_STARDUST_WALLET_ID,
         message: '0x68656c6c6f20776f726c64',
         chainType: 'EVM',
       };
@@ -49,7 +49,7 @@ describe('System: DEV Signing Parity', () => {
 
     it('should return an address', async () => {
       const params: ApiRequestPayload = {
-        walletId: DEV_SYSTEM_VAULT_WALLET_ID,
+        walletId: DEV_SYSTEM_STARDUST_WALLET_ID,
         chainType: 'EVM',
       };
 
@@ -59,7 +59,7 @@ describe('System: DEV Signing Parity', () => {
 
     it('should return a public key', async () => {
       const params: ApiRequestPayload = {
-        walletId: DEV_SYSTEM_VAULT_WALLET_ID,
+        walletId: DEV_SYSTEM_STARDUST_WALLET_ID,
         chainType: 'EVM',
       };
 
@@ -73,7 +73,7 @@ describe('System: DEV Signing Parity', () => {
   describe('sol', () => {
     it('should sign a utf8 string', async () => {
       const params: SignRequestPayload = {
-        walletId: DEV_SYSTEM_VAULT_WALLET_ID,
+        walletId: DEV_SYSTEM_STARDUST_WALLET_ID,
         message: 'hello world',
         chainType: 'sol',
       };
@@ -86,7 +86,7 @@ describe('System: DEV Signing Parity', () => {
 
     it('should sign a hex encoded string', async () => {
       const params: SignRequestPayload = {
-        walletId: DEV_SYSTEM_VAULT_WALLET_ID,
+        walletId: DEV_SYSTEM_STARDUST_WALLET_ID,
         message: '0x68656c6c6f20776f726c64',
         chainType: 'sol',
       };
@@ -99,7 +99,7 @@ describe('System: DEV Signing Parity', () => {
 
     it('should return an address', async () => {
       const params: ApiRequestPayload = {
-        walletId: DEV_SYSTEM_VAULT_WALLET_ID,
+        walletId: DEV_SYSTEM_STARDUST_WALLET_ID,
         chainType: 'sol',
       };
 
@@ -109,7 +109,7 @@ describe('System: DEV Signing Parity', () => {
 
     it('should return a public key', async () => {
       const params: ApiRequestPayload = {
-        walletId: DEV_SYSTEM_VAULT_WALLET_ID,
+        walletId: DEV_SYSTEM_STARDUST_WALLET_ID,
         chainType: 'sol',
       };
 
@@ -121,7 +121,7 @@ describe('System: DEV Signing Parity', () => {
   describe('sui', () => {
     it('should sign a utf8 string', async () => {
       const params: SignRequestPayload = {
-        walletId: DEV_SYSTEM_VAULT_WALLET_ID,
+        walletId: DEV_SYSTEM_STARDUST_WALLET_ID,
         message: 'hello world',
         chainType: 'sui',
       };
@@ -134,7 +134,7 @@ describe('System: DEV Signing Parity', () => {
 
     it('should sign a hex encoded string', async () => {
       const params: SignRequestPayload = {
-        walletId: DEV_SYSTEM_VAULT_WALLET_ID,
+        walletId: DEV_SYSTEM_STARDUST_WALLET_ID,
         message: '0x68656c6c6f20776f726c64',
         chainType: 'sui',
       };
@@ -146,7 +146,7 @@ describe('System: DEV Signing Parity', () => {
     });
     it('should return an address', async () => {
       const params: ApiRequestPayload = {
-        walletId: DEV_SYSTEM_VAULT_WALLET_ID,
+        walletId: DEV_SYSTEM_STARDUST_WALLET_ID,
         chainType: 'sui',
       };
 
@@ -156,7 +156,7 @@ describe('System: DEV Signing Parity', () => {
 
     it('should return a public key', async () => {
       const params: ApiRequestPayload = {
-        walletId: DEV_SYSTEM_VAULT_WALLET_ID,
+        walletId: DEV_SYSTEM_STARDUST_WALLET_ID,
         chainType: 'sui',
       };
 

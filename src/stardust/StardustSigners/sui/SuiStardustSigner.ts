@@ -1,13 +1,13 @@
 import { convertToHex } from '../../../index';
-import AbstractStardustKeyPair from '../AbstractStardustKeyPair';
 import { ApiRequestPayload, SignRequestPayload } from '../../../types';
 import { IntentScope, messageWithIntent } from '@mysten/sui.js/cryptography';
 import { blake2b } from '@noble/hashes/blake2b';
 import StardustSignerAPI from '../../StardustSignerAPI';
+import AbstractStardustSigner from '../AbstractStardustSigner';
 
 type SuiChainType = 'sui';
 
-export default class SuiKeyPair implements AbstractStardustKeyPair {
+export default class SuiStardustSigner implements AbstractStardustSigner {
   public walletId;
   public api: StardustSignerAPI;
   public chainType: SuiChainType;
@@ -18,7 +18,7 @@ export default class SuiKeyPair implements AbstractStardustKeyPair {
     this.chainType = 'sui';
   }
 
-  public publicKey = async (): Promise<string> => {
+  public getPublicKey = async (): Promise<string> => {
     const params: ApiRequestPayload = {
       walletId: this.walletId,
       chainType: this.chainType,
@@ -26,7 +26,7 @@ export default class SuiKeyPair implements AbstractStardustKeyPair {
     return await this.api.getPublicKey(params);
   };
 
-  public sign = async (message: string | Uint8Array): Promise<string> => {
+  public signRaw = async (message: string | Uint8Array): Promise<string> => {
     const hexString = this.sanitizeMessage(message);
     const params: SignRequestPayload = {
       walletId: this.walletId,
@@ -39,7 +39,7 @@ export default class SuiKeyPair implements AbstractStardustKeyPair {
   public signTransactionBlock = async (builtTx: Uint8Array): Promise<string> => {
     const intentMessage = messageWithIntent(IntentScope.TransactionData, builtTx);
     const digest = blake2b(intentMessage, { dkLen: 32 });
-    return await this.sign(digest);
+    return await this.signRaw(digest);
   };
 
   public signPersonalMessage = async (message: Uint8Array): Promise<string> => {
@@ -48,10 +48,10 @@ export default class SuiKeyPair implements AbstractStardustKeyPair {
     serializedMessage.set(message, 1);
     const intentMessage = messageWithIntent(IntentScope.PersonalMessage, serializedMessage);
     const digest = blake2b(intentMessage, { dkLen: 32 });
-    return await this.sign(digest);
+    return await this.signRaw(digest);
   };
 
-  public address = async (): Promise<string> => {
+  public getAddress = async (): Promise<string> => {
     const params: ApiRequestPayload = {
       walletId: this.walletId,
       chainType: this.chainType,
