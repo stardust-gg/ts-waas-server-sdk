@@ -4,6 +4,7 @@ import { describe, expect, it } from '@jest/globals';
 
 import V5SignMessageExample from '../../examples/ethers/v5/sign-message';
 import V5SignTypedDataExample from '../../examples/ethers/v5/sign-typed-data';
+import V5SignTransaction from '../../examples/ethers/v5/sign-transaction';
 
 import V6SignMessageExample from '../../examples/ethers/v6/sign-message';
 import V6SignTypedDataExample from '../../examples/ethers/v6/sign-typed-data';
@@ -44,6 +45,16 @@ describe('ethers', () => {
     it('should sign typed data', async () => {
       const provider = new ethers_v5.providers.JsonRpcProvider('https://eth.public-rpc.com');
       const { ethAddress, recoveredAddress } = await V5SignTypedDataExample(
+        DEV_SYSTEM_STARDUST_API_KEY,
+        DEV_SYSTEM_STARDUST_WALLET_ID,
+        provider
+      );
+      expect(ethAddress).toBe(recoveredAddress);
+    });
+
+    it('should sign a tx object', async () => {
+      const provider = new ethers_v5.providers.JsonRpcProvider('https://eth.public-rpc.com');
+      const { ethAddress, recoveredAddress } = await V5SignTransaction(
         DEV_SYSTEM_STARDUST_API_KEY,
         DEV_SYSTEM_STARDUST_WALLET_ID,
         provider
