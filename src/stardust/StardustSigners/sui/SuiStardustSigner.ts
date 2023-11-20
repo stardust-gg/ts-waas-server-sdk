@@ -1,16 +1,14 @@
 import { convertToHex } from '../../../index';
-import { ApiRequestPayload, SignRequestPayload } from '../../../types';
+import { ApiRequestPayload, ChainType, SignRequestPayload } from '../../../types';
 import { IntentScope, messageWithIntent } from '@mysten/sui.js/cryptography';
 import { blake2b } from '@noble/hashes/blake2b';
 import StardustSignerAPI from '../../StardustSignerAPI';
 import AbstractStardustSigner from '../AbstractStardustSigner';
 
-type SuiChainType = 'sui';
-
 export default class SuiStardustSigner implements AbstractStardustSigner {
   public walletId;
   public api: StardustSignerAPI;
-  public chainType: SuiChainType;
+  public chainType: ChainType;
 
   constructor(id: string, apiKey: string) {
     this.walletId = id;
