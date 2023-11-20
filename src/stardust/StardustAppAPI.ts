@@ -2,7 +2,6 @@ import AbstractStardustAPI from './AbstractStardustAPI';
 import StardustApp from './StardustApp';
 
 export default class StardustAppAPI extends AbstractStardustAPI {
-  // eslint-disable-next-line no-useless-constructor
   constructor(apiKey: string, url?: string) {
     super(apiKey, url);
   }
@@ -15,11 +14,9 @@ export default class StardustAppAPI extends AbstractStardustAPI {
       email: stardustApp.email,
       description: stardustApp.description,
     });
-    // eslint-disable-next-line no-param-reassign
     stardustApp.id = appData.id;
 
-    // eslint-disable-next-line no-param-reassign, prefer-destructuring
-    stardustApp.apiKey = appData.apiKeys[0];
+    stardustApp.apiKey = appData.apiKey;
     return stardustApp;
   }
 

@@ -57,6 +57,11 @@ export default class HexString {
     return BigInt(this.prefix());
   }
 
-  static addHexPrefix = (str: string): `0x${string}` =>
-    (str.startsWith('0x') ? str : `0x${str}`) as `0x${string}`;
+  static addHexPrefix = (str: string): `0x${string}` => {
+    const hexPattern = /^[0-9A-Fa-f]*$/;
+    if (!hexPattern.test(str)) {
+      throw new Error('Invalid hex string');
+    }
+    return str.startsWith('0x') ? `0x${str}` : `0x${HexString.normalizeHex(str)}`;
+  };
 }

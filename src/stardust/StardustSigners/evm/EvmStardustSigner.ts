@@ -1,7 +1,8 @@
 import StardustSignerAPI from '../../StardustSignerAPI';
 import { ApiRequestPayload, ChainType, SignRequestPayload } from '../../../types';
-import { ethers } from 'ethers_v6';
+import { ethers, isHexString } from 'ethers_v6';
 import AbstractStardustSigner from '../AbstractStardustSigner';
+import HexString from '../../../utils/HexString';
 
 export default class EvmStardustSigner extends AbstractStardustSigner {
   public walletId;
@@ -44,12 +45,26 @@ export default class EvmStardustSigner extends AbstractStardustSigner {
   };
 
   async signMessage(message: string | Uint8Array): Promise<string> {
+    const messagePrefix = '\x19Ethereum Signed Message:\n';
+    const messageLen = String(message.length);
+    let prefixedMsg: string;
+
     if (message instanceof Uint8Array) {
       message = this.uint8ArrayToHexString(message);
     }
-    const messagePrefix = '\x19Ethereum Signed Message:\n';
-    const messageLen = String(message.length);
-    const prefixedMsg = messagePrefix + messageLen + message;
+
+    if (!isHexString(message)) {
+      // is not a hex string
+      prefixedMsg = String(
+        new HexString(Buffer.from(messagePrefix + messageLen + message, 'utf8'))
+      );
+    } else {
+      // is a hex string
+      prefixedMsg =
+        new HexString(Buffer.from(messagePrefix, 'utf8')).prefix() +
+        new HexString(Buffer.from(messageLen, 'utf8')).strip() +
+        new HexString(message).strip();
+    }
 
     const payload: SignRequestPayload = {
       walletId: this.walletId,

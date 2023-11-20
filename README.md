@@ -42,7 +42,7 @@ import { StardustCustodialSDK, StardustApp } from '@stardust-gg/stardust-custodi
 const app: StardustApp = new StardustApp('app_name', 'email@address.xyz', 'optional_description');
 
 // create a StardustApp instance in the Stardust API
-await StardustCustodialSDK.Create(app);
+await StardustCustodialSDK.CreateApp(app);
 
 // save the api key so you can access this app later
 const apiKey = app.apiKey;

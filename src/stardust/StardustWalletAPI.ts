@@ -12,8 +12,8 @@ export default class StardustWalletAPI extends AbstractStardustAPI {
     return new StardustWallet(
       walletData.id,
       this.apiKey,
-      new Date(walletData.created_at),
-      walletData.last_used_at ? new Date(walletData.last_used_at) : null
+      new Date(walletData.createdAt),
+      walletData.lastUsedAt ? new Date(walletData.lastUsedAt) : null
     );
   }
 
@@ -22,8 +22,8 @@ export default class StardustWalletAPI extends AbstractStardustAPI {
     return new StardustWallet(
       walletId,
       this.apiKey,
-      new Date(walletData.created_at),
-      walletData.last_used_at ? new Date(walletData.last_used_at) : null
+      new Date(walletData.createdAt),
+      walletData.lastUsedAt ? new Date(walletData.lastUsedAt) : null
     );
   }
 }

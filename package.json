@@ -2,14 +2,14 @@
   "name": "@stardust-gg/stardust-custodial-sdk",
   "version": "2.0.0",
   "description": "This SDK is intended for use with the Stardust Custodial Wallet API, and its main purpose is to easily allow its implementers to create Stardust custodial wallets. These wallet objects can be instantiated, and an EthersSigner (satisfying Ethers.js's Signer requirements) can be accessed. More signers will be released in following updates. The EthersSigner can be used in place of any existing Ethers signers. See the examples in the later sections.",
-  "main": "dist/main.js",
+  "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
     "clean": "rm -rf dist/ node_modules/ yarn.lock && yarn install",
     "postinstall": "yarn run build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
-    "build": "webpack --config webpack.config.js",
+    "build": "tsc",
     "test": "jest",
     "test:cov": "jest --coverage=true"
   },
