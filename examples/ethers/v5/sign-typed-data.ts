@@ -10,8 +10,8 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 // Setup constants
-const STARDUST_API_KEY = process.env.DEV_SYSTEM_STARDUST_API_KEY!;
-const STARDUST_WALLET_ID = process.env.DEV_SYSTEM_STARDUST_WALLET_ID!;
+const STARDUST_API_KEY = process.env.PROD_SYSTEM_STARDUST_API_KEY!;
+const STARDUST_WALLET_ID = process.env.PROD_SYSTEM_STARDUST_WALLET_ID!;
 const RPC_RUL = 'https://eth.public-rpc.com';
 
 const provider = new ethers.providers.JsonRpcProvider(RPC_RUL);

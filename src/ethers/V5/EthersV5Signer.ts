@@ -18,10 +18,6 @@ export default class EthersV5Signer extends Signer {
     return this.evmStardustSigner.getAddress();
   }
 
-  // Returns the signed prefixed-message. This MUST treat:
-  // - Bytes as a binary message
-  // - string as a UTF8-message
-  // i.e. "0x1234" is a SIX (6) byte string, NOT 2 bytes of data
   async signMessage(message: string): Promise<string> {
     return this.evmStardustSigner.signMessage(message);
   }
@@ -30,10 +26,6 @@ export default class EthersV5Signer extends Signer {
     return this.evmStardustSigner.signRaw(message);
   }
 
-  // Signs a transaction and returns the fully serialized, signed transaction.
-  // The EXACT transaction MUST be signed, and NO additional properties to be added.
-  // - This MAY throw if signing transactions is not supports, but if
-  //   it does, sentTransaction MUST be overridden.
   async signTransaction(transaction: Deferrable<TransactionRequest>): Promise<string> {
     const tx = await resolveProperties(transaction);
     if (tx.from) {
@@ -52,7 +44,6 @@ export default class EthersV5Signer extends Signer {
     return serialize(<UnsignedTransaction>tx, signature);
   }
 
-  // Returns a new instance of the Signer, connected to provider.
   connect(provider: Provider): EthersV5Signer {
     return new EthersV5Signer(this.evmStardustSigner, provider);
   }

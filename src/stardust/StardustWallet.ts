@@ -3,7 +3,7 @@ import { Provider } from 'ethers_v6';
 import EthersV5Signer from '../ethers/V5/EthersV5Signer';
 import EthersV6Signer from '../ethers/V6/EthersV6Signer';
 import SuiStardustSigner from './StardustSigners/sui/SuiStardustSigner';
-import ImxStardustSigner from './StardustSigners/imx/ImxStardustSigner';
+import ImxStardustSigner from './StardustSigners/evm/imx/ImxStardustSigner';
 import EvmStardustSigner from './StardustSigners/evm/EvmStardustSigner';
 
 export default class StardustWallet {

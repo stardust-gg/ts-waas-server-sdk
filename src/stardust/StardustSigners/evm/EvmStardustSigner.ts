@@ -1,8 +1,9 @@
 import StardustSignerAPI from '../../StardustSignerAPI';
 import { ApiRequestPayload, ChainType, SignRequestPayload } from '../../../types';
-import { ethers, isHexString } from 'ethers_v6';
+import { ethers } from 'ethers_v6';
 import AbstractStardustSigner from '../AbstractStardustSigner';
 import HexString from '../../../utils/HexString';
+import { convertStringToHex, isHexString } from '../../../utils';
 
 export default class EvmStardustSigner extends AbstractStardustSigner {
   public walletId;
@@ -20,6 +21,7 @@ export default class EvmStardustSigner extends AbstractStardustSigner {
     if (digest instanceof Uint8Array) {
       digest = this.uint8ArrayToHexString(digest);
     }
+
     const payload: SignRequestPayload = {
       walletId: this.walletId,
       chainType: 'EVM',
@@ -46,24 +48,24 @@ export default class EvmStardustSigner extends AbstractStardustSigner {
 
   async signMessage(message: string | Uint8Array): Promise<string> {
     const messagePrefix = '\x19Ethereum Signed Message:\n';
-    const messageLen = String(message.length);
+    let messageLen;
     let prefixedMsg: string;
 
     if (message instanceof Uint8Array) {
+      messageLen = String(message.length);
       message = this.uint8ArrayToHexString(message);
     }
 
     if (!isHexString(message)) {
-      // is not a hex string
-      prefixedMsg = String(
-        new HexString(Buffer.from(messagePrefix + messageLen + message, 'utf8'))
-      );
+      messageLen = String(new HexString(convertStringToHex(message)).length);
+      prefixedMsg = convertStringToHex(messagePrefix + messageLen + message);
     } else {
-      // is a hex string
+      const messageHexString = new HexString(message);
+      messageLen = String(messageHexString.length);
       prefixedMsg =
-        new HexString(Buffer.from(messagePrefix, 'utf8')).prefix() +
-        new HexString(Buffer.from(messageLen, 'utf8')).strip() +
-        new HexString(message).strip();
+        convertStringToHex(messagePrefix) +
+        new HexString(convertStringToHex(messageLen)).strip() +
+        messageHexString.strip();
     }
 
     const payload: SignRequestPayload = {

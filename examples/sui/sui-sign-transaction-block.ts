@@ -12,9 +12,9 @@ type SuiNetwork = 'localnet' | 'devnet' | 'testnet' | 'mainnet';
 const network: SuiNetwork = 'localnet';
 
 // Setup constants
-const STARDUST_API_KEY = process.env.DEV_SYSTEM_STARDUST_API_KEY!;
-const STARDUST_WALLET_ID = process.env.DEV_SYSTEM_STARDUST_WALLET_ID!;
-const STARDUST_WALLET_ID_2 = process.env.DEV_SYSTEM_STARDUST_WALLET_ID_2!;
+const STARDUST_API_KEY = process.env.PROD_SYSTEM_STARDUST_API_KEY!;
+const STARDUST_WALLET_ID = process.env.PROD_SYSTEM_STARDUST_WALLET_ID!;
+const STARDUST_WALLET_ID_2 = process.env.PROD_SYSTEM_STARDUST_WALLET_ID_2!;
 
 const main = async (apiKey: string, walletId1: string, walletId2: string) => {
   // Establish connection to the SUI network

@@ -9,8 +9,8 @@ import { resolveProperties } from '@ethersproject/properties';
 import { serializeTransaction } from 'ethers/lib/utils';
 dotenv.config();
 
-const apiKey = String(process.env.DEV_SYSTEM_STARDUST_API_KEY);
-const walletId = String(process.env.DEV_SYSTEM_STARDUST_WALLET_ID);
+const apiKey = String(process.env.PROD_SYSTEM_STARDUST_API_KEY);
+const walletId = String(process.env.PROD_SYSTEM_STARDUST_WALLET_ID);
 // imx rpc
 const rpcUrl = 'https://eth.public-rpc.com';
 

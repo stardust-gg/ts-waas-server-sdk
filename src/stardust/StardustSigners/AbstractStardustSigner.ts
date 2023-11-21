@@ -1,13 +1,7 @@
 export default abstract class AbstractStardustSigner {
-  getPublicKey = async (): Promise<string> => {
-    throw new Error('Method not implemented.');
-  };
+  public abstract getPublicKey: () => Promise<string>;
 
-  getAddress = async (): Promise<string> => {
-    throw new Error('Method not implemented.');
-  };
+  public abstract getAddress: () => Promise<string>;
 
-  signRaw = async (message: string | Uint8Array): Promise<string> => {
-    throw new Error('Method not implemented.');
-  };
+  public abstract signRaw: (message: string | Uint8Array) => Promise<string>;
 }

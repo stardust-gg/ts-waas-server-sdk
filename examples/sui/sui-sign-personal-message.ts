@@ -1,4 +1,3 @@
-import { SuiClient, getFullnodeUrl } from '@mysten/sui.js/client';
 import StardustCustodialSdk from '../../src/stardust/StardustCustodialSDK';
 import { Ed25519PublicKey } from '@mysten/sui.js/keypairs/ed25519';
 
@@ -6,19 +5,16 @@ import dotenv from 'dotenv';
 import { verifyPersonalMessage } from '@mysten/sui.js/verify';
 dotenv.config();
 
-type SuiNetwork = 'localnet' | 'devnet' | 'testnet' | 'mainnet';
-const network: SuiNetwork = 'localnet';
-
 // Setup constants
-const STARDUST_API_KEY = process.env.DEV_SYSTEM_STARDUST_API_KEY!;
-const STARDUST_WALLET_ID = process.env.DEV_SYSTEM_STARDUST_WALLET_ID!;
+const STARDUST_API_KEY = process.env.PROD_SYSTEM_STARDUST_API_KEY!;
+const STARDUST_WALLET_ID = process.env.PROD_SYSTEM_STARDUST_WALLET_ID!;
 
 const main = async (apiKey: string, walletId: string) => {
   // Create a StardustCustodialSdk instance
-  const stardust = new StardustCustodialSdk(STARDUST_API_KEY);
+  const stardust = new StardustCustodialSdk(apiKey);
 
   // grab relevant wallet
-  const wallet = await stardust.getWallet(STARDUST_WALLET_ID);
+  const wallet = await stardust.getWallet(walletId);
 
   // Get the sui address of the wallet - sui specific
   const address = await wallet.sui.getAddress();

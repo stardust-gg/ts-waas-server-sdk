@@ -1,4 +1,4 @@
-import { convertToHex } from '../../../index';
+import { convertStringToHex } from '../../../index';
 import { ApiRequestPayload, ChainType, SignRequestPayload } from '../../../types';
 import { IntentScope, messageWithIntent } from '@mysten/sui.js/cryptography';
 import { blake2b } from '@noble/hashes/blake2b';
@@ -60,7 +60,7 @@ export default class SuiStardustSigner implements AbstractStardustSigner {
   private sanitizeMessage = (message: string | Uint8Array): string => {
     // If message is a string and is already a hex string, return it as is
     if (typeof message === 'string') {
-      return convertToHex(message);
+      return convertStringToHex(message);
     }
 
     // Otherwise, convert message to a Buffer and then to a hex string - works for utf 8 and uint8array

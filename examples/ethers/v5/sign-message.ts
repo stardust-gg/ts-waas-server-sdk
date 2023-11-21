@@ -6,8 +6,8 @@ import { StardustCustodialSDK, StardustWallet } from '../../../src';
 import dotenv from 'dotenv';
 dotenv.config();
 
-const apiKey = String(process.env.DEV_SYSTEM_STARDUST_API_KEY);
-const walletId = String(process.env.DEV_SYSTEM_STARDUST_WALLET_ID);
+const apiKey = String(process.env.PROD_SYSTEM_STARDUST_API_KEY);
+const walletId = String(process.env.PROD_SYSTEM_STARDUST_WALLET_ID);
 // imx rpc
 const rpcUrl = 'https://ethereum-sepolia.publicnode.com';
 // const rpcUrl = 'https://eth.public-rpc.com';
