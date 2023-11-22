@@ -11,12 +11,13 @@ import {
   MOCKED_API_KEY,
   MOCKED_SERIALIZED_SIGNATURE,
   MOCKED_API_SIGNAURE,
+  MOCKED_ADDRESS,
 } from './constants';
 
 jest.mock('../../../src/stardust/StardustSigners/evm/EvmStardustSigner', () => {
   return jest.fn().mockImplementation((walletId: string, apiKey: string) => {
     return {
-      getAddress: jest.fn().mockResolvedValue('mockedAddress'),
+      getAddress: jest.fn().mockResolvedValue(MOCKED_ADDRESS),
       signMessage: jest.fn().mockResolvedValue('mockedSignature'),
       signRaw: jest.fn().mockResolvedValue('mockedRawSignature'),
       api: {
@@ -58,7 +59,7 @@ describe('ethers', () => {
     describe('use cases', () => {
       it('should delete the "from" property from the tx object if set', async () => {
         const tx = {
-          from: 'mockedAddress',
+          from: MOCKED_ADDRESS,
           to: ethers_v5.constants.AddressZero,
           value: ethers_v5.utils.parseEther('1'),
         };
@@ -68,7 +69,7 @@ describe('ethers', () => {
 
       it('should return the correct address when getAddress is called', async () => {
         const address = await ethersV5Signer.getAddress();
-        expect(address).toBe('mockedAddress');
+        expect(address).toBe(MOCKED_ADDRESS);
       });
 
       it('should sign a message and return the correct signature', async () => {

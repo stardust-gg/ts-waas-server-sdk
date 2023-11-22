@@ -56,12 +56,12 @@ export default class EthersV6Signer extends AbstractSigner {
 
     // Build the transaction
     const builtTx = Transaction.from(<TransactionLike<string>>tx);
-    const unsignedHash = builtTx.unsignedHash;
+    const unsignedSerialized = builtTx.unsignedSerialized;
 
     const payload: SignRequestPayload = {
       walletId: this.evmStardustSigner.walletId,
       chainType: 'EVM',
-      message: unsignedHash,
+      message: unsignedSerialized,
     };
     const signature = await this.evmStardustSigner.api.signTransaction(payload);
     builtTx.signature = signature;
