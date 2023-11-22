@@ -1,14 +1,13 @@
-import { PublicKey, SuiClient, getFullnodeUrl } from '@mysten/sui.js/client';
+import dotenv from 'dotenv';
+dotenv.config();
+
+import { SuiClient, getFullnodeUrl } from '@mysten/sui.js/client';
 import StardustCustodialSdk from '../../src/stardust/StardustCustodialSDK';
 import { TransactionBlock } from '@mysten/sui.js/transactions';
 import { requestSuiFromFaucetV0, getFaucetHost } from '@mysten/sui.js/faucet';
 import { verifyTransactionBlock } from '@mysten/sui.js/verify';
 
-import dotenv from 'dotenv';
-import { Ed25519PublicKey } from '@mysten/sui.js/dist/cjs/keypairs/ed25519';
-dotenv.config();
-
-type SuiNetwork = 'localnet' | 'devnet' | 'testnet' | 'mainnet';
+type SuiNetwork = 'localnet' | 'devnet' | 'testnet';
 const network: SuiNetwork = 'localnet';
 
 // Setup constants
@@ -16,55 +15,51 @@ const STARDUST_API_KEY = process.env.PROD_SYSTEM_STARDUST_API_KEY!;
 const STARDUST_WALLET_ID = process.env.PROD_SYSTEM_STARDUST_WALLET_ID!;
 const STARDUST_WALLET_ID_2 = process.env.PROD_SYSTEM_STARDUST_WALLET_ID_2!;
 
-const main = async (apiKey: string, walletId1: string, walletId2: string) => {
-  // Establish connection to the SUI network
-  const client = new SuiClient({ url: getFullnodeUrl(network) });
+// This is currently an example set up to use a locally running validator test network
+// https://docs.sui.io/guides/developer/getting-started/local-network
+async function main() {
+  try {
+    // Establish connection to the SUI network
+    const client = new SuiClient({ url: getFullnodeUrl(network) });
 
-  // Create a StardustCustodialSdk instance
-  const stardust = new StardustCustodialSdk(apiKey);
+    // Create a StardustCustodialSdk instance
+    const stardust = new StardustCustodialSdk(STARDUST_API_KEY);
 
-  // grab relevant wallet
-  const wallet1 = await stardust.getWallet(walletId1);
-  const wallet2 = await stardust.getWallet(walletId2);
+    // Grab relevant wallets
+    const wallet1 = await stardust.getWallet(STARDUST_WALLET_ID);
+    const wallet2 = await stardust.getWallet(STARDUST_WALLET_ID_2);
 
-  // Get the sui address of the wallet - sui specific
-  const address1 = await wallet1.sui.getAddress();
-  const address2 = await wallet2.sui.getAddress();
+    // Get the SUI addresses of the wallets (SUI specific)
+    const address1 = await wallet1.sui.getAddress();
+    const address2 = await wallet2.sui.getAddress();
 
-  // [optional] Request funds from the faucet to perform a tx
-  await requestSuiFromFaucetV0({
-    host: getFaucetHost(network),
-    recipient: address1,
-  });
+    // [optional] Request funds from the faucet to perform a transaction
+    await requestSuiFromFaucetV0({
+      host: getFaucetHost(network),
+      recipient: address1,
+    });
 
-  // built tx for sui - application specific
-  const tx = new TransactionBlock();
-  const [coin] = tx.splitCoins(tx.gas, [1000]);
-  tx.transferObjects([coin], address2);
-  tx.setSender(address1);
-  const builtTx: Uint8Array = await tx.build({ client });
+    // Build a transaction for SUI - application specific
+    const tx = new TransactionBlock();
+    const [coin] = tx.splitCoins(tx.gas, [1000]);
+    tx.transferObjects([coin], address2);
+    tx.setSender(address1);
+    const builtTx: Uint8Array = await tx.build({ client });
 
-  // sign a transaction block - most common
-  const sig = await wallet1.sui.signTransactionBlock(builtTx);
+    // Sign a transaction block - most common
+    const sig = await wallet1.sui.signTransactionBlock(builtTx);
 
-  // recover signature
-  const recoveredAddress = (await verifyTransactionBlock(builtTx, sig)).toSuiAddress();
+    // Recover the signature
+    const recoveredAddress = (await verifyTransactionBlock(builtTx, sig)).toSuiAddress();
 
-  return {
-    sig,
-    address: address1,
-    recoveredAddress: recoveredAddress,
-  };
+    // Log the results
+    console.log(`Signature: ${sig}`);
+    console.log(`Address 1: ${address1}`);
+    console.log(`Recovered Address: ${recoveredAddress}`);
+  } catch (error) {
+    console.error(`Error: ${JSON.stringify(error)}`);
+    process.exit(1);
+  }
+}
 
-  // // lets now send the tx to the network
-  // const sent_tx = await client.executeTransactionBlock({
-  //   transactionBlock: builtTx,
-  //   signature: sig,
-  // });
-
-  // console.log(`\n\nSent tx digest ${sent_tx.digest}\n\n`);
-};
-
-main(STARDUST_API_KEY, STARDUST_WALLET_ID, STARDUST_WALLET_ID_2);
-
-export default main;
+main();

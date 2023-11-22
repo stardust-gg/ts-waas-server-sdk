@@ -1,21 +1,16 @@
-/* eslint-disable prettier/prettier */
-
-import { joinSignature } from '@ethersproject/bytes';
-import { _TypedDataEncoder } from 'ethers/lib/utils';
-import { TypedDataDomain, TypedDataField } from 'ethers_v6';
-import { ethers } from 'ethers_v6';
-
-import { StardustCustodialSDK, StardustWallet } from '../../../src';
 import dotenv from 'dotenv';
 dotenv.config();
+
+import { TypedDataDomain, TypedDataField } from 'ethers_v6';
+import { ethers } from 'ethers_v6';
+import { StardustCustodialSDK, StardustWallet } from '../../../src';
 
 // Setup constants
 const STARDUST_API_KEY = process.env.PROD_SYSTEM_STARDUST_API_KEY!;
 const STARDUST_WALLET_ID = process.env.PROD_SYSTEM_STARDUST_WALLET_ID!;
-const RPC_RUL = 'https://eth.public-rpc.com';
+const RPC_URL = process.env.RPC_URL!;
 
-const provider = new ethers.JsonRpcProvider(RPC_RUL);
-
+// Typed Data Domain and Types
 const domain: TypedDataDomain = {
   name: 'testing',
   version: '1',
@@ -40,18 +35,34 @@ const value: Record<string, any> = {
   nonce: '3',
 };
 
-const main = async (apiKey: string, walletId: string, provider: ethers.Provider) => {
-  const sdk = new StardustCustodialSDK(apiKey);
-  const wallet: StardustWallet = await sdk.getWallet(walletId);
-  const signer = wallet.ethers.v6.getSigner(provider);
+// Main function
+async function main() {
+  try {
+    // Initialize Provider
+    const provider = new ethers.JsonRpcProvider(RPC_URL);
 
-  const sig = await signer.signTypedData(domain, types, value);
+    // Initialize Stardust SDK
+    const sdk = new StardustCustodialSDK(STARDUST_API_KEY);
 
-  const recoveredAddress = ethers.verifyTypedData(domain, types, value, sig);
+    // Get Wallet
+    const wallet: StardustWallet = await sdk.getWallet(STARDUST_WALLET_ID);
 
-  return { sig, ethAddress: await signer.getAddress(), recoveredAddress };
-};
+    // Get V6 Signer
+    const signer = wallet.ethers.v6.getSigner(provider);
 
-main(STARDUST_API_KEY, STARDUST_WALLET_ID, provider);
+    // Sign the typed data - natively in ethers v6
+    const sig = await signer.signTypedData(domain, types, value);
 
-export default main;
+    // Verify the typed data and get the recovered address
+    const recoveredAddress = ethers.verifyTypedData(domain, types, value, sig);
+
+    // Log results
+    console.log(`Signature: ${sig}`);
+    console.log(`Ethereum Address: ${await signer.getAddress()}`);
+    console.log(`Recovered Address: ${recoveredAddress}`);
+  } catch (error) {
+    console.error(`Error: ${JSON.stringify(error)}`);
+  }
+}
+
+main();

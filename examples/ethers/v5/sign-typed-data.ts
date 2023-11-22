@@ -1,4 +1,5 @@
-/* eslint-disable prettier/prettier */
+import dotenv from 'dotenv';
+dotenv.config();
 
 import { joinSignature } from '@ethersproject/bytes';
 import { _TypedDataEncoder } from 'ethers/lib/utils';
@@ -6,16 +7,13 @@ import { TypedDataDomain, TypedDataField } from 'ethers/lib/ethers';
 import { ethers } from 'ethers';
 
 import { StardustCustodialSDK, StardustWallet } from '../../../src';
-import dotenv from 'dotenv';
-dotenv.config();
 
 // Setup constants
 const STARDUST_API_KEY = process.env.PROD_SYSTEM_STARDUST_API_KEY!;
 const STARDUST_WALLET_ID = process.env.PROD_SYSTEM_STARDUST_WALLET_ID!;
-const RPC_RUL = 'https://eth.public-rpc.com';
+const RPC_RUL = process.env.RPC_URL!;
 
-const provider = new ethers.providers.JsonRpcProvider(RPC_RUL);
-
+// Typed Data Domain and Types
 const domain: TypedDataDomain = {
   name: 'testing',
   version: '1',
@@ -32,42 +30,63 @@ const types: Record<string, TypedDataField[]> = {
   ],
 };
 
+// Function to recover signer from typed data
 const recoverSigner = (order: any, signature: any) => {
+  // Calculate typed data hash
   const typedDataHash = ethers.utils.keccak256(_TypedDataEncoder.encode(domain, types, order));
+  // Recover the signer's address from the signature
   return ethers.utils.recoverAddress(typedDataHash, signature);
 };
 
-const main = async (apiKey: string, walletId: string, provider: ethers.providers.Provider) => {
-  const sdk = new StardustCustodialSDK(apiKey);
-  const wallet: StardustWallet = await sdk.getWallet(walletId);
-  const signer = wallet.ethers.v5.getSigner().connect(provider);
+// Main function
+async function main() {
+  try {
+    // Initialize Provider
+    const provider = new ethers.providers.JsonRpcProvider(RPC_RUL);
 
-  const value: Record<string, any> = {
-    buyer: '0x355172E1AA17117DfCFDD2AcB4b0BFDA8308Cbc9',
-    seller: '0x355172E1AA17117DfCFDD2AcB4b0BFDA8308Cbc9',
-    price: '2',
-    tokenId: '2',
-    nonce: '3',
-  };
+    // Initialize Stardust SDK
+    const sdk = new StardustCustodialSDK(STARDUST_API_KEY);
 
-  const populated = await _TypedDataEncoder.resolveNames(
-    domain,
-    types,
-    value,
-    async (name: string) => {
-      return (await provider.resolveName(name)) ?? 'null';
-    }
-  );
+    // Get Wallet
+    const wallet: StardustWallet = await sdk.getWallet(STARDUST_WALLET_ID);
 
-  const sig = joinSignature(
-    await signer.signRaw(_TypedDataEncoder.encode(populated.domain, types, populated.value))
-  );
+    // Connect to Provider
+    const signer = wallet.ethers.v5.getSigner().connect(provider);
 
-  const recoveredAddress = recoverSigner(value, sig);
+    // Create value object for typed data
+    const value: Record<string, any> = {
+      buyer: '0x355172E1AA17117DfCFDD2AcB4b0BFDA8308Cbc9',
+      seller: '0x355172E1AA17117DfCFDD2AcB4b0BFDA8308Cbc9',
+      price: '2',
+      tokenId: '2',
+      nonce: '3',
+    };
 
-  return { sig, ethAddress: await signer.getAddress(), recoveredAddress };
-};
+    // Resolve ENS names in typed data
+    const populated = await _TypedDataEncoder.resolveNames(
+      domain,
+      types,
+      value,
+      async (name: string) => {
+        return (await provider.resolveName(name)) ?? 'null';
+      }
+    );
 
-main(STARDUST_API_KEY, STARDUST_WALLET_ID, provider);
+    // Sign the typed data
+    const sig = joinSignature(
+      await signer.signRaw(_TypedDataEncoder.encode(populated.domain, types, populated.value))
+    );
 
-export default main;
+    // Recover the signer's address
+    const recoveredAddress = recoverSigner(value, sig);
+
+    // Log results
+    console.log(`Signature: ${sig}`);
+    console.log(`Ethereum Address: ${await signer.getAddress()}`);
+    console.log(`Recovered Address: ${recoveredAddress}`);
+  } catch (error) {
+    console.error(`Error: ${JSON.stringify(error)}`);
+  }
+}
+
+main();

@@ -1,59 +1,70 @@
-import { ethers } from 'ethers';
-
-import { StardustCustodialSDK, StardustWallet } from '../../../src';
-
-// allow usage of env
 import dotenv from 'dotenv';
-import { UnsignedTransaction, serialize } from '@ethersproject/transactions';
-import { resolveProperties } from '@ethersproject/properties';
-import { serializeTransaction } from 'ethers/lib/utils';
 dotenv.config();
 
-const apiKey = String(process.env.PROD_SYSTEM_STARDUST_API_KEY);
-const walletId = String(process.env.PROD_SYSTEM_STARDUST_WALLET_ID);
-// imx rpc
-const rpcUrl = 'https://eth.public-rpc.com';
+import { ethers } from 'ethers';
+import { StardustCustodialSDK, StardustWallet } from '../../../src';
 
-const provider = new ethers.providers.JsonRpcProvider(rpcUrl);
+// Configuration
+const apiKey = process.env.PROD_SYSTEM_STARDUST_API_KEY!;
+const walletId = process.env.PROD_SYSTEM_STARDUST_WALLET_ID!;
+const rpcUrl = process.env.RPC_URL!;
 
-const main = async (apiKey: string, walletId: string, provider: ethers.providers.Provider) => {
-  const sdk = new StardustCustodialSDK(apiKey);
-  const wallet: StardustWallet = await sdk.getWallet(walletId);
+async function main() {
+  try {
+    // Initialize Provider
+    const provider = new ethers.providers.JsonRpcProvider(rpcUrl);
 
-  const signer = wallet.ethers.v5.getSigner().connect(provider);
+    // Initialize Stardust SDK
+    const sdk = new StardustCustodialSDK(apiKey);
 
-  const ethAddress = await signer.getAddress();
+    // Get Wallet
+    const wallet: StardustWallet = await sdk.getWallet(walletId);
 
-  const transaction = {
-    to: '0x355172E1AA17117DfCFDD2AcB4b0BFDA8308Cbc9',
-    value: ethers.utils.parseEther('0.01'),
-  };
+    // Get V5 Signer
+    const signer = wallet.ethers.v5.getSigner().connect(provider);
 
-  const signedTx = await signer.signTransaction(transaction);
-  const tx = ethers.utils.parseTransaction(signedTx);
-  const rawTx = {
-    ...transaction,
-    nonce: tx.nonce,
-    gasPrice: tx.gasPrice,
-    gasLimit: tx.gasLimit,
-    data: tx.data,
-    chainId: tx.chainId,
-  };
+    // Get Ethereum Address
+    const ethAddress = await signer.getAddress();
 
-  const rawTxHash = ethers.utils.keccak256(ethers.utils.serializeTransaction(rawTx));
-  const recoveredAddress = ethers.utils.recoverAddress(rawTxHash, {
-    r: tx.r!,
-    s: tx.s!,
-    v: tx.v!,
-  });
+    // Create Transaction
+    const transaction = {
+      to: '0x355172E1AA17117DfCFDD2AcB4b0BFDA8308Cbc9',
+      value: ethers.utils.parseEther('0.01'),
+    };
 
-  return {
-    signedTx,
-    ethAddress,
-    recoveredAddress,
-  };
-};
+    // Sign Transaction
+    const signedTx = await signer.signTransaction(transaction);
 
-main(apiKey, walletId, provider);
+    // Parse back into tx object
+    const tx = ethers.utils.parseTransaction(signedTx);
 
-export default main;
+    // Create raw tx object
+    const rawTx = {
+      ...transaction,
+      nonce: tx.nonce,
+      gasPrice: tx.gasPrice,
+      gasLimit: tx.gasLimit,
+      data: tx.data,
+      chainId: tx.chainId,
+    };
+
+    // Calculate raw tx hash
+    const rawTxHash = ethers.utils.keccak256(ethers.utils.serializeTransaction(rawTx));
+
+    // Recover signer address from raw tx hash and signature
+    const recoveredAddress = ethers.utils.recoverAddress(rawTxHash, {
+      r: tx.r!,
+      s: tx.s!,
+      v: tx.v!,
+    });
+
+    // Log results
+    console.log(`Signed transaction: ${JSON.stringify(signedTx, null, 2)}`);
+    console.log(`Signer Address: ${ethAddress}`);
+    console.log(`Recovered Address: ${recoveredAddress}`);
+  } catch (error) {
+    console.error(`Error: ${JSON.stringify(error)}`);
+  }
+}
+
+main();
