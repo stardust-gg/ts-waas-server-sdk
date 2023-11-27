@@ -1,6 +1,5 @@
 import axios, { HttpStatusCode } from 'axios';
 const URL = 'https://vault-api.stardust.gg';
-// ('https://custodial-wallet.stardust.gg');
 export default class AbstractStardustAPI {
   constructor(protected apiKey: string, protected url: string = URL) {}
 
@@ -9,7 +8,7 @@ export default class AbstractStardustAPI {
       headers: { 'x-api-key': apiKey },
     });
     if (response.status !== HttpStatusCode.Created)
-      throw new Error(`Failed to POST to ${endpoint} with data: ${data}`);
+      throw new Error(`Failed to POST to ${endpoint} with data: ${JSON.stringify(data)}`);
     return response.data;
   }
 
@@ -19,7 +18,7 @@ export default class AbstractStardustAPI {
       params: query,
     });
     if (response.status !== HttpStatusCode.Ok)
-      throw new Error(`Failed to GET from ${endpoint} with query: ${query}`);
+      throw new Error(`Failed to GET from ${endpoint} with query: ${JSON.stringify(query)}`);
     return response.data;
   }
 
@@ -28,7 +27,7 @@ export default class AbstractStardustAPI {
       headers: { 'x-api-key': this.apiKey },
     });
     if (response.status !== HttpStatusCode.Created)
-      throw new Error(`Failed to POST to ${endpoint} with data: ${data}`);
+      throw new Error(`Failed to POST to ${endpoint} with data: ${JSON.stringify(data)}`);
     return response.data;
   }
 }

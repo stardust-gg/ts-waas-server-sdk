@@ -5,7 +5,7 @@ import { describe, expect, it } from '@jest/globals';
 import EthersV6Signer from '../../../src/ethers/V6/EthersV6Signer';
 import EvmStardustSigner from '../../../src/stardust/StardustSigners/evm/EvmStardustSigner';
 import * as ethers_v6 from 'ethers_v6';
-import { ethers } from 'ethers_v6';
+import { TypedDataDomain, TypedDataField, ethers } from 'ethers_v6';
 import {
   MOCKED_WALLET_ID,
   MOCKED_API_KEY,
@@ -13,8 +13,8 @@ import {
   MOCKED_API_SIGNAURE,
   RPC_URL,
   MOCKED_ADDRESS,
+  MOCKED_SERIALIZED_TYPED_DATA_SIGNATURE,
 } from './constants';
-import { providers } from 'ethers';
 
 jest.mock('../../../src/stardust/StardustSigners/evm/EvmStardustSigner', () => {
   return jest.fn().mockImplementation((walletId: string, apiKey: string) => {
@@ -96,6 +96,71 @@ describe('ethers', () => {
         const provider = new ethers_v6.JsonRpcProvider(RPC_URL);
         const signer = ethersV6Signer.connect(provider);
         expect(signer).toBeInstanceOf(EthersV6Signer);
+      });
+
+      it('should sign typed data and return the correct signature', async () => {
+        // Typed Data Domain and Types
+        const domain: TypedDataDomain = {
+          name: 'testing',
+          version: '1',
+          verifyingContract: '0x355172E1AA17117DfCFDD2AcB4b0BFDA8308Cbc9',
+        };
+
+        const types: Record<string, TypedDataField[]> = {
+          Order: [
+            { name: 'buyer', type: 'address' },
+            { name: 'seller', type: 'address' },
+            { name: 'price', type: 'uint256' },
+            { name: 'tokenId', type: 'uint256' },
+            { name: 'nonce', type: 'uint256' },
+          ],
+        };
+
+        const value: Record<string, any> = {
+          buyer: '0x355172E1AA17117DfCFDD2AcB4b0BFDA8308Cbc9',
+          seller: '0x355172E1AA17117DfCFDD2AcB4b0BFDA8308Cbc9',
+          price: '2',
+          tokenId: '2',
+          nonce: '3',
+        };
+
+        const signature = await ethersV6Signer.signTypedData(domain, types, value);
+        expect(signature).toBe(MOCKED_SERIALIZED_TYPED_DATA_SIGNATURE);
+      });
+
+      it('should resolve ens names within typed data', async () => {
+        const domain: TypedDataDomain = {
+          name: 'testing',
+          version: '1',
+          verifyingContract: '0x355172E1AA17117DfCFDD2AcB4b0BFDA8308Cbc9',
+        };
+
+        const types: Record<string, TypedDataField[]> = {
+          Order: [
+            { name: 'buyer', type: 'address' },
+            { name: 'seller', type: 'address' },
+            { name: 'price', type: 'uint256' },
+            { name: 'tokenId', type: 'uint256' },
+            { name: 'nonce', type: 'uint256' },
+          ],
+        };
+
+        const value: Record<string, any> = {
+          buyer: 'andy.eth',
+          seller: '0x355172E1AA17117DfCFDD2AcB4b0BFDA8308Cbc9',
+          price: '2',
+          tokenId: '2',
+          nonce: '3',
+        };
+
+        await ethersV6Signer.signTypedData(domain, types, value);
+      });
+
+      it('should resolve a to & from value when not provided - defined by provider', async () => {
+        const tx = {
+          value: ethers_v6.parseEther('0.001'),
+        };
+        await ethersV6Signer.signTransaction(tx);
       });
     });
   });

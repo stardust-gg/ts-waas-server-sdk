@@ -3,7 +3,12 @@ import { ethers } from 'ethers';
 import { keccak256, parseTransaction, splitSignature } from 'ethers/lib/utils';
 import { serialize, UnsignedTransaction } from '@ethersproject/transactions';
 import { SignatureLike } from '@ethersproject/bytes';
-import { StardustCustodialSDK, StardustApp, StardustWallet, convertStringToHex } from '../../src';
+import {
+  StardustCustodialSDK,
+  StardustApp,
+  StardustWallet,
+  convertStringToHexString,
+} from '../../src';
 import HexString from '../../src/utils/HexString';
 
 const uuidRegex =
@@ -81,8 +86,8 @@ describe('e2e', () => {
       const messagePrefix = '\x19Ethereum Signed Message:\n';
       const messageLen = String(new HexString(message).length);
       const prefixedMsg =
-        convertStringToHex(messagePrefix) +
-        new HexString(convertStringToHex(messageLen)).strip() +
+        convertStringToHexString(messagePrefix) +
+        new HexString(convertStringToHexString(messageLen)).strip() +
         new HexString(message).strip();
       const recoveredAddress = ethers.utils.recoverAddress(
         ethers.utils.keccak256(prefixedMsg),

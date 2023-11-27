@@ -1,6 +1,6 @@
 import { isHexString } from './isHexString';
 
-export function convertStringToHex(str: string): string {
+export function convertStringToHexString(str: string): string {
   let hexString: string;
 
   if (isHexString(str)) {

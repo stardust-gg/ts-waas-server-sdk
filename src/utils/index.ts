@@ -1,3 +1,5 @@
 export * from './HexString';
-export * from './convertStringToHex';
+export * from './convertStringToHexString';
 export * from './isHexString';
+export * from './uint8ArrayToHexString';
+export * from './convertToHex';

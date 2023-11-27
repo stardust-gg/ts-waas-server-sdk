@@ -3,7 +3,7 @@ import { ApiRequestPayload, ChainType, SignRequestPayload } from '../../../types
 import { ethers } from 'ethers_v6';
 import AbstractStardustSigner from '../AbstractStardustSigner';
 import HexString from '../../../utils/HexString';
-import { convertStringToHex, isHexString } from '../../../utils';
+import { convertStringToHexString, isHexString, uint8ArrayToHexString } from '../../../utils';
 
 export default class EvmStardustSigner extends AbstractStardustSigner {
   public walletId;
@@ -19,12 +19,12 @@ export default class EvmStardustSigner extends AbstractStardustSigner {
 
   public signRaw = async (digest: string | Uint8Array): Promise<string> => {
     if (digest instanceof Uint8Array) {
-      digest = this.uint8ArrayToHexString(digest);
+      digest = uint8ArrayToHexString(digest);
     }
 
     const payload: SignRequestPayload = {
       walletId: this.walletId,
-      chainType: 'EVM',
+      chainType: 'evm',
       message: digest,
     };
 
@@ -34,7 +34,7 @@ export default class EvmStardustSigner extends AbstractStardustSigner {
   public getAddress = async (): Promise<string> => {
     const payload: ApiRequestPayload = {
       walletId: this.walletId,
-      chainType: 'EVM',
+      chainType: 'evm',
     };
     return ethers.getAddress(await this.api.getAddress(payload));
   };
@@ -53,31 +53,27 @@ export default class EvmStardustSigner extends AbstractStardustSigner {
 
     if (message instanceof Uint8Array) {
       messageLen = String(message.length);
-      message = this.uint8ArrayToHexString(message);
+      message = uint8ArrayToHexString(message);
     }
 
     if (!isHexString(message)) {
-      messageLen = String(new HexString(convertStringToHex(message)).length);
-      prefixedMsg = convertStringToHex(messagePrefix + messageLen + message);
+      messageLen = String(new HexString(convertStringToHexString(message)).length);
+      prefixedMsg = convertStringToHexString(messagePrefix + messageLen + message);
     } else {
       const messageHexString = new HexString(message);
       messageLen = String(messageHexString.length);
       prefixedMsg =
-        convertStringToHex(messagePrefix) +
-        new HexString(convertStringToHex(messageLen)).strip() +
+        convertStringToHexString(messagePrefix) +
+        new HexString(convertStringToHexString(messageLen)).strip() +
         messageHexString.strip();
     }
 
     const payload: SignRequestPayload = {
       walletId: this.walletId,
-      chainType: 'EVM',
+      chainType: 'evm',
       message: prefixedMsg,
     };
 
     return await this.api.signMessage(payload);
   }
-
-  private uint8ArrayToHexString = (uint8Array: Uint8Array) => {
-    return '0x' + uint8Array.reduce((str, byte) => str + byte.toString(16).padStart(2, '0'), '');
-  };
 }

@@ -1,4 +1,4 @@
-import { convertStringToHex } from '../../../index';
+import { convertToHex, uint8ArrayToHexString } from '../../../utils';
 import { ApiRequestPayload, ChainType, SignRequestPayload } from '../../../types';
 import { IntentScope, messageWithIntent } from '@mysten/sui.js/cryptography';
 import { blake2b } from '@noble/hashes/blake2b';
@@ -24,12 +24,15 @@ export default class SuiStardustSigner implements AbstractStardustSigner {
     return await this.api.getPublicKey(params);
   };
 
-  public signRaw = async (message: string | Uint8Array): Promise<string> => {
-    const hexString = this.sanitizeMessage(message);
+  public signRaw = async (digest: string | Uint8Array): Promise<string> => {
+    if (digest instanceof Uint8Array) {
+      digest = uint8ArrayToHexString(digest);
+    }
+
     const params: SignRequestPayload = {
       walletId: this.walletId,
       chainType: this.chainType,
-      message: hexString,
+      message: digest,
     };
     return String(await this.api.signMessage(params));
   };
@@ -55,16 +58,5 @@ export default class SuiStardustSigner implements AbstractStardustSigner {
       chainType: this.chainType,
     };
     return await this.api.getAddress(params);
-  };
-
-  private sanitizeMessage = (message: string | Uint8Array): string => {
-    // If message is a string and is already a hex string, return it as is
-    if (typeof message === 'string') {
-      return convertStringToHex(message);
-    }
-
-    // Otherwise, convert message to a Buffer and then to a hex string - works for utf 8 and uint8array
-    const hexString = '0x' + Buffer.from(message).toString('hex');
-    return hexString;
   };
 }

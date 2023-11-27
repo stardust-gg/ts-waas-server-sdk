@@ -14,7 +14,7 @@ module.exports = {
   collectCoverageFrom: ['src/**/*.ts'],
   rootDir: '',
   coverageReporters: ['json', 'lcov', 'text', 'clover'],
-  coveragePathIgnorePatterns: ['node_modules', 'examples', 'src/utils', 'dist', 'test'],
+  coveragePathIgnorePatterns: ['node_modules', 'examples', 'dist', 'test'],
   testTimeout: 180000,
   testPathIgnorePatterns: ['__tests__/fixtures', 'build'],
   verbose: true,

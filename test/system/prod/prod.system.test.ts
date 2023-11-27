@@ -27,7 +27,7 @@ describe('System: PROD Signing Parity', () => {
         const params: SignRequestPayload = {
           walletId: PROD_SYSTEM_STARDUST_WALLET_ID,
           message: 'hello world',
-          chainType: 'EVM',
+          chainType: 'evm',
         };
 
         const signature = await signerAPI.signMessage(params);
@@ -40,7 +40,7 @@ describe('System: PROD Signing Parity', () => {
         const params: SignRequestPayload = {
           walletId: PROD_SYSTEM_STARDUST_WALLET_ID,
           message: '0x68656c6c6f20776f726c64',
-          chainType: 'EVM',
+          chainType: 'evm',
         };
 
         const signature = await signerAPI.signMessage(params);
@@ -52,7 +52,7 @@ describe('System: PROD Signing Parity', () => {
       it('should return an address', async () => {
         const params: ApiRequestPayload = {
           walletId: PROD_SYSTEM_STARDUST_WALLET_ID,
-          chainType: 'EVM',
+          chainType: 'evm',
         };
 
         const address = await signerAPI.getAddress(params);
@@ -62,7 +62,7 @@ describe('System: PROD Signing Parity', () => {
       it('should return a public key', async () => {
         const params: ApiRequestPayload = {
           walletId: PROD_SYSTEM_STARDUST_WALLET_ID,
-          chainType: 'EVM',
+          chainType: 'evm',
         };
 
         const pubKey = await signerAPI.getPublicKey(params);

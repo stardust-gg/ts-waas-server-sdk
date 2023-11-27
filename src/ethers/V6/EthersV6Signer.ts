@@ -60,7 +60,7 @@ export default class EthersV6Signer extends AbstractSigner {
 
     const payload: SignRequestPayload = {
       walletId: this.evmStardustSigner.walletId,
-      chainType: 'EVM',
+      chainType: 'evm',
       message: unsignedSerialized,
     };
     const signature = await this.evmStardustSigner.api.signTransaction(payload);
@@ -105,11 +105,11 @@ export default class EthersV6Signer extends AbstractSigner {
 
     const payload: SignRequestPayload = {
       walletId: this.evmStardustSigner.walletId,
-      chainType: 'EVM',
+      chainType: 'evm',
       message: encodedTypedData,
     };
 
-    const sig = await this.evmStardustSigner.api.signMessage(payload);
+    const sig = await this.evmStardustSigner.api.signTransaction(payload);
     const splitSig = ethers.Signature.from(sig);
     return ethers.Signature.from(splitSig).serialized;
   }
