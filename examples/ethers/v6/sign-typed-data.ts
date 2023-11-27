@@ -1,14 +1,13 @@
 import dotenv from 'dotenv';
 dotenv.config();
 
-import { TypedDataDomain, TypedDataField } from 'ethers_v6';
+import { TypedDataDomain, TypedDataField, getDefaultProvider } from 'ethers_v6';
 import { ethers } from 'ethers_v6';
 import { StardustCustodialSDK, StardustWallet } from '../../../src';
 
 // Setup constants
 const STARDUST_API_KEY = process.env.PROD_SYSTEM_STARDUST_API_KEY!;
 const STARDUST_WALLET_ID = process.env.PROD_SYSTEM_STARDUST_WALLET_ID!;
-const RPC_URL = process.env.RPC_URL!;
 
 // Typed Data Domain and Types
 const domain: TypedDataDomain = {
@@ -39,7 +38,7 @@ const value: Record<string, any> = {
 async function main() {
   try {
     // Initialize Provider
-    const provider = new ethers.JsonRpcProvider(RPC_URL);
+    const provider = getDefaultProvider('mainnet');
 
     // Initialize Stardust SDK
     const sdk = new StardustCustodialSDK(STARDUST_API_KEY);

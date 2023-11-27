@@ -8,38 +8,33 @@ import { StardustCustodialSDK, StardustWallet } from '../../../src';
 const apiKey = process.env.PROD_SYSTEM_STARDUST_API_KEY!;
 const walletId = process.env.PROD_SYSTEM_STARDUST_WALLET_ID!;
 
-// Main function
 async function main() {
   try {
     // Initialize Provider
-    const provider = getDefaultProvider('mainnet');
+    const provider = getDefaultProvider('matic');
 
     // Initialize Stardust SDK
     const sdk = new StardustCustodialSDK(apiKey);
 
-    // Get wallet
+    // Get Wallet
     const wallet: StardustWallet = await sdk.getWallet(walletId);
 
     // Get V6 Signer
     const signer = wallet.ethers.v6.getSigner(provider);
 
-    // Get Ethereum Address
-    const ethAddress = await signer.getAddress();
+    // Create Transaction -- application specific
+    const transaction = {
+      to: '0x355172E1AA17117DfCFDD2AcB4b0BFDA8308Cbc9',
+      value: ethers.parseEther('0.01'),
+      data: '0xe6',
+    };
 
-    // Create a message to sign
-    const message = 'hi';
-
-    // Sign the message
-    const sig = await signer.signMessage(message);
-
-    // Verify the message and get the recovered address
-    const recoveredAddress = ethers.verifyMessage(message, sig);
+    // Send Transaction
+    const sentTx = await signer.sendTransaction(transaction);
+    await sentTx.wait();
 
     // Log results
-    console.log(`Ethereum Address: ${ethAddress}`);
-    console.log(`Signed Message: ${message}`);
-    console.log(`Signature: ${sig}`);
-    console.log(`Recovered Address: ${recoveredAddress}`);
+    console.log(`Sent tx object ${JSON.stringify(sentTx)}`);
   } catch (error) {
     console.error(`Error: ${JSON.stringify(error)}`);
   }

@@ -1,20 +1,18 @@
 import dotenv from 'dotenv';
 dotenv.config();
 
-import { Transaction, TransactionLike, ethers, recoverAddress } from 'ethers_v6';
+import { Transaction, ethers, getDefaultProvider, recoverAddress } from 'ethers_v6';
 import { StardustCustodialSDK, StardustWallet } from '../../../src';
-import { sign } from 'crypto';
-import { decode } from 'punycode';
 
 // Configuration
 const apiKey = process.env.PROD_SYSTEM_STARDUST_API_KEY!;
 const walletId = process.env.PROD_SYSTEM_STARDUST_WALLET_ID!;
-const rpcUrl = process.env.RPC_URL!;
 
 async function main() {
   try {
     // Initialize Provider
-    const provider = new ethers.JsonRpcProvider(rpcUrl);
+
+    const provider = getDefaultProvider('mainnet');
 
     // Initialize Stardust SDK
     const sdk = new StardustCustodialSDK(apiKey);
@@ -47,6 +45,7 @@ async function main() {
     );
 
     // Log results
+    console.log('Signed tx', builtTx.signature!.r + builtTx.signature!.s + builtTx.signature!.v);
     console.log(`Serialized tx ${JSON.stringify(signedTx, null, 2)}`);
     console.log(`Signer Address: ${ethAddress}`);
     console.log(`Recovered Address: ${recoveredAddress}`);
