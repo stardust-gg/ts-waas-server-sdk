@@ -13,7 +13,7 @@ module.exports = {
   collectCoverage: true,
   collectCoverageFrom: ['src/**/*.ts'],
   rootDir: '',
-  coverageReporters: ['json', 'lcov', 'text', 'clover'],
+  coverageReporters: ['json', 'lcov', 'text', 'clover', 'html'],
   coveragePathIgnorePatterns: ['node_modules', 'examples', 'dist', 'test'],
   testTimeout: 180000,
   testPathIgnorePatterns: ['__tests__/fixtures', 'build'],
