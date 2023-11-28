@@ -11,91 +11,124 @@
 
 ## Table of Contents
 
-- [Background](#background)
-- [Install](#install)
-- [Usage](#usage)
+- [Introduction](#introduction)
+- [Changelog](#changelog)
+  - [Features](#features)
+  - [Breaking Changes](#breaking)
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+  - [Usage](#usage)
+- [Common Usage Patterns](#common-usage-patterns)
+  - [Ethers-V5](#ethers-V5)
+  - [Ethers-V6](#ethers-V6)
+  - [IMX](#imx)
+  - [EVM](#evm)
+  - [SUI](#sui)
 - [Contributing](#contributing)
 - [License](#license)
+- [Contact and Support](#contact-and-support)
 
-## Background
+## Introduction
 
-This SDK is intended for use with the Stardust Custodial Wallet API, and its main purpose is to easily allow its implementers to create Stardust custodial wallets. These wallet objects can be instantiated, and an EthersSigner (satisfying [Ethers.js](https://docs.ethers.org/v5/api/signer/#Signer)'s Signer requirements) can be accessed. More signers will be released in following updates.
+**Stardust-Custodial-SDK** is a TypeScript-based SDK specifically crafted to enable seamless integration with the Stardust custodial wallet management system. This SDK is designed for TypeScript developers looking to incorporate advanced wallet management features into their applications with minimal effort - whether you're building a new project or enhancing an existing one.
 
-The EthersSigner can be used in place of any existing Ethers signers. See the examples in the later sections.
+## Changelog
 
-## Install
+Stardust-Custodial-SDK V2 introduces several key enhancements to enhance your blockchain development experience:
+
+#### Features
+
+- **IMX Support**: Support for generating deterministic IMX Signers.
+- **SUI Support**: Compatibility added with the SUI blockchain. Message Signing and Transaction Block Signing.
+- **Ethers v6 Support**: Updated for compatibility with ethers.js library version 6.
+- **EIP 191 Message Signing**: Implementation of EIP 191 standards for EVM message signing.
+
+#### Breaking
+
+- **Breaking Change**: Changes in accessing ethers v5 - refer to [Common Usage Patterns](#common-usage-patterns).
+
+## Getting started
+
+#### Prerequisites
+
+This SDK is intended for use with TypeScript. Familiarity with TypeScript and modern JavaScript development practices is using NodeJs is recommended.
+
+You will need to create an application and grab your api key @ waas.stardust.gg
+
+#### Install
 
 ```
 npm i @stardust-gg/stardust-custodial-sdk
 ```
 
-## Usage
+#### Usage
 
-The StardustCustodialSDK object is designed to be used with only 1 app. If your use case requires to have multiple apps, multiple StardustCustodialSDK's will need to be used.
+```python
+import os;
 
-### Creating your first app
+os.thing()
 
-```ts
-import { StardustCustodialSDK, StardustApp } from '@stardust-gg/stardust-custodial-sdk';
-
-// create your app object locally
-const app: StardustApp = new StardustApp('app_name', 'email@address.xyz', 'optional_description');
-
-// create a StardustApp instance in the Stardust API
-await StardustCustodialSDK.CreateApp(app);
-
-// save the api key so you can access this app later
-const apiKey = app.apiKey;
 ```
 
-### Getting your app and creating wallet
-
 ```ts
-import {
-  StardustCustodialSDK,
-  StardustApp,
-  StardustWallet,
-} from '@stardust-gg/stardust-custodial-sdk';
+import { StardustCustodialSDK } from '@stardust-gg/stardust-custodial-sdk';
 
-const STARDUST_API_KEY = 'your-api-key';
-const sdk = new StardustCustodialSDK(STARDUST_API_KEY);
-const wallet: StardustWallet = await sdk.createWallet();
+const myApiKey = '<your-api-key-here>';
 
-// Make sure to save this walletId for later steps!
-const walletId = wallet.id;
-await clientWalletDB.save(walletId);
+// connect to the api
+const sdk = new StardustCustodialSDK(myApiKey);\
+
+// creating a wallet
+const wallet = await sdk.createWallet();
+
+// getting wallet identifier
+const walletIdentifier = wallet.id;
 ```
 
-### Send some ETH from your StardustWallet to any other address using Ethers.js
+\*\*\*Note: you should be storing these wallet Identifiers as they are unique to your players/users and are how you will manage them
+
+## Common Usage Patterns
+
+#### Ethers-V5
 
 ```ts
-import { ethers } from 'ethers';
-import { StardustCustodialSDK, StardustApp, StardustWallet } from 'stardust-custodial-sdk';
-
-const rpcUrl = 'https://your_rpc_providers.url';
-const provider = new ethers.providers.JsonRpcProvider(rpcUrl);
-
-const STARDUST_API_KEY = 'your-api-key';
-const sdk = new StardustCustodialSDK(apiKey);
-
-const WALLET_ID = 'your-wallet-id';
-const wallet: StardustWallet = await sdk.getWallet(WALLET_ID);
-
-const signer = wallet.signers.ethers.connect(provider);
-
-const txn = {
-  to: '0xaBcDef1234567890Abcdef1234567890Abcdef12', // to address
-  value: ethers.utils.parseEther('1.0'), // ether value to send with transaction
-};
-
-// sign and send the transaction using the supplied provider
-await signer.sendTransaction(txn);
+const provider: JsonRpcProvider = new ethers.providers.JsonRpcProvider(<your-provider-url>)
+const ethersV5Signer = await wallet.ethers.v5.getSigner().connect(provider)
 ```
+
+Reference Ethers v5 documentation for usage of this signer.
+
+#### EthersV6
+
+```ts
+const provider: JsonRpcProvider = new ethers.JsonRpcProvider(<your-provider-url>)
+const ethersV6Signer = await wallet.ethers.v5.getSigner(provider)
+```
+
+Reference Ethers v6 documentation for usage of this signer.
+
+#### EVM
+
+```ts
+const evmStardustSigner = await wallet.evm;
+```
+
+#### IMX
+
+#### SUI
 
 ## Contributing
 
-PRs accepted.
+Feel free to open pull requests to propose changes or additions.
 
 ## License
 
 [Apache-2.0](./LICENSE.md)
+
+## Contact and Support
+
+For support or feedback, please reach out to:
+
+- blockchain@stardust.gg
+- brandon.null@stardust.gg
