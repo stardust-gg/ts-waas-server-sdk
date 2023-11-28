@@ -1,5 +1,6 @@
 import ImxStardustSigner from '../../src/stardust/StardustSigners/imx/ImxStardustSigner';
 import EthersV5Signer from '../../src/ethers/V5/EthersV5Signer';
+import * as imx from '@imtbl/imx-sdk';
 
 jest.mock('../../src/stardust/StardustSigners/evm/EvmStardustSigner', () => {
   return jest.fn().mockImplementation((walletId: string, apiKey: string) => {
@@ -20,8 +21,8 @@ describe('ImxStardustSigner', () => {
     const mockedEthersV5Signer = new EthersV5Signer(
       new EvmStardustSigner(mockedWalletId, mockedAPIKey)
     );
-    const imxStardustSigner = new ImxStardustSigner(mockedWalletId, mockedAPIKey);
-    const imxSigner = await imxStardustSigner.getSigner(mockedEthersV5Signer);
+    const imxStardustSigner = new ImxStardustSigner(mockedEthersV5Signer);
+    const imxSigner = await imxStardustSigner.getStarkSigner();
     expect(imxSigner).toBeDefined();
     expect(imxSigner).toBeInstanceOf(Object);
     expect(imxSigner).toHaveProperty('signMessage');

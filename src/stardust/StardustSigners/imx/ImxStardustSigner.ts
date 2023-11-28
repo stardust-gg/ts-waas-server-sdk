@@ -10,8 +10,8 @@ export default class ImxStardustSigner implements AbstractStardustSigner {
     this.ethersV5signer = ethersV5Signer;
   }
 
-  public getSigner = async (signer: EthersV5Signer): Promise<StarkSigner> => {
-    return createStarkSigner(await this.privateKey());
+  public getStarkSigner = async (): Promise<StarkSigner> => {
+    return await createStarkSigner(await this.privateKey());
   };
 
   private privateKey = async () => {
@@ -19,14 +19,14 @@ export default class ImxStardustSigner implements AbstractStardustSigner {
   };
 
   public getPublicKey: () => Promise<string> = async () => {
-    throw 'not implemented';
+    return await (await this.getStarkSigner()).getAddress();
   };
 
   public getAddress = async (): Promise<string> => {
-    throw 'not implemented';
+    return this.getPublicKey();
   };
 
   public signRaw = async (message: string | Uint8Array): Promise<string> => {
-    throw 'not implemented';
+    throw 'not implemented'; // unsupported - imx only uses signMessage and can be accessed via getSigner().signMessage
   };
 }

@@ -26,7 +26,7 @@ async function main() {
     const signer = wallet.ethers.v5.getSigner().connect(provider);
 
     // Obtain L2 Imx Stark Signer - deterministic from L1 signer
-    const imxSigner: StarkSigner = await wallet.imx.getSigner(signer);
+    const imxSigner: StarkSigner = await wallet.imx.getStarkSigner();
 
     // Create a wallet connection object
     const walletConnection: WalletConnection = {

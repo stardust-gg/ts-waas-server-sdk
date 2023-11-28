@@ -46,7 +46,7 @@ export default class EvmStardustSigner extends AbstractStardustSigner {
     });
   };
 
-  async signMessage(message: string | Uint8Array): Promise<string> {
+  public signMessage = async (message: string | Uint8Array): Promise<string> => {
     const messagePrefix = '\x19Ethereum Signed Message:\n';
     let messageLen;
     let prefixedMsg: string;
@@ -75,5 +75,5 @@ export default class EvmStardustSigner extends AbstractStardustSigner {
     };
 
     return await this.api.signMessage(payload);
-  }
+  };
 }

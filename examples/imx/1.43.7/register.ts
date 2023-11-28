@@ -3,8 +3,8 @@ dotenv.config();
 
 import * as imx from '@imtbl/imx-sdk';
 import { ethers } from 'ethers';
-import StardustCustodialSDK from '../../src/stardust/StardustCustodialSDK';
-import StardustWallet from '../../src/stardust/StardustWallet';
+import StardustCustodialSDK from '../../../src/stardust/StardustCustodialSDK';
+import StardustWallet from '../../../src/stardust/StardustWallet';
 
 const sleep = async (ms: number) => {
   return new Promise((resolve) => {
@@ -23,9 +23,10 @@ const run = async () => {
   // Get wallet
   const wallet: StardustWallet = await sdk.getWallet(walletId);
 
+  // Setup legacy config for imx usage
   const config = {
     apiAddress: 'https://api.x.immutable.com/v1',
-    alchemyProviderUrl: 'https://eth-mainnet.g.alchemy.com/v2/ssNJKdz_3ZTmSpOx4oNz-0P2FDR26VH5',
+    alchemyProviderUrl: `https://eth-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY!}`,
     starkContractAddress: '0x5FDCCA53617f4d2b9134B29090C87D01058e27e9', // 0x4527BE8f31E2ebFbEF4fCADDb5a17447B27d2aef for ropsten
     registrationContractAddress: '0x72a06bf2a1CE5e39cBA06c0CAb824960B587d64c', // 0x6C21EC8DE44AE44D0992ec3e2d9f1aBb6207D864 for ropsten
     gasLimit: '5000000',
@@ -38,6 +39,7 @@ const run = async () => {
   // Obtain L1 Signer (ethers v5)
   const signer = wallet.ethers.v5.getSigner().connect(provider);
 
+  // Setup params using config and L1 Signer
   const params = {
     starkContractAddress: config.starkContractAddress,
     registrationContractAddress: config.registrationContractAddress,
@@ -47,10 +49,11 @@ const run = async () => {
     gasPrice: config.gasPrice,
   };
 
+  // Connect to client
   const client = await imx.ImmutableXClient.build(params);
 
   console.log(
-    `Stardust Custodial Wallet Address: ${
+    `Stardust Custodial EVM Wallet Address: ${
       client.address
     }, with signer address ${await signer.getAddress()}, with Stark Public Key: ${
       client.starkPublicKey
@@ -58,7 +61,6 @@ const run = async () => {
   );
 
   let isRegistered = await client.isRegistered({ user: client.address });
-
   if (!isRegistered) {
     console.log(`${client.address} is not registered! Registering now`);
     console.log({ etherKey: client.address.toLowerCase(), starkPublicKey: client.starkPublicKey });
@@ -84,3 +86,12 @@ const run = async () => {
 };
 
 run();
+
+// Stardust Custodial Wallet Address: 0x2210fa04b60d6846552f889dcde641022648f493, with signer address 0x2210FA04B60d6846552F889DCde641022648F493, with Stark Public Key: 0x020e4b0e5a26da10d87f9b136a06d7c0d0b8a847a26d5bd0816d932e1e3c5a63
+// 0x2210fa04b60d6846552f889dcde641022648f493 is not registered! Registering now
+// {
+//   etherKey: '0x2210fa04b60d6846552f889dcde641022648f493',
+//   starkPublicKey: '0x020e4b0e5a26da10d87f9b136a06d7c0d0b8a847a26d5bd0816d932e1e3c5a63'
+// }
+// Success, 0x2210fa04b60d6846552f889dcde641022648f493 is registered!
+// true
