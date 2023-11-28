@@ -14,14 +14,15 @@
 - [Introduction](#introduction)
 - [Changelog](#changelog)
   - [Features](#features)
+  - [Bug Fixes](#fixes)
   - [Breaking Changes](#breaking)
 - [Getting Started](#getting-started)
   - [Prerequisites](#prerequisites)
   - [Installation](#installation)
   - [Usage](#usage)
 - [Common Usage Patterns](#common-usage-patterns)
-  - [Ethers-V5](#ethers-V5)
-  - [Ethers-V6](#ethers-V6)
+  - [Ethers V5](#ethers-V5)
+  - [Ethers V6](#ethers-V6)
   - [IMX](#imx)
   - [EVM](#evm)
   - [SUI](#sui)
@@ -35,7 +36,7 @@
 
 ## Changelog
 
-Stardust-Custodial-SDK V2 introduces several key enhancements to enhance your blockchain development experience:
+### Latest Version: 2.0.0 [11/30/2023]
 
 #### Features
 
@@ -44,9 +45,15 @@ Stardust-Custodial-SDK V2 introduces several key enhancements to enhance your bl
 - **Ethers v6 Support**: Updated for compatibility with ethers.js library version 6.
 - **EIP 191 Message Signing**: Implementation of EIP 191 standards for EVM message signing.
 
-#### Breaking
+#### Fixes
+
+- **UTF8 Signing/Encoding**: Fixed a bug where UTF8 string with valid unicode wouldn't parse correctly
+
+#### Breaking Changes
 
 - **Breaking Change**: Changes in accessing ethers v5 - refer to [Common Usage Patterns](#common-usage-patterns).
+
+For more detailed version history, see the [full changelog](./changelog.md).
 
 ## Getting started
 
@@ -64,13 +71,6 @@ npm i @stardust-gg/stardust-custodial-sdk
 
 #### Usage
 
-```python
-import os;
-
-os.thing()
-
-```
-
 ```ts
 import { StardustCustodialSDK } from '@stardust-gg/stardust-custodial-sdk';
 
@@ -86,37 +86,52 @@ const wallet = await sdk.createWallet();
 const walletIdentifier = wallet.id;
 ```
 
-\*\*\*Note: you should be storing these wallet Identifiers as they are unique to your players/users and are how you will manage them
+> **Note**: You should be storing these wallet identifiers as they are unique to your players/users and are how you will manage them.
 
 ## Common Usage Patterns
 
-#### Ethers-V5
+#### Ethers V5
 
 ```ts
 const provider: JsonRpcProvider = new ethers.providers.JsonRpcProvider(<your-provider-url>)
 const ethersV5Signer = await wallet.ethers.v5.getSigner().connect(provider)
 ```
 
-Reference Ethers v5 documentation for usage of this signer.
+Reference [Ethers v5](https://docs.ethers.org/v5/) documentation for usage of this signer.
 
-#### EthersV6
+#### Ethers V6
 
 ```ts
 const provider: JsonRpcProvider = new ethers.JsonRpcProvider(<your-provider-url>)
 const ethersV6Signer = await wallet.ethers.v5.getSigner(provider)
 ```
 
-Reference Ethers v6 documentation for usage of this signer.
+Reference [Ethers v6](https://docs.ethers.org/v6/) documentation for usage of this signer.
 
 #### EVM
 
 ```ts
-const evmStardustSigner = await wallet.evm;
+const userEVMAddress = await wallet.evm.getAddress();
+const userEVMPublicKey = await wallet.evm.getPublicKey();
+const rawSignedDigest = await wallet.evm.signRaw('0x010203');
+const eip191signedMessage = await wallet.evm.signMessage('hello world');
 ```
 
 #### IMX
 
+```ts
+const starkSigner = await wallet.imx.getStarkSigner();
+```
+
+Reference [IMX-Core-SDK](https://github.com/immutable/imx-core-sdk/tree/main/examples) documentation on usage with StarkSigner
+
 #### SUI
+
+```ts
+const suiStardustSigner = await wallet.sui;
+const builtTx: Uint8Array = <your-tx-object>;
+const signedTransactionBlock = await wallet1.sui.signTransactionBlock(builtTx);
+```
 
 ## Contributing
 
