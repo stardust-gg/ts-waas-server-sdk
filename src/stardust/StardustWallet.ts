@@ -36,6 +36,6 @@ export default class StardustWallet {
 
     this.evm = new EvmStardustSigner(id, apiKey);
     this.sui = new SuiStardustSigner(id, apiKey);
-    this.imx = new ImxStardustSigner(id, apiKey);
+    this.imx = new ImxStardustSigner(this.ethers.v5.getSigner());
   }
 }

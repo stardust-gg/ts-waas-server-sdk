@@ -30,6 +30,7 @@
     "@ethersproject/bytes": "^5.7.0",
     "@ethersproject/transactions": "^5.7.0",
     "@imtbl/core-sdk": "^2.2.0",
+    "@imtbl/imx-sdk": "1.43.7",
     "axios": "^1.3.4",
     "ethers": "5.7.2",
     "ethers_v6": "npm:ethers@^6.6.1"
