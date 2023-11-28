@@ -50,28 +50,7 @@ export default class EvmStardustSigner extends AbstractStardustSigner {
   }
 
   public async signMessage(message: string | Uint8Array): Promise<string> {
-    const messagePrefix = '\x19Ethereum Signed Message:\n';
-    let messageLen;
-    let prefixedMsg: string;
-
-    if (message instanceof Uint8Array) {
-      messageLen = String(message.length);
-      // eslint-disable-next-line no-param-reassign
-      message = uint8ArrayToHexString(message);
-    }
-
-    if (!IsHexString(message)) {
-      messageLen = String(new HexString(convertStringToHexString(message as string)).length);
-      prefixedMsg = convertStringToHexString(messagePrefix + messageLen + message);
-    } else {
-      const messageHexString = new HexString(message as string);
-      messageLen = String(messageHexString.length);
-      prefixedMsg =
-        convertStringToHexString(messagePrefix) +
-        new HexString(convertStringToHexString(messageLen)).strip() +
-        messageHexString.strip();
-    }
-
+    const prefixedMsg = this.createPrefixedMessage(message);
     const payload: SignRequestPayload = {
       walletId: this.walletId,
       chainType: 'evm',
@@ -79,5 +58,29 @@ export default class EvmStardustSigner extends AbstractStardustSigner {
     };
 
     return this.api.signMessage(payload);
+  }
+
+  private createPrefixedMessage(message: string | Uint8Array): string {
+    const messagePrefix = '\x19Ethereum Signed Message:\n';
+
+    let messageContent: string;
+    let messageLen: number;
+
+    if (message instanceof Uint8Array) {
+      messageContent = uint8ArrayToHexString(message).replace(/^0x/, '');
+      messageLen = message.byteLength;
+    } else {
+      messageContent = IsHexString(message)
+        ? message.replace(/^0x/, '')
+        : convertStringToHexString(message).replace(/^0x/, '');
+      messageLen = messageContent.length / 2; // Byte length for hex string
+    }
+
+    const prefixedMessage =
+      convertStringToHexString(messagePrefix) +
+      new HexString(convertStringToHexString(String(messageLen))).strip() +
+      new HexString(messageContent).strip();
+
+    return prefixedMessage;
   }
 }
