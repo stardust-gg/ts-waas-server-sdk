@@ -36,7 +36,7 @@ lerna-debug.log*
 !.vscode/extensions.json
 
 #ignore everything except final report
-!coverage/coverage-final.json
+#!coverage/coverage-final.json
 
 
 # Environment vars
