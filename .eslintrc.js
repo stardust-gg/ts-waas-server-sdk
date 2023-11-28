@@ -29,7 +29,7 @@ module.exports = {
     node: true,
     jest: true,
   },
-  ignorePatterns: ['.eslintrc.js', 'dist', 'node_modules', '*.constants.ts', 'test'],
+  ignorePatterns: ['.eslintrc.js', 'dist', 'node_modules', '*.constants.ts', 'test', '*.config.js'],
   settings: {
     'import/resolver': {
       node: {
