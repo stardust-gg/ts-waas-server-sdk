@@ -15,8 +15,11 @@ export default class StardustWallet {
       getSigner: (provider: Provider) => EthersV6Signer;
     };
   };
+
   public evm: EvmStardustSigner;
+
   public sui: SuiStardustSigner;
+
   public imx: ImxStardustSigner;
 
   constructor(

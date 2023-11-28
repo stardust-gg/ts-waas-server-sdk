@@ -1,13 +1,15 @@
+import { ethers } from 'ethers_v6';
 import StardustSignerAPI from '../../StardustSignerAPI';
 import { ApiRequestPayload, ChainType, SignRequestPayload } from '../../../types';
-import { ethers } from 'ethers_v6';
 import AbstractStardustSigner from '../AbstractStardustSigner';
 import HexString from '../../../utils/HexString';
-import { convertStringToHexString, isHexString, uint8ArrayToHexString } from '../../../utils';
+import { IsHexString, convertStringToHexString, uint8ArrayToHexString } from '../../../utils';
 
 export default class EvmStardustSigner extends AbstractStardustSigner {
   public walletId;
+
   public api: StardustSignerAPI;
+
   public chainType: ChainType;
 
   constructor(walletId: string, apiKey: string) {
@@ -17,8 +19,9 @@ export default class EvmStardustSigner extends AbstractStardustSigner {
     this.chainType = 'evm';
   }
 
-  public signRaw = async (digest: string | Uint8Array): Promise<string> => {
+  public async signRaw(digest: string | Uint8Array): Promise<string> {
     if (digest instanceof Uint8Array) {
+      // eslint-disable-next-line no-param-reassign
       digest = uint8ArrayToHexString(digest);
     }
 
@@ -28,39 +31,40 @@ export default class EvmStardustSigner extends AbstractStardustSigner {
       message: digest,
     };
 
-    return await this.api.signMessage(payload);
-  };
+    return this.api.signMessage(payload);
+  }
 
-  public getAddress = async (): Promise<string> => {
+  public async getAddress(): Promise<string> {
     const payload: ApiRequestPayload = {
       walletId: this.walletId,
       chainType: 'evm',
     };
     return ethers.getAddress(await this.api.getAddress(payload));
-  };
+  }
 
-  public getPublicKey = async (): Promise<string> => {
-    return await this.api.getPublicKey({
+  public async getPublicKey(): Promise<string> {
+    return this.api.getPublicKey({
       walletId: this.walletId,
       chainType: this.chainType,
     });
-  };
+  }
 
-  public signMessage = async (message: string | Uint8Array): Promise<string> => {
+  public async signMessage(message: string | Uint8Array): Promise<string> {
     const messagePrefix = '\x19Ethereum Signed Message:\n';
     let messageLen;
     let prefixedMsg: string;
 
     if (message instanceof Uint8Array) {
       messageLen = String(message.length);
+      // eslint-disable-next-line no-param-reassign
       message = uint8ArrayToHexString(message);
     }
 
-    if (!isHexString(message)) {
-      messageLen = String(new HexString(convertStringToHexString(message)).length);
+    if (!IsHexString(message)) {
+      messageLen = String(new HexString(convertStringToHexString(message as string)).length);
       prefixedMsg = convertStringToHexString(messagePrefix + messageLen + message);
     } else {
-      const messageHexString = new HexString(message);
+      const messageHexString = new HexString(message as string);
       messageLen = String(messageHexString.length);
       prefixedMsg =
         convertStringToHexString(messagePrefix) +
@@ -74,6 +78,6 @@ export default class EvmStardustSigner extends AbstractStardustSigner {
       message: prefixedMsg,
     };
 
-    return await this.api.signMessage(payload);
-  };
+    return this.api.signMessage(payload);
+  }
 }

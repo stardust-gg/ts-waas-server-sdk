@@ -4,8 +4,10 @@ import { serialize, UnsignedTransaction } from '@ethersproject/transactions';
 import type { Provider, TransactionRequest } from '@ethersproject/abstract-provider';
 import type { SignRequestPayload } from '../../types';
 import EvmStardustSigner from '../../stardust/StardustSigners/evm/EvmStardustSigner';
+
 export default class EthersV5Signer extends Signer {
   private evmStardustSigner: EvmStardustSigner;
+
   readonly provider?: Provider;
 
   constructor(evmStardustSigner: EvmStardustSigner, provider?: Provider) {
@@ -14,19 +16,19 @@ export default class EthersV5Signer extends Signer {
     this.provider = provider;
   }
 
-  async getAddress(): Promise<string> {
+  public async getAddress(): Promise<string> {
     return this.evmStardustSigner.getAddress();
   }
 
-  async signMessage(message: string): Promise<string> {
+  public async signMessage(message: string): Promise<string> {
     return this.evmStardustSigner.signMessage(message);
   }
 
-  async signRaw(message: string | Uint8Array): Promise<string> {
+  public async signRaw(message: string | Uint8Array): Promise<string> {
     return this.evmStardustSigner.signRaw(message);
   }
 
-  async signTransaction(transaction: Deferrable<TransactionRequest>): Promise<string> {
+  public async signTransaction(transaction: Deferrable<TransactionRequest>): Promise<string> {
     const tx = await resolveProperties(transaction);
     if (tx.from) {
       if (tx.from !== (await this.getAddress())) {
@@ -44,7 +46,7 @@ export default class EthersV5Signer extends Signer {
     return serialize(<UnsignedTransaction>tx, signature);
   }
 
-  connect(provider: Provider): EthersV5Signer {
+  public connect(provider: Provider): EthersV5Signer {
     return new EthersV5Signer(this.evmStardustSigner, provider);
   }
 }

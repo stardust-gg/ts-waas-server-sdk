@@ -59,16 +59,16 @@ export default class HexString {
 
   /// return the byte length of the hex string - not the same as str.length
   get length(): number {
-    let utf8String = this.Uint8Array;
+    const utf8String = this.Uint8Array;
     return utf8String.length;
   }
 
-  static addHexPrefix = (str: string): `0x${string}` => {
+  public static addHexPrefix(str: string): `0x${string}` {
     const hexPattern = /^(0x)?[a-fA-F0-9]+$/;
     if (!hexPattern.test(str)) {
       throw new Error('Invalid hex string');
     }
 
     return (str.startsWith('0x') ? str : `0x${str}`) as `0x${string}`;
-  };
+  }
 }

@@ -32,7 +32,7 @@
 
 ## Introduction
 
-**Stardust-Custodial-SDK** is a TypeScript-based SDK specifically crafted to enable seamless integration with the Stardust custodial wallet management system. This SDK is designed for TypeScript developers looking to incorporate advanced wallet management features into their applications with minimal effort - whether you're building a new project or enhancing an existing one.
+**Stardust-Custodial-SDK** is a TypeScript-based SDK specifically crafted to enable seamless integration with the Stardust custodial Wallets as a service (WaaS). This SDK is designed for TypeScript developers looking to incorporate advanced wallet management features into their applications with minimal effort - whether you're building a new project or enhancing an existing one.
 
 ## Changelog
 
@@ -47,11 +47,11 @@
 
 #### Fixes
 
-- **UTF8 Signing/Encoding**: Fixed a bug where UTF8 string with valid unicode wouldn't parse correctly
+- **UTF8 Signing/Encoding**: Fixed a bug where UTF8 string with valid unicode characters wouldn't parse correctly
 
 #### Breaking Changes
 
-- **Breaking Change**: Changes in accessing ethers v5 - refer to [Common Usage Patterns](#common-usage-patterns).
+- Changes in accessing ethers v5 - refer to [Common Usage](#common-usage) patterns.
 
 For more detailed version history, see the [full changelog](./changelog.md).
 
@@ -88,9 +88,9 @@ const walletIdentifier = wallet.id;
 
 > **Note**: You should be storing these wallet identifiers as they are unique to your players/users and are how you will manage them.
 
-## Common Usage Patterns
+## Common Usage
 
-#### Ethers V5
+### Ethers V5
 
 ```ts
 const provider: JsonRpcProvider = new ethers.providers.JsonRpcProvider(<your-provider-url>)
@@ -99,7 +99,7 @@ const ethersV5Signer = await wallet.ethers.v5.getSigner().connect(provider)
 
 Reference [Ethers v5](https://docs.ethers.org/v5/) documentation for usage of this signer.
 
-#### Ethers V6
+### Ethers V6
 
 ```ts
 const provider: JsonRpcProvider = new ethers.JsonRpcProvider(<your-provider-url>)
@@ -108,7 +108,7 @@ const ethersV6Signer = await wallet.ethers.v5.getSigner(provider)
 
 Reference [Ethers v6](https://docs.ethers.org/v6/) documentation for usage of this signer.
 
-#### EVM
+### EVM
 
 ```ts
 const userEVMAddress = await wallet.evm.getAddress();
@@ -117,7 +117,7 @@ const rawSignedDigest = await wallet.evm.signRaw('0x010203');
 const eip191signedMessage = await wallet.evm.signMessage('hello world');
 ```
 
-#### IMX
+### IMX
 
 ```ts
 const starkSigner = await wallet.imx.getStarkSigner();
@@ -125,7 +125,7 @@ const starkSigner = await wallet.imx.getStarkSigner();
 
 Reference [IMX-Core-SDK](https://github.com/immutable/imx-core-sdk/tree/main/examples) documentation on usage with StarkSigner
 
-#### SUI
+### SUI
 
 ```ts
 const suiStardustSigner = await wallet.sui;

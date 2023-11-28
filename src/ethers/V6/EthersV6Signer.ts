@@ -9,8 +9,8 @@ import {
   resolveAddress,
   resolveProperties,
   assert,
+  AbstractSigner,
 } from 'ethers_v6';
-import { AbstractSigner } from 'ethers_v6';
 import { SignRequestPayload } from '../../types';
 import EvmStardustSigner from '../../stardust/StardustSigners/evm/EvmStardustSigner';
 
@@ -22,15 +22,11 @@ export default class EthersV6Signer extends AbstractSigner {
     this.evmStardustSigner = evmStardustSigner;
   }
 
-  connect(provider: Provider): EthersV6Signer {
-    return new EthersV6Signer(this.evmStardustSigner, provider);
-  }
-
-  async getAddress(): Promise<string> {
+  public async getAddress(): Promise<string> {
     return this.evmStardustSigner.getAddress();
   }
 
-  async signTransaction(tx: ethers.TransactionRequest): Promise<string> {
+  public async signTransaction(tx: ethers.TransactionRequest): Promise<string> {
     // Replace any Addressable or ENS name with an address
     const { to, from } = await resolveProperties({
       to: tx.to ? resolveAddress(tx.to, this.provider) : undefined,
@@ -38,9 +34,11 @@ export default class EthersV6Signer extends AbstractSigner {
     });
 
     if (to != null) {
+      // eslint-disable-next-line no-param-reassign
       tx.to = to;
     }
     if (from != null) {
+      // eslint-disable-next-line no-param-reassign
       tx.from = from;
     }
 
@@ -51,12 +49,13 @@ export default class EthersV6Signer extends AbstractSigner {
         'tx.from',
         tx.from
       );
+      // eslint-disable-next-line no-param-reassign
       delete tx.from;
     }
 
     // Build the transaction
     const builtTx = Transaction.from(<TransactionLike<string>>tx);
-    const unsignedSerialized = builtTx.unsignedSerialized;
+    const { unsignedSerialized } = builtTx;
 
     const payload: SignRequestPayload = {
       walletId: this.evmStardustSigner.walletId,
@@ -68,11 +67,11 @@ export default class EthersV6Signer extends AbstractSigner {
     return builtTx.serialized;
   }
 
-  async signMessage(message: string | Uint8Array): Promise<string> {
+  public async signMessage(message: string | Uint8Array): Promise<string> {
     return this.evmStardustSigner.signMessage(message);
   }
 
-  async signTypedData(
+  public async signTypedData(
     domain: ethers.TypedDataDomain,
     types: Record<string, ethers.TypedDataField[]>,
     value: Record<string, any>
@@ -112,5 +111,9 @@ export default class EthersV6Signer extends AbstractSigner {
     const sig = await this.evmStardustSigner.api.signTransaction(payload);
     const splitSig = ethers.Signature.from(sig);
     return ethers.Signature.from(splitSig).serialized;
+  }
+
+  public connect(provider: Provider): EthersV6Signer {
+    return new EthersV6Signer(this.evmStardustSigner, provider);
   }
 }

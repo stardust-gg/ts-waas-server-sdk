@@ -5,7 +5,7 @@ import { HttpStatusCode } from 'axios';
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 
-const baseUrl = 'https://vault-api.stardust.gg';
+const baseUrl = 'https://custodial-wallet.stardust.gg';
 describe('AbstractStardustAPI', () => {
   let api: AbstractStardustAPI;
 

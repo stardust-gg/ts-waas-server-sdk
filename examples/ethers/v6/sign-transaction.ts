@@ -11,7 +11,6 @@ const walletId = process.env.PROD_SYSTEM_STARDUST_WALLET_ID!;
 async function main() {
   try {
     // Initialize Provider
-
     const provider = getDefaultProvider('mainnet');
 
     // Initialize Stardust SDK

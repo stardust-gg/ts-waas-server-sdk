@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">76.92% </span>
+                <span class="strong">62.5% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>10/13</span>
+                <span class='fraction'>5/8</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">76.92% </span>
+                <span class="strong">62.5% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>10/13</span>
+                <span class='fraction'>5/8</span>
             </div>
         
             
@@ -95,8 +95,8 @@
 <a name='L30'></a><a href='#L30'>30</a>
 <a name='L31'></a><a href='#L31'>31</a>
 <a name='L32'></a><a href='#L32'>32</a>
-<a name='L33'></a><a href='#L33'>33</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4x</span>
+<a name='L33'></a><a href='#L33'>33</a>
+<a name='L34'></a><a href='#L34'>34</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -107,29 +107,30 @@
 <span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import EthersV5Signer from '../../../ethers/V5/EthersV5Signer';
-import { StarkSigner, createStarkSigner, generateLegacyStarkPrivateKey } from '@imtbl/core-sdk';
-import EvmStardustSigner from '../evm/EvmStardustSigner';
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { StarkSigner, createStarkSigner, generateLegacyStarkPrivateKey } from '@imtbl/core-sdk';
+import EthersV5Signer from '../../../ethers/V5/EthersV5Signer';
 import AbstractStardustSigner from '../AbstractStardustSigner';
 &nbsp;
 export default class ImxStardustSigner implements AbstractStardustSigner {
@@ -139,25 +140,27 @@ export default class ImxStardustSigner implements AbstractStardustSigner {
     this.ethersV5signer = ethersV5Signer;
   }
 &nbsp;
-  public getStarkSigner = async (): Promise&lt;StarkSigner&gt; =&gt; {
-    return await createStarkSigner(await this.privateKey());
-  };
+  public async getStarkSigner(): Promise&lt;StarkSigner&gt; {
+    return createStarkSigner(await this.privateKey());
+  }
 &nbsp;
-  private privateKey = async () =&gt; {
-    return await generateLegacyStarkPrivateKey(this.ethersV5signer);
-  };
+  private async privateKey() {
+    return generateLegacyStarkPrivateKey(this.ethersV5signer);
+  }
 &nbsp;
-  public getPublicKey: () =&gt; Promise&lt;string&gt; = <span class="fstat-no" title="function not covered" >async </span>() =&gt; {
-<span class="cstat-no" title="statement not covered" >    return await (await this.getStarkSigner()).getAddress();</span>
-  };
+  public <span class="fstat-no" title="function not covered" >async </span>getPublicKey(): Promise&lt;string&gt; {
+<span class="cstat-no" title="statement not covered" >    return (await this.getStarkSigner()).getAddress();</span>
+  }
 &nbsp;
-  public getAddress = <span class="fstat-no" title="function not covered" >async </span>(): Promise&lt;string&gt; =&gt; {
+  public <span class="fstat-no" title="function not covered" >async </span>getAddress(): Promise&lt;string&gt; {
 <span class="cstat-no" title="statement not covered" >    return this.getPublicKey();</span>
-  };
+  }
 &nbsp;
-  public signRaw = <span class="fstat-no" title="function not covered" >async </span>(message: string | Uint8Array): Promise&lt;string&gt; =&gt; {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  public <span class="fstat-no" title="function not covered" >async </span>signRaw(message: string | Uint8Array): Promise&lt;string&gt; {
+    // eslint-disable-next-line @typescript-eslint/no-throw-literal
 <span class="cstat-no" title="statement not covered" >    throw 'not implemented'; </span>// unsupported - imx only uses signMessage and can be accessed via getSigner().signMessage
-  };
+  }
 }
 &nbsp;</pre></td></tr></table></pre>
 
@@ -166,7 +169,7 @@ export default class ImxStardustSigner implements AbstractStardustSigner {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-11-28T19:21:00.859Z
+                at 2023-11-28T22:50:25.889Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>

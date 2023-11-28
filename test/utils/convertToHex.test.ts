@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 import { describe } from '@jest/globals';
-import { convertToHex } from '../../src/utils/convertToHex';
+import { convertToHex } from '../../src/utils';
 
 describe('convertToHex', () => {
   it('should convert a utf8 string to hex encoded', async () => {

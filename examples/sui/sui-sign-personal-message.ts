@@ -8,7 +8,6 @@ import { verifyPersonalMessage } from '@mysten/sui.js/verify';
 const STARDUST_API_KEY = process.env.PROD_SYSTEM_STARDUST_API_KEY!;
 const STARDUST_WALLET_ID = process.env.PROD_SYSTEM_STARDUST_WALLET_ID!;
 
-// Main function
 async function main() {
   try {
     // Create a StardustCustodialSdk instance

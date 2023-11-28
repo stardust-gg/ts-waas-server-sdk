@@ -1,13 +1,15 @@
-import { convertToHex, uint8ArrayToHexString } from '../../../utils';
-import { ApiRequestPayload, ChainType, SignRequestPayload } from '../../../types';
 import { IntentScope, messageWithIntent } from '@mysten/sui.js/cryptography';
 import { blake2b } from '@noble/hashes/blake2b';
+import { uint8ArrayToHexString } from '../../../utils';
+import { ApiRequestPayload, ChainType, SignRequestPayload } from '../../../types';
 import StardustSignerAPI from '../../StardustSignerAPI';
 import AbstractStardustSigner from '../AbstractStardustSigner';
 
 export default class SuiStardustSigner implements AbstractStardustSigner {
   public walletId;
+
   public api: StardustSignerAPI;
+
   public chainType: ChainType;
 
   constructor(id: string, apiKey: string) {
@@ -16,16 +18,17 @@ export default class SuiStardustSigner implements AbstractStardustSigner {
     this.chainType = 'sui';
   }
 
-  public getPublicKey = async (): Promise<string> => {
+  public async getPublicKey(): Promise<string> {
     const params: ApiRequestPayload = {
       walletId: this.walletId,
       chainType: this.chainType,
     };
-    return await this.api.getPublicKey(params);
-  };
+    return this.api.getPublicKey(params);
+  }
 
-  public signRaw = async (digest: string | Uint8Array): Promise<string> => {
+  public async signRaw(digest: string | Uint8Array): Promise<string> {
     if (digest instanceof Uint8Array) {
+      // eslint-disable-next-line no-param-reassign
       digest = uint8ArrayToHexString(digest);
     }
 
@@ -35,28 +38,28 @@ export default class SuiStardustSigner implements AbstractStardustSigner {
       message: digest,
     };
     return String(await this.api.signMessage(params));
-  };
+  }
 
-  public signTransactionBlock = async (builtTx: Uint8Array): Promise<string> => {
+  public async signTransactionBlock(builtTx: Uint8Array): Promise<string> {
     const intentMessage = messageWithIntent(IntentScope.TransactionData, builtTx);
     const digest = blake2b(intentMessage, { dkLen: 32 });
-    return await this.signRaw(digest);
-  };
+    return this.signRaw(digest);
+  }
 
-  public signPersonalMessage = async (message: Uint8Array): Promise<string> => {
+  public async signPersonalMessage(message: Uint8Array): Promise<string> {
     const serializedMessage = new Uint8Array(message.length + 1);
     serializedMessage[0] = message.length;
     serializedMessage.set(message, 1);
     const intentMessage = messageWithIntent(IntentScope.PersonalMessage, serializedMessage);
     const digest = blake2b(intentMessage, { dkLen: 32 });
-    return await this.signRaw(digest);
-  };
+    return this.signRaw(digest);
+  }
 
-  public getAddress = async (): Promise<string> => {
+  public async getAddress(): Promise<string> {
     const params: ApiRequestPayload = {
       walletId: this.walletId,
       chainType: this.chainType,
     };
-    return await this.api.getAddress(params);
-  };
+    return this.api.getAddress(params);
+  }
 }

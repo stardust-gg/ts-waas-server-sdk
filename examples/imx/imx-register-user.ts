@@ -10,7 +10,6 @@ const apiKey = process.env.PROD_SYSTEM_STARDUST_API_KEY!;
 const walletId = process.env.PROD_SYSTEM_STARDUST_WALLET_ID!;
 const rpcUrl = process.env.SANDBOX_IMX_RPC_URL!; // SANDBOX: must match network for imx config
 
-// Main function
 async function main() {
   try {
     // Initialize provider

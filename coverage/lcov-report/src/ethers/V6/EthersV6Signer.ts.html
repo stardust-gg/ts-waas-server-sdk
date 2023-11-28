@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>32/32</span>
+                <span class='fraction'>31/31</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>32/32</span>
+                <span class='fraction'>31/31</span>
             </div>
         
             
@@ -179,7 +179,10 @@
 <a name='L114'></a><a href='#L114'>114</a>
 <a name='L115'></a><a href='#L115'>115</a>
 <a name='L116'></a><a href='#L116'>116</a>
-<a name='L117'></a><a href='#L117'>117</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">4x</span>
+<a name='L117'></a><a href='#L117'>117</a>
+<a name='L118'></a><a href='#L118'>118</a>
+<a name='L119'></a><a href='#L119'>119</a>
+<a name='L120'></a><a href='#L120'>120</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -191,24 +194,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -217,17 +202,34 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -293,6 +295,10 @@
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import {
@@ -306,8 +312,8 @@
   resolveAddress,
   resolveProperties,
   assert,
+  AbstractSigner,
 } from 'ethers_v6';
-import { AbstractSigner } from 'ethers_v6';
 import { SignRequestPayload } from '../../types';
 import EvmStardustSigner from '../../stardust/StardustSigners/evm/EvmStardustSigner';
 &nbsp;
@@ -319,15 +325,11 @@ export default class EthersV6Signer extends AbstractSigner {
     this.evmStardustSigner = evmStardustSigner;
   }
 &nbsp;
-  connect(provider: Provider): EthersV6Signer {
-    return new EthersV6Signer(this.evmStardustSigner, provider);
-  }
-&nbsp;
-  async getAddress(): Promise&lt;string&gt; {
+  public async getAddress(): Promise&lt;string&gt; {
     return this.evmStardustSigner.getAddress();
   }
 &nbsp;
-  async signTransaction(tx: ethers.TransactionRequest): Promise&lt;string&gt; {
+  public async signTransaction(tx: ethers.TransactionRequest): Promise&lt;string&gt; {
     // Replace any Addressable or ENS name with an address
     const { to, from } = await resolveProperties({
       to: tx.to ? resolveAddress(tx.to, this.provider) : undefined,
@@ -335,9 +337,11 @@ export default class EthersV6Signer extends AbstractSigner {
     });
 &nbsp;
     if (to != null) {
+      // eslint-disable-next-line no-param-reassign
       tx.to = to;
     }
     if (from != null) {
+      // eslint-disable-next-line no-param-reassign
       tx.from = from;
     }
 &nbsp;
@@ -348,12 +352,13 @@ export default class EthersV6Signer extends AbstractSigner {
         'tx.from',
         tx.from
       );
+      // eslint-disable-next-line no-param-reassign
       delete tx.from;
     }
 &nbsp;
     // Build the transaction
     const builtTx = Transaction.from(&lt;TransactionLike&lt;string&gt;&gt;tx);
-    const unsignedSerialized = builtTx.unsignedSerialized;
+    const { unsignedSerialized } = builtTx;
 &nbsp;
     const payload: SignRequestPayload = {
       walletId: this.evmStardustSigner.walletId,
@@ -365,11 +370,11 @@ export default class EthersV6Signer extends AbstractSigner {
     return builtTx.serialized;
   }
 &nbsp;
-  async signMessage(message: string | Uint8Array): Promise&lt;string&gt; {
+  public async signMessage(message: string | Uint8Array): Promise&lt;string&gt; {
     return this.evmStardustSigner.signMessage(message);
   }
 &nbsp;
-  async signTypedData(
+  public async signTypedData(
     domain: ethers.TypedDataDomain,
     types: Record&lt;string, ethers.TypedDataField[]&gt;,
     value: Record&lt;string, any&gt;
@@ -410,6 +415,10 @@ export default class EthersV6Signer extends AbstractSigner {
     const splitSig = ethers.Signature.from(sig);
     return ethers.Signature.from(splitSig).serialized;
   }
+&nbsp;
+  public connect(provider: Provider): EthersV6Signer {
+    return new EthersV6Signer(this.evmStardustSigner, provider);
+  }
 }
 &nbsp;</pre></td></tr></table></pre>
 
@@ -418,7 +427,7 @@ export default class EthersV6Signer extends AbstractSigner {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-11-28T19:21:00.859Z
+                at 2023-11-28T22:50:25.889Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>
