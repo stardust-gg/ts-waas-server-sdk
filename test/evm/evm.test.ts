@@ -1,4 +1,5 @@
 import EvmStardustSigner from '../../src/stardust/StardustSigners/evm/EvmStardustSigner';
+import { convertToHex } from '../../src/utils';
 import HexString from '../../src/utils/HexString';
 import { MOCKED_EIP191_MESSAGE, MOCKED_ADRESS, MOCKED_MESSAGE } from './constants';
 jest.mock('../../src/stardust/StardustSignerAPI', () => {
@@ -95,6 +96,29 @@ describe('EvmStardustSigner', () => {
       walletId: mockWalletId,
       chainType: 'evm',
       message: MOCKED_EIP191_MESSAGE,
+    });
+  });
+
+  it('should sign a message for imx', async () => {
+    const digest = `Only sign this request if you’ve initiated an action with Immutable X.`;
+
+    const mockedRawSignature = await evmStardustSigner.signMessage(digest);
+    expect(evmStardustSigner.api.signMessage).toHaveBeenCalledWith({
+      walletId: mockWalletId,
+      chainType: 'evm',
+      message:
+        '0x19457468657265756d205369676e6564204d6573736167653a0a37324f6e6c79207369676e2074686973207265717565737420696620796f75e28099766520696e6974696174656420616e20616374696f6e207769746820496d6d757461626c6520582e',
+    });
+  });
+
+  it('should sign a message for imx with unicode characters', async () => {
+    const digest = `Only sign this request if you\u2019ve initiated an action with Immutable X.`;
+    const mockedRawSignature = await evmStardustSigner.signMessage(digest);
+    expect(evmStardustSigner.api.signMessage).toHaveBeenCalledWith({
+      walletId: mockWalletId,
+      chainType: 'evm',
+      message:
+        '0x19457468657265756d205369676e6564204d6573736167653a0a37324f6e6c79207369676e2074686973207265717565737420696620796f75e28099766520696e6974696174656420616e20616374696f6e207769746820496d6d757461626c6520582e',
     });
   });
 });

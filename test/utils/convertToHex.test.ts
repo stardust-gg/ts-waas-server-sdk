@@ -23,4 +23,12 @@ describe('convertToHex', () => {
     const hexString = convertToHex(input);
     expect(hexString).toBe('0x010203');
   });
+
+  it('should convert a string with unicode characters to hex encoded', async () => {
+    const input = `Only sign this request if you\u2019ve initiated an action with Immutable X.`;
+    const hexString = convertToHex(input);
+    const input2 = 'Only sign this request if you’ve initiated an action with Immutable X.';
+    const hexString2 = convertToHex(input2);
+    expect(hexString).toBe(hexString2);
+  });
 });
