@@ -141,6 +141,8 @@ Feel free to open pull requests to propose changes or additions.
 
 [Apache-2.0](./LICENSE.md)
 
+This project uses portions of ethers.js, developed by Richard Moore (@ricmoo), under the [MIT License](./LICENSE.ETHERS.JS.MD).
+
 ## Contact and Support
 
 For support or feedback, please reach out to:
