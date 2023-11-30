@@ -1881,6 +1881,24 @@
   dependencies:
     "@sinonjs/commons" "^3.0.0"
 
+"@stardust-gg/stardust-custodial-sdk@^2.0.1":
+  "integrity" "sha512-FAsobCXe+f7HU9sSL4jKWbm5S7cw05/mM2j6ih2N3rUEEU0y+RcZSrv1mnUd8BRTY23kYC4p7/0Z74BK7oeuxw=="
+  "resolved" "https://registry.npmjs.org/@stardust-gg/stardust-custodial-sdk/-/stardust-custodial-sdk-2.0.1.tgz"
+  "version" "2.0.1"
+  dependencies:
+    "@ethersproject/abstract-provider" "^5.7.0"
+    "@ethersproject/abstract-signer" "^5.7.0"
+    "@ethersproject/bytes" "^5.7.0"
+    "@ethersproject/properties" "^5.7.0"
+    "@ethersproject/transactions" "^5.7.0"
+    "@imtbl/core-sdk" "^2.2.0"
+    "@imtbl/imx-sdk" "1.43.7"
+    "@mysten/sui.js" "^0.47.0"
+    "@noble/hashes" "^1.3.2"
+    "axios" "^1.3.4"
+    "ethers" "5.7.2"
+    "ethers_v6" "npm:ethers@^6.6.1"
+
 "@suchipi/femver@^1.0.0":
   "integrity" "sha512-bprE8+K5V+DPX7q2e2K57ImqNBdfGHDIWaGI5xHxZoxbKOuQZn4wzPiUxOAHnsUr3w3xHrWXwN7gnG/iIuEMIg=="
   "resolved" "https://registry.npmjs.org/@suchipi/femver/-/femver-1.0.0.tgz"

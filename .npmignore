@@ -5,6 +5,7 @@ hardhat.config*
 .env
 .eslintrc*
 .prettierrc*
+.prettierignore
 tsconfig*
 webpack.config*
 coverage/**
