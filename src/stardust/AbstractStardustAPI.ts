@@ -1,36 +1,34 @@
 import axios, { HttpStatusCode } from 'axios';
 
 const URL = 'https://custodial-wallet.stardust.gg';
-
 export default class AbstractStardustAPI {
-  // eslint-disable-next-line no-useless-constructor, no-unused-vars, no-empty-function
-  constructor(protected apiKey: string) {}
+  constructor(protected apiKey: string, protected url: string = URL) {}
 
-  static async Post(endpoint: string, data: any, apiKey: string = '') {
+  public static async Post(endpoint: string, data: any, apiKey: string = '') {
     const response = await axios.post(`${URL}/${endpoint}`, data, {
       headers: { 'x-api-key': apiKey },
     });
     if (response.status !== HttpStatusCode.Created)
-      throw new Error(`Failed to POST to ${endpoint} with data: ${data}`);
+      throw new Error(`Failed to POST to ${endpoint} with data: ${JSON.stringify(data)}`);
     return response.data;
   }
 
-  async apiGet(endpoint: string, query: any = {}) {
-    const response = await axios.get(`${URL}/${endpoint}`, {
+  public async apiGet(endpoint: string, query: any = {}) {
+    const response = await axios.get(`${this.url}/${endpoint}`, {
       headers: { 'x-api-key': this.apiKey },
       params: query,
     });
     if (response.status !== HttpStatusCode.Ok)
-      throw new Error(`Failed to GET from ${endpoint} with query: ${query}`);
+      throw new Error(`Failed to GET from ${endpoint} with query: ${JSON.stringify(query)}`);
     return response.data;
   }
 
-  async apiPost(endpoint: string, data: any = {}) {
-    const response = await axios.post(`${URL}/${endpoint}`, data, {
+  public async apiPost(endpoint: string, data: any = {}) {
+    const response = await axios.post(`${this.url}/${endpoint}`, data, {
       headers: { 'x-api-key': this.apiKey },
     });
     if (response.status !== HttpStatusCode.Created)
-      throw new Error(`Failed to POST to ${endpoint} with data: ${data}`);
+      throw new Error(`Failed to POST to ${endpoint} with data: ${JSON.stringify(data)}`);
     return response.data;
   }
 }

@@ -7,3 +7,8 @@ hardhat.config*
 .prettierrc*
 tsconfig*
 webpack.config*
+coverage/**
+examples/**
+jest.config*
+yarn-error.log
+```
