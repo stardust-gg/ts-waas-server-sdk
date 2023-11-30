@@ -6,3 +6,9 @@ hardhat.config*
 .eslintrc*
 .prettierrc*
 tsconfig*
+webpack.config*
+coverage/**
+examples/**
+jest.config*
+yarn-error.log
+```

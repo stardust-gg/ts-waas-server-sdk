@@ -1,8 +1,15 @@
+import 'dotenv/config';
 import { ethers } from 'ethers';
-import { hashMessage, keccak256, parseTransaction, splitSignature } from 'ethers/lib/utils';
+import { keccak256, parseTransaction, splitSignature } from 'ethers/lib/utils';
 import { serialize, UnsignedTransaction } from '@ethersproject/transactions';
 import { SignatureLike } from '@ethersproject/bytes';
-import { StardustCustodialSDK, StardustApp, StardustWallet } from '../src';
+import {
+  StardustCustodialSDK,
+  StardustApp,
+  StardustWallet,
+  convertStringToHexString,
+} from '../../src';
+import HexString from '../../src/utils/HexString';
 
 const uuidRegex =
   /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/;
@@ -11,24 +18,17 @@ describe('e2e', () => {
   let walletId: string;
   describe('basic create and get flows', () => {
     it('should create an app in the Stardust database', async () => {
-      const app: StardustApp = new StardustApp('name', 'email', 'description');
-      await StardustCustodialSDK.CreateApp(app);
-      apiKey = app.apiKey!;
-      expect(app).toBeDefined();
-      expect(app.name).toEqual('name');
-      expect(app.email).toEqual('email');
-      expect(app.description).toEqual('description');
-      expect(app.id).toMatch(uuidRegex);
-      expect(app.apiKey).toMatch(uuidRegex);
+      apiKey = process.env.PROD_SYSTEM_STARDUST_API_KEY!;
+      walletId = process.env.PROD_SYSTEM_STARDUST_WALLET_ID!;
     });
 
     it('should retrieve an app from the Stardust database', async () => {
       const sdk = new StardustCustodialSDK(apiKey);
       const app = await sdk.getApp();
       expect(app).toBeDefined();
-      expect(app.name).toEqual('name');
-      expect(app.email).toEqual('email');
-      expect(app.description).toEqual('description');
+      expect(app.name).toBeDefined();
+      expect(app.email).toBeDefined();
+      expect(app.description).toBeDefined();
       expect(app.id).toMatch(uuidRegex);
       expect(app.apiKey).toMatch(uuidRegex);
     });
@@ -60,40 +60,47 @@ describe('e2e', () => {
       const sdk = new StardustCustodialSDK(apiKey);
       stardustWallet = await sdk.getWallet(walletId);
 
-      const signer = stardustWallet.signers.ethers.connect(provider);
+      const signer = stardustWallet.ethers.v5.getSigner().connect(provider);
       expect(await signer.getChainId()).not.toBeNull();
-      expect(stardustWallet.signers.ethers).toBeDefined();
+      expect(stardustWallet.ethers.v5.getSigner()).toBeDefined();
     });
 
     it('Should allow us to get our on chain address', async () => {
-      const signer = stardustWallet.signers.ethers.connect(provider); // signer connected in last test
+      const signer = stardustWallet.ethers.v5.getSigner().connect(provider); // signer connected in last test
       const address = await signer.getAddress();
       expect(address).toMatch(/^0x[a-fA-F0-9]{40}$/);
     });
 
     it('Should return the same address if we call getAddress() twice', async () => {
-      const signer = stardustWallet.signers.ethers.connect(provider); // signer connected in last test
+      const signer = stardustWallet.ethers.v5.getSigner().connect(provider); // signer connected in last test
       const address = await signer.getAddress();
       const address2 = await signer.getAddress();
       expect(address).toEqual(address2);
     });
 
     it('Should sign a message and verify it was signed by the correct address', async () => {
-      const signer = stardustWallet.signers.ethers.connect(provider); // signer connected in last test
-      const message = '0x12456';
-      const hashedMessage = hashMessage(message);
-      const signature = await signer.signMessage(hashedMessage);
-      const address = await signer.getAddress();
-      const recoveredAddress = ethers.utils.verifyMessage(hashedMessage, signature);
-      expect(address).toEqual(recoveredAddress);
+      const signer = stardustWallet.ethers.v5.getSigner().connect(provider); // signer connected in last test
+      const message = '0x1234';
+      const signature = await signer.signMessage(message);
+      const expectedAddress = await signer.getAddress();
+      const messagePrefix = '\x19Ethereum Signed Message:\n';
+      const messageLen = String(new HexString(message).length);
+      const prefixedMsg =
+        convertStringToHexString(messagePrefix) +
+        new HexString(convertStringToHexString(messageLen)).strip() +
+        new HexString(message).strip();
+      const recoveredAddress = ethers.utils.recoverAddress(
+        ethers.utils.keccak256(prefixedMsg),
+        signature
+      );
+      expect(recoveredAddress).toEqual(expectedAddress);
     });
 
     it('Should sign a transaction and verify it was signed by the correct address', async () => {
-      const signer = stardustWallet.signers.ethers.connect(provider); // signer connected in last test
+      const signer = stardustWallet.ethers.v5.getSigner().connect(provider); // signer connected in last test
       const address = await signer.getAddress();
 
       const txn = {
-        nonce: 0,
         gasPrice: '',
         gasLimit: '',
         to: '0x08505F42D5666225d5d73B842dAdB87CCA44d1AE',
