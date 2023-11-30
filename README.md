@@ -36,7 +36,7 @@
 
 ## Changelog
 
-### Latest Version: 2.0.1 [11/30/2023]
+### Latest Version: 2.0.0 [11/30/2023]
 
 #### Features
 
