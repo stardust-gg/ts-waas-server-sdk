@@ -13,19 +13,15 @@ export default class StardustCustodialSdk {
     this.stardustWalletAPI = new StardustWalletAPI(apiKey);
   }
 
-  static async CreateApp(stardustApp: StardustApp): Promise<StardustApp> {
-    return StardustAppAPI.Create(stardustApp);
-  }
-
-  async getApp(): Promise<StardustApp> {
+  public async getApp(): Promise<StardustApp> {
     return this.stardustAppAPI.get();
   }
 
-  async createWallet(): Promise<StardustWallet> {
+  public async createWallet(): Promise<StardustWallet> {
     return this.stardustWalletAPI.create();
   }
 
-  async getWallet(walletId: string): Promise<StardustWallet> {
+  public async getWallet(walletId: string): Promise<StardustWallet> {
     return this.stardustWalletAPI.get(walletId);
   }
 }

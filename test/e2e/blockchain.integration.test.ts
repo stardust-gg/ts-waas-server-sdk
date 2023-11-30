@@ -1,6 +1,6 @@
 import 'dotenv/config';
 import { Provider } from '@ethersproject/abstract-provider';
-import { StardustApp, StardustCustodialSDK } from '../src';
+import { StardustCustodialSDK } from '../../src';
 
 if (!process.env.ALCHEMY_POLYGON_API_KEY) {
   throw new Error('ALCHEMY_POLYGON_API_KEY is not set');
@@ -20,6 +20,7 @@ const fundAccount = async (address: string, ether: string) => {
 describe('Blockchain integration tests', () => {
   let apiKey: string;
   let walletId: string;
+
   beforeAll(async () => {
     await hre.network.provider.request({
       method: 'hardhat_reset',
@@ -32,14 +33,12 @@ describe('Blockchain integration tests', () => {
         },
       ],
     });
-
-    const app = new StardustApp('name', 'email', 'description');
-    await StardustCustodialSDK.CreateApp(app);
-    apiKey = app.apiKey!;
+    apiKey = process.env.PROD_SYSTEM_STARDUST_API_KEY!;
     const sdk = new StardustCustodialSDK(apiKey);
     const wallet = await sdk.createWallet();
     walletId = wallet.id;
   });
+
   it('should spin up hardhat network properly', async () => {
     const blockNumber = await hardhatEthersProvider.getBlockNumber();
     expect(blockNumber).toEqual(polygonBlockNumber);
@@ -48,7 +47,7 @@ describe('Blockchain integration tests', () => {
   it('Should fund the custodial wallet to use for testing', async () => {
     const sdk = new StardustCustodialSDK(apiKey);
     const wallet = await sdk.getWallet(walletId);
-    const signer = wallet.signers.ethers.connect(hardhatEthersProvider);
+    const signer = wallet.ethers.v5.getSigner().connect(hardhatEthersProvider);
     const address = await signer.getAddress();
     const custodialBalancePreFunding = await signer.getBalance();
     await fundAccount(address, '1');
@@ -63,7 +62,7 @@ describe('Blockchain integration tests', () => {
     //   first lets get the address of a custodial wallet
     const sdk = new StardustCustodialSDK(apiKey);
     const wallet = await sdk.getWallet(walletId);
-    const signer = wallet.signers.ethers.connect(hardhatEthersProvider);
+    const signer = wallet.ethers.v5.getSigner().connect(hardhatEthersProvider);
     const address = await signer.getAddress();
     const recipient = hre.ethers.Wallet.createRandom().connect(hardhatEthersProvider);
     const initialBalance = hre.ethers.utils.formatEther(await recipient.getBalance());
@@ -76,12 +75,12 @@ describe('Blockchain integration tests', () => {
     await txn.wait(1);
     const finalBalance = hre.ethers.utils.formatEther(await recipient.getBalance());
     expect(finalBalance - initialBalance).toEqual(sendValue);
-  });
+  }, 15000);
 
   it('should be able to interact with usdc contract to send usdc', async () => {
     const sdk = new StardustCustodialSDK(apiKey);
     const wallet = await sdk.getWallet(walletId);
-    const signer = wallet.signers.ethers.connect(hardhatEthersProvider);
+    const signer = wallet.ethers.v5.getSigner().connect(hardhatEthersProvider);
 
     const usdcAddress = '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174';
 

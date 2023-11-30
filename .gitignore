@@ -17,7 +17,6 @@ lerna-debug.log*
 .DS_Store
 
 # Tests
-/coverage
 /.nyc_output
 
 # IDEs and editors
@@ -35,6 +34,12 @@ lerna-debug.log*
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+
+# Ignore everything in the coverage directory
+coverage/*
+
+# Except the coverage-final.json file
+!coverage/coverage-final.json
 
 # Environment vars
 .env
