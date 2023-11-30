@@ -1,11 +1,12 @@
 import dotenv from 'dotenv';
-dotenv.config();
 
 import { SuiClient, getFullnodeUrl } from '@mysten/sui.js/client';
-import StardustCustodialSdk from '../../src/stardust/StardustCustodialSDK';
 import { TransactionBlock } from '@mysten/sui.js/transactions';
 import { requestSuiFromFaucetV0, getFaucetHost } from '@mysten/sui.js/faucet';
 import { verifyTransactionBlock } from '@mysten/sui.js/verify';
+import { StardustCustodialSDK } from '@stardust-gg/stardust-custodial-sdk';
+
+dotenv.config();
 
 type SuiNetwork = 'localnet' | 'devnet' | 'testnet';
 const network: SuiNetwork = 'localnet';
@@ -23,7 +24,7 @@ async function main() {
     const client = new SuiClient({ url: getFullnodeUrl(network) });
 
     // Create a StardustCustodialSdk instance
-    const stardust = new StardustCustodialSdk(STARDUST_API_KEY);
+    const stardust = new StardustCustodialSDK(STARDUST_API_KEY);
 
     // Grab relevant wallets
     const wallet1 = await stardust.getWallet(STARDUST_WALLET_ID);

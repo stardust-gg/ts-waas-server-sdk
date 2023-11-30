@@ -78,7 +78,11 @@ const myApiKey = '<your-api-key-here>';
 
 // connect to the api
 const sdk = new StardustCustodialSDK(myApiKey);\
+```
 
+##### Creating a wallet
+
+```ts
 // create a wallet
 const wallet = await sdk.createWallet();
 
@@ -88,7 +92,26 @@ const walletIdentifier = wallet.id;
 
 > **Note**: Store these wallet identifiers, they are unique to your players/users and are how you will manage them.
 
+##### Getting a Wallet
+
+```ts
+// wallet identifier
+const walletId = <your-saved-wallet-id>;
+
+// get a wallet
+const wallet = await sdk.getWallet(walletId);
+```
+
 ## Common Usage
+
+### Examples
+
+All common examples in their full form can be found under [examples](./examples/)
+
+If you are cloning the repo and wish to run the examples directly use `yarn run-example <path-to-example>`
+
+Like so:
+`yarn run-example examples/sui/sui-sign-personal-message`
 
 ### Ethers V5
 
@@ -132,6 +155,10 @@ const suiStardustSigner = await wallet.sui;
 const builtTx: Uint8Array = <your-tx-object>;
 const signedTransactionBlock = await wallet1.sui.signTransactionBlock(builtTx);
 ```
+
+Reference [sui typescript sdk](https://github.com/MystenLabs/sui/blob/main/sdk/typescript/README.md) documentation for usage of Sui.
+
+Additionally, you can reference [examples](./examples/sui/) of use cases for Sui.
 
 ## Contributing
 

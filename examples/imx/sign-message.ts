@@ -1,9 +1,10 @@
 import dotenv from 'dotenv';
-dotenv.config();
 
-import { ImmutableX, StarkSigner } from '@imtbl/core-sdk';
+import { StarkSigner } from '@imtbl/core-sdk';
 import { ethers } from 'ethers';
-import { StardustCustodialSDK, StardustWallet } from '../../src';
+import { StardustCustodialSDK, StardustWallet } from '@stardust-gg/stardust-custodial-sdk';
+
+dotenv.config();
 
 // Configuration
 const apiKey = process.env.PROD_SYSTEM_STARDUST_API_KEY!;

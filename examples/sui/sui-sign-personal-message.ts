@@ -1,8 +1,9 @@
 import dotenv from 'dotenv';
-dotenv.config();
 
-import StardustCustodialSdk from '../../src/stardust/StardustCustodialSDK';
 import { verifyPersonalMessage } from '@mysten/sui.js/verify';
+import { StardustCustodialSDK } from '@stardust-gg/stardust-custodial-sdk';
+
+dotenv.config();
 
 // Setup constants
 const STARDUST_API_KEY = process.env.PROD_SYSTEM_STARDUST_API_KEY!;
@@ -11,7 +12,7 @@ const STARDUST_WALLET_ID = process.env.PROD_SYSTEM_STARDUST_WALLET_ID!;
 async function main() {
   try {
     // Create a StardustCustodialSdk instance
-    const stardust = new StardustCustodialSdk(STARDUST_API_KEY);
+    const stardust = new StardustCustodialSDK(STARDUST_API_KEY);
 
     // Grab the relevant wallet
     const wallet = await stardust.getWallet(STARDUST_WALLET_ID);

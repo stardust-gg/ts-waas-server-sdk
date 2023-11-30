@@ -1,9 +1,10 @@
 import dotenv from 'dotenv';
-dotenv.config();
 
 import { Config, ImmutableX, StarkSigner, WalletConnection } from '@imtbl/core-sdk';
 import { ethers } from 'ethers';
-import { StardustCustodialSDK, StardustWallet } from '../../src';
+import { StardustCustodialSDK, StardustWallet } from '@stardust-gg/stardust-custodial-sdk';
+
+dotenv.config();
 
 // Configuration
 const apiKey = process.env.PROD_SYSTEM_STARDUST_API_KEY!;
@@ -43,7 +44,7 @@ async function main() {
     let response;
     try {
       response = await imxClient.getUser(ethAddress);
-      if (response['accounts'].length === 0) {
+      if (response.accounts.length === 0) {
         await imxClient.registerOffchain(walletConnection);
         console.log('Successfully registered user with ImmutableX.');
         response = await imxClient.getUser(ethAddress);
@@ -60,7 +61,7 @@ async function main() {
     }
 
     // Log results
-    console.log(`User Accounts on ImmutableX: ${response['accounts']}`);
+    console.log(`User Accounts on ImmutableX: ${response.accounts}`);
   } catch (error) {
     console.error(`Error: ${JSON.stringify(error)}`);
     process.exit(1);

@@ -1,8 +1,9 @@
 import dotenv from 'dotenv';
-dotenv.config();
 
 import { ethers, getDefaultProvider } from 'ethers_v6';
-import { StardustCustodialSDK, StardustWallet } from '../../../src';
+import { StardustCustodialSDK, StardustWallet } from '@stardust-gg/stardust-custodial-sdk';
+
+dotenv.config();
 
 // Configuration
 const apiKey = process.env.PROD_SYSTEM_STARDUST_API_KEY!;

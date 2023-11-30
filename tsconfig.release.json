@@ -7,12 +7,7 @@
     "skipLibCheck": true /* Skip type checking of declaration files. */,
     "forceConsistentCasingInFileNames": true /* Disallow inconsistently-cased references to the same file. */,
     "declaration": true,
-    "outDir": "./dist",
-    "baseUrl": ".",
-    "paths": {
-      "@stardust-gg/stardust-custodial-sdk": ["./src"]
-    }
+    "outDir": "./dist"
   },
-  "include": ["src/**/*", "examples/**/*", "src", "examples"],
-  "exclude": ["test", "coverage", "node_modules"]
+  "include": ["src"]
 }

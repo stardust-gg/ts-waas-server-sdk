@@ -1,8 +1,9 @@
 import dotenv from 'dotenv';
-dotenv.config();
 
 import { Transaction, ethers, getDefaultProvider, recoverAddress } from 'ethers_v6';
-import { StardustCustodialSDK, StardustWallet } from '../../../src';
+import { StardustCustodialSDK, StardustWallet } from '@stardust-gg/stardust-custodial-sdk';
+
+dotenv.config();
 
 // Configuration
 const apiKey = process.env.PROD_SYSTEM_STARDUST_API_KEY!;
@@ -36,7 +37,7 @@ async function main() {
 
     // Deserialize the signed tx
     const builtTx = Transaction.from(signedTx);
-    const unsignedSerialized = builtTx.unsignedSerialized;
+    const { unsignedSerialized } = builtTx;
 
     const recoveredAddress = recoverAddress(
       ethers.keccak256(unsignedSerialized),

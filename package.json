@@ -4,18 +4,9 @@
   "description": "The Stardust Custodial Wallet SDK, written in TypeScript, is a versatile and user-friendly tool designed for integration with various blockchain platforms, including Immutable X (IMX), Sui, and evm-compatible networks. It streamlines the process of creating and managing custodial wallets, allowing developers to efficiently and agnostically instantiate wallet objects. The SDK features an EthersSigner, compliant with Ethers.js's Signer standards, ensuring compatibility and ease of replacement for existing Ethers signers. Aimed at enhancing blockchain application development, this SDK is a key component of the Stardust Wallet as a Service (Waas) offering, catering to the evolving needs of the blockchain ecosystem with its TypeScript-based architecture and comprehensive documentation.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "scripts": {
-    "clean": "rm -rf dist/ node_modules/ yarn.lock && yarn install",
-    "postinstall": "yarn run build",
-    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
-    "build": "tsc",
-    "test": "jest --testMatch='**/*.test.ts' --coverage=false",
-    "test:cov": "jest --testMatch='**/*.test.ts' --coverage=true",
-    "test-integration": "jest --testMatch='**/*.integration.test.ts'",
-    "test-integration:cov": "jest --testMatch='**/*.integration.test.ts' --coverage=true",
-    "test-system": "jest --testMatch='**/*.system.test.ts'",
-    "test-system:cov": "jest --testMatch='**/*.system.test.ts' --coverage=true"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/stardust-gg/ts-custodial-sdk.git"
   },
   "keywords": [
     "api",
@@ -24,8 +15,21 @@
   ],
   "author": "brandon.null@stardust.gg",
   "license": "Apache-2.0",
+  "scripts": {
+    "clean": "rm -rf dist/ node_modules/ yarn.lock && yarn install",
+    "postinstall": "yarn run build",
+    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
+    "build": "tsc -P tsconfig.release.json",
+    "test": "jest --testMatch='**/*.test.ts' --coverage=false",
+    "test:cov": "jest --testMatch='**/*.test.ts' --coverage=true",
+    "test-integration": "jest --testMatch='**/*.integration.test.ts'",
+    "test-integration:cov": "jest --testMatch='**/*.integration.test.ts' --coverage=true",
+    "test-system": "jest --testMatch='**/*.system.test.ts'",
+    "test-system:cov": "jest --testMatch='**/*.system.test.ts' --coverage=true",
+    "run-example": "ts-node -r tsconfig-paths/register"
+  },
   "dependencies": {
-    "@mysten/sui.js": "^0.47.0",
     "@ethersproject/abstract-provider": "^5.7.0",
     "@ethersproject/abstract-signer": "^5.7.0",
     "@ethersproject/bytes": "^5.7.0",
@@ -33,6 +37,7 @@
     "@ethersproject/transactions": "^5.7.0",
     "@imtbl/core-sdk": "^2.2.0",
     "@imtbl/imx-sdk": "1.43.7",
+    "@mysten/sui.js": "^0.47.0",
     "@noble/hashes": "^1.3.2",
     "axios": "^1.3.4",
     "ethers": "5.7.2",
@@ -58,6 +63,7 @@
     "ts-jest": "^29.0.5",
     "ts-loader": "^9.4.2",
     "ts-node": "^10.9.1",
+    "tsconfig-paths": "^4.2.0",
     "typescript": "^4.6.3",
     "webpack": "^5.76.0",
     "webpack-cli": "^5.0.1"

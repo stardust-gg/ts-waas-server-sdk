@@ -1,12 +1,13 @@
 import dotenv from 'dotenv';
-dotenv.config();
 
 import { joinSignature } from '@ethersproject/bytes';
 import { _TypedDataEncoder } from 'ethers/lib/utils';
 import { TypedDataDomain, TypedDataField } from 'ethers/lib/ethers';
 import { ethers } from 'ethers';
 
-import { StardustCustodialSDK, StardustWallet } from '../../../src';
+import { StardustCustodialSDK, StardustWallet } from '@stardust-gg/stardust-custodial-sdk';
+
+dotenv.config();
 
 // Setup constants
 const STARDUST_API_KEY = process.env.PROD_SYSTEM_STARDUST_API_KEY!;
@@ -67,9 +68,7 @@ async function main() {
       domain,
       types,
       value,
-      async (name: string) => {
-        return (await provider.resolveName(name)) ?? 'null';
-      }
+      async (name: string) => (await provider.resolveName(name)) ?? 'null'
     );
 
     // Sign the typed data

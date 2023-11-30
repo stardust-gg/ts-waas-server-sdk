@@ -8,6 +8,7 @@ module.exports = {
   plugins: ['@typescript-eslint/eslint-plugin'],
   extends: ['airbnb-base', 'airbnb-typescript/base', 'prettier'],
   rules: {
+    'import/no-extraneous-dependencies': 'off',
     'import/no-absolute-path': 'error',
     '@typescript-eslint/explicit-member-accessibility': [
       'error',

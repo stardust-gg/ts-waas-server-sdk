@@ -1,16 +1,15 @@
 import dotenv from 'dotenv';
-dotenv.config();
 
 import * as imx from '@imtbl/imx-sdk';
 import { ethers } from 'ethers';
-import StardustCustodialSDK from '../../../src/stardust/StardustCustodialSDK';
-import StardustWallet from '../../../src/stardust/StardustWallet';
+import { StardustCustodialSDK, StardustWallet } from '@stardust-gg/stardust-custodial-sdk';
 
-const sleep = async (ms: number) => {
-  return new Promise((resolve) => {
+dotenv.config();
+
+const sleep = async (ms: number) =>
+  new Promise((resolve) => {
     setTimeout(resolve, ms);
   });
-};
 
 // Configuration
 const apiKey = process.env.PROD_SYSTEM_STARDUST_API_KEY!;
@@ -43,7 +42,7 @@ async function main() {
     const params = {
       starkContractAddress: imxConfig.starkContractAddress,
       registrationContractAddress: imxConfig.registrationContractAddress,
-      signer: signer,
+      signer,
       publicApiUrl: imxConfig.apiAddress,
     };
 
@@ -80,12 +79,3 @@ async function main() {
 }
 
 main();
-
-// Stardust Custodial Wallet Address: 0x2210fa04b60d6846552f889dcde641022648f493, with signer address 0x2210FA04B60d6846552F889DCde641022648F493, with Stark Public Key: 0x020e4b0e5a26da10d87f9b136a06d7c0d0b8a847a26d5bd0816d932e1e3c5a63
-// 0x2210fa04b60d6846552f889dcde641022648f493 is not registered! Registering now
-// {
-//   etherKey: '0x2210fa04b60d6846552f889dcde641022648f493',
-//   starkPublicKey: '0x020e4b0e5a26da10d87f9b136a06d7c0d0b8a847a26d5bd0816d932e1e3c5a63'
-// }
-// Success, 0x2210fa04b60d6846552f889dcde641022648f493 is registered!
-// true
