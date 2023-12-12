@@ -174,5 +174,4 @@ This project uses portions of ethers.js, developed by Richard Moore (@ricmoo), u
 
 For support or feedback, please reach out to:
 
-- blockchain@stardust.gg
-- brandon.null@stardust.gg
+- support@stardust.gg
