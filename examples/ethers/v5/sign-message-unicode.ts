@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 
-import { ethers } from 'ethers';
+import { ethers } from 'ethers_v5';
 import { StardustCustodialSDK, StardustWallet } from '@stardust-gg/stardust-custodial-sdk';
 
 dotenv.config();

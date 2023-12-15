@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 import { joinSignature } from '@ethersproject/bytes';
 import { _TypedDataEncoder } from 'ethers/lib/utils';
 import { TypedDataDomain, TypedDataField } from 'ethers/lib/ethers';
-import { ethers } from 'ethers';
+import { ethers } from 'ethers_v5';
 
 import { StardustCustodialSDK, StardustWallet } from '@stardust-gg/stardust-custodial-sdk';
 
