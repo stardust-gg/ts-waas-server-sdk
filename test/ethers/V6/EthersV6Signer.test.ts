@@ -35,7 +35,7 @@ async function createMockEthersV6Signer() {
   return new EthersV6Signer(new EvmStardustSigner(MOCKED_WALLET_ID, MOCKED_API_KEY), provider);
 }
 
-describe('ethers', () => {
+describe('ethers_v5', () => {
   let ethersV6Signer: EthersV6Signer;
 
   beforeAll(async () => {
