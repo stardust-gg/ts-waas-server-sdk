@@ -36,24 +36,17 @@
 
 ## Changelog
 
-### Latest Version: 2.0.1 [11/30/2023]
-
-#### Features
-
-- **IMX Support**: Support for generating deterministic IMX Signers.
-- **SUI Support**: Compatibility added for the SUI blockchain. Message Signing and Transaction Block Signing.
-- **Ethers v6 Support**: Updated for compatibility with ethers.js library version 6.
-- **EIP 191 Message Signing**: Implementation of EIP 191 standards for EVM message signing.
+### Latest Version: 2.1.0 [12/x/2023]
 
 #### Fixes
-
-- **UTF8 Signing/Encoding**: Fixed UTF-8 strings with valid unicode characters parsing incorrectly.
+- Fixes a bug where node 18 could not be used
 
 #### Breaking Changes
+- ethers v5 is now aliased
 
-- Changes to accessing ethers v5 - refer to [Common Usage](#common-usage) patterns.
+Releases with can be found [here](https://github.com/stardust-gg/stardust-custodial-sdk/releases) 
 
-For more detailed version history, see the [full changelog](./changelog.md).
+For a detailed version history, see the [full changelog](https://docs-waas.stardust.gg/change-log/v2).
 
 ## Getting started
 
