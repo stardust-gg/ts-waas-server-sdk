@@ -36,15 +36,14 @@
 
 ## Changelog
 
-### Latest Version: 2.1.0 [12/x/2023]
+### Latest Version: 2.1.0 [12/18/2023]
 
 #### Fixes
-- Fixes a bug where node 18 could not be used
 
-#### Breaking Changes
-- ethers v5 is now aliased
+- Corrects an issue preventing the use of node 18.
+- Ethers v5 is now aliased within dependencies
 
-Releases with can be found [here](https://github.com/stardust-gg/stardust-custodial-sdk/releases) 
+Releases can be found [here](https://github.com/stardust-gg/stardust-custodial-sdk/releases)
 
 For a detailed version history, see the [full changelog](https://docs-waas.stardust.gg/change-log/v2).
 
