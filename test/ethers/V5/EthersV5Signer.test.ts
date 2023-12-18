@@ -4,7 +4,7 @@ dotenv.config();
 import { describe, expect, it } from '@jest/globals';
 import EthersV5Signer from '../../../src/ethers/V5/EthersV5Signer';
 import EvmStardustSigner from '../../../src/stardust/StardustSigners/evm/EvmStardustSigner';
-import * as ethers_v5 from 'ethers';
+import * as ethers_v5 from 'ethers_v5';
 
 import {
   MOCKED_WALLET_ID,
@@ -31,7 +31,7 @@ jest.mock('../../../src/stardust/StardustSigners/evm/EvmStardustSigner', () => {
 async function createMockEthersV5Signer() {
   return new EthersV5Signer(new EvmStardustSigner(MOCKED_WALLET_ID, MOCKED_API_KEY));
 }
-describe('ethers', () => {
+describe('ethers_v5', () => {
   let ethersV5Signer: EthersV5Signer;
 
   beforeAll(async () => {

@@ -1,5 +1,5 @@
 import 'dotenv/config';
-import { ethers } from 'ethers';
+import { ethers } from 'ethers_v5';
 import { keccak256, parseTransaction, splitSignature } from 'ethers/lib/utils';
 import { serialize, UnsignedTransaction } from '@ethersproject/transactions';
 import { SignatureLike } from '@ethersproject/bytes';
