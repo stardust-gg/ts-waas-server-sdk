@@ -3,7 +3,7 @@ import { Deferrable, resolveProperties } from '@ethersproject/properties';
 import { serialize, UnsignedTransaction } from '@ethersproject/transactions';
 import type { Provider, TransactionRequest } from '@ethersproject/abstract-provider';
 import type { SignRequestPayload } from '../../types';
-import EvmStardustSigner from '../../stardust/StardustSigners/evm/EvmStardustSigner';
+import EvmStardustSigner from '../../stardust/Signers/evm/EvmStardustSigner';
 
 export default class EthersV5Signer extends Signer {
   private evmStardustSigner: EvmStardustSigner;

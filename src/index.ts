@@ -1,6 +1,6 @@
 import StardustCustodialSDK from './stardust/StardustCustodialSDK';
-import StardustApp from './stardust/StardustApp';
-import StardustWallet from './stardust/StardustWallet';
+import StardustApplication from './stardust/Application/StardustApplication';
+import StardustWallet from './stardust/Wallet/StardustWallet';
 
 // utils
 export * from './utils/index';
@@ -8,4 +8,4 @@ export * from './utils/index';
 // types
 export * from './types';
 
-export { StardustCustodialSDK, StardustApp, StardustWallet };
+export { StardustCustodialSDK, StardustApplication, StardustWallet };

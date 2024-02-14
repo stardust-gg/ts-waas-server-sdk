@@ -12,7 +12,7 @@ import {
   AbstractSigner,
 } from 'ethers_v6';
 import { SignRequestPayload } from '../../types';
-import EvmStardustSigner from '../../stardust/StardustSigners/evm/EvmStardustSigner';
+import EvmStardustSigner from '../../stardust/Signers/evm/EvmStardustSigner';
 
 export default class EthersV6Signer extends AbstractSigner {
   private evmStardustSigner: EvmStardustSigner;

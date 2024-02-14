@@ -5,7 +5,7 @@ import { serialize, UnsignedTransaction } from '@ethersproject/transactions';
 import { SignatureLike } from '@ethersproject/bytes';
 import {
   StardustCustodialSDK,
-  StardustApp,
+  StardustApplication,
   StardustWallet,
   convertStringToHexString,
 } from '../../src';
@@ -24,7 +24,7 @@ describe('e2e', () => {
 
     it('should retrieve an app from the Stardust database', async () => {
       const sdk = new StardustCustodialSDK(apiKey);
-      const app = await sdk.getApp();
+      const app = await sdk.getApplication();
       expect(app).toBeDefined();
       expect(app.name).toBeDefined();
       expect(app.email).toBeDefined();

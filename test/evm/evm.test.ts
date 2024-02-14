@@ -1,8 +1,8 @@
-import EvmStardustSigner from '../../src/stardust/StardustSigners/evm/EvmStardustSigner';
+import EvmStardustSigner from '../../src/stardust/Signers/evm/EvmStardustSigner';
 import { convertToHex } from '../../src/utils';
 import HexString from '../../src/utils/HexString';
 import { MOCKED_EIP191_MESSAGE, MOCKED_ADRESS, MOCKED_MESSAGE } from './constants';
-jest.mock('../../src/stardust/StardustSignerAPI', () => {
+jest.mock('../../src/stardust/Signers/StardustSignerAPI', () => {
   return jest.fn().mockImplementation((apiKey: string) => {
     return {
       getAddress: jest.fn().mockResolvedValue(MOCKED_ADRESS),

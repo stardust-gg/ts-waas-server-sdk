@@ -1,4 +1,4 @@
-import StardustSignerAPI from '../../../src/stardust/StardustSignerAPI';
+import StardustSignerAPI from '../../../src/stardust/Signers/StardustSignerAPI';
 import { ApiRequestPayload, SignRequestPayload } from '../../../src/types';
 import { describe, expect, it } from '@jest/globals';
 

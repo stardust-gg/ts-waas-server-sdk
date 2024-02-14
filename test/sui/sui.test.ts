@@ -3,10 +3,10 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 import { describe } from '@jest/globals';
-import SuiStardustSigner from '../../src/stardust/StardustSigners/sui/SuiStardustSigner';
+import SuiStardustSigner from '../../src/stardust/Signers/sui/SuiStardustSigner';
 
 // Mock the StardustSignerAPI class
-jest.mock('../../src/stardust/StardustSignerAPI', () => {
+jest.mock('../../src/stardust/Signers/StardustSignerAPI', () => {
   return jest.fn().mockImplementation((apiKey: string) => ({
     getPublicKey: jest.fn().mockResolvedValue('mockedPublicKey'),
     signMessage: jest.fn().mockResolvedValue('mockedSignature'),
