@@ -6,7 +6,6 @@ jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 
 const baseUrl = 'https://custodial-wallet.stardust.gg';
-// const baseUrl = 'https://vault-api.dev-stardust.gg';
 describe('BaseStardustAPI', () => {
   let api: BaseStardustAPI;
 

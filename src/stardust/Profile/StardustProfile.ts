@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-cycle
 import StardustWallet from '../Wallet/StardustWallet';
 import StardustProfileIdentifier from './StardustProfileIdentifier';
 import StardustProfileIdentifierAPI from './StardustProfileIdentifierAPI';
