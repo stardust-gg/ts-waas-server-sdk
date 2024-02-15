@@ -8,6 +8,8 @@ import EvmStardustSigner from '../Signers/evm/EvmStardustSigner';
 import StardustApplication from '../Application/StardustApplication';
 // eslint-disable-next-line import/no-cycle
 import StardustProfileAPI from '../Profile/StardustProfileAPI';
+import StardustProfile from '../Profile/StardustProfile';
+import { StardustWalletData } from './Types';
 
 export default class StardustWallet {
   public ethers: {
@@ -50,7 +52,11 @@ export default class StardustWallet {
     this.stardustProfileAPI = new StardustProfileAPI(this.apiKey!);
   }
 
-  public static generate(walletData: any): StardustWallet {
+  public async getProfile(): Promise<StardustProfile> {
+    return this.stardustProfileAPI.get(this.profileId);
+  }
+
+  public static generate(walletData: StardustWalletData): StardustWallet {
     return new StardustWallet(
       walletData.id,
       walletData.profileId,

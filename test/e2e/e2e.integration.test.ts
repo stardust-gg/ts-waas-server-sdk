@@ -1,14 +1,10 @@
 import 'dotenv/config';
 import { ethers } from 'ethers_v5';
+import { ethers as ethers_v6 } from 'ethers_v6';
 import { keccak256, parseTransaction, splitSignature } from 'ethers/lib/utils';
 import { serialize, UnsignedTransaction } from '@ethersproject/transactions';
 import { SignatureLike } from '@ethersproject/bytes';
-import {
-  StardustCustodialSDK,
-  StardustApplication,
-  StardustWallet,
-  convertStringToHexString,
-} from '../../src';
+import { StardustCustodialSDK, StardustWallet, convertStringToHexString } from '../../src';
 import HexString from '../../src/utils/HexString';
 
 const uuidRegex =
@@ -56,6 +52,8 @@ describe('e2e', () => {
     const provider = new ethers.providers.JsonRpcProvider(
       'https://api.avax-test.network/ext/bc/C/rpc'
     );
+    const provider2 = new ethers_v6.JsonRpcProvider('https://api.avax-test.network/ext/bc/C/rpc');
+
     it('should allow us to connect a wallet to a provider', async () => {
       const sdk = new StardustCustodialSDK(apiKey);
       stardustWallet = await sdk.getWallet(walletId);
@@ -63,6 +61,9 @@ describe('e2e', () => {
       const signer = stardustWallet.ethers.v5.getSigner().connect(provider);
       expect(await signer.getChainId()).not.toBeNull();
       expect(stardustWallet.ethers.v5.getSigner()).toBeDefined();
+      const signer2 = stardustWallet.ethers.v6.getSigner(provider2);
+      expect(await signer2.getNonce()).not.toBeNull();
+      expect(signer2).toBeDefined();
     });
 
     it('Should allow us to get our on chain address', async () => {

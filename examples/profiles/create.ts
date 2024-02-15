@@ -16,10 +16,9 @@ async function main() {
 
     // Create a profile - naming is optional
     const profile = await sdk.createProfile(application.id, 'My Profile Name'); // can save profile.id for later access
-    console.log(`Profile: ${JSON.stringify(profile)}`);
 
-    // Get grab wallet object off of the profile for usage in signing/sending/etc
-    const { wallet } = profile;
+    // check out how to use wallets in the wallet example
+    console.log(`Profile created: ${JSON.stringify(profile)}`);
   } catch (error) {
     console.error(`Error: ${JSON.stringify(error)}`);
   }

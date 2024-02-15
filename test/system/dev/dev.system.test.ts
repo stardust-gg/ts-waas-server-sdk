@@ -1,8 +1,12 @@
 import StardustApplication from '../../../src/stardust/Application/StardustApplication';
 import StardustProfile from '../../../src/stardust/Profile/StardustProfile';
+import StardustProfileAPI from '../../../src/stardust/Profile/StardustProfileAPI';
+import StardustProfileIdentifier from '../../../src/stardust/Profile/StardustProfileIdentifier';
 import StardustProfileIdentifierAPI from '../../../src/stardust/Profile/StardustProfileIdentifierAPI';
+import { StardustProfileIdentifierService } from '../../../src/stardust/Profile/Types';
 import StardustSignerAPI from '../../../src/stardust/Signers/StardustSignerAPI';
 import StardustCustodialSDK from '../../../src/stardust/StardustCustodialSDK';
+import StardustWallet from '../../../src/stardust/Wallet/StardustWallet';
 import { ApiRequestPayload, SignRequestPayload } from '../../../src/types';
 import { describe, expect, it } from '@jest/globals';
 // allow usage of env
@@ -40,6 +44,15 @@ describe('System: DEV Signing Parity', () => {
         profileId = profile.id;
       });
 
+      it('should create a new profile with a name', async () => {
+        const profile: StardustProfile = await sdk.createProfile(
+          DEV_SYSTEM_STARDUST_APPLICATION_ID,
+          'test-profile'
+        );
+        expect(profile).toBeDefined();
+        expect(profile.name).toBe('test-profile');
+      });
+
       it('should get a profile', async () => {
         const profile = await sdk.getProfile(profileId);
         expect(profile).toBeDefined();
@@ -51,73 +64,100 @@ describe('System: DEV Signing Parity', () => {
           DEV_SYSTEM_STARDUST_API_KEY,
           DEV_SYSTEM_STARDUST_API_URL
         );
-        const identifier = await profile.addIdentifier('email', 'test@test.com');
+        const identifier = await profile.addIdentifier(
+          StardustProfileIdentifierService.Email,
+          'test@test.com'
+        );
         profileIdentifierId = identifier.id;
         expect(identifier).toBeDefined();
         const identifiers = await profile.getIdentifiers();
         expect(identifiers).toBeDefined();
         expect(identifiers.length).toBe(1);
         expect(identifiers[0].id).toBe(identifier.id);
-        expect(identifiers[0].service).toBe('email');
+        expect(identifiers[0].service).toBe('ts-sdk:email');
         expect(identifiers[0].value).toBe('test@test.com');
       });
 
       it('should get a profile identifier by identifier id', async () => {
         const profileIdentifier = await sdk.getProfileIdentifier(profileIdentifierId);
         expect(profileIdentifier).toBeDefined();
-        expect(profileIdentifier.service).toBe('email');
+        expect(profileIdentifier.service).toBe('ts-sdk:email');
         expect(profileIdentifier.value).toBe('test@test.com');
       });
 
-      it('should add google identifier to a profile', async () => {
-        const profile = await sdk.getProfile(profileId);
-        profile.stardustProfileIdentifierAPI = new StardustProfileIdentifierAPI(
-          DEV_SYSTEM_STARDUST_API_KEY,
-          DEV_SYSTEM_STARDUST_API_URL
-        );
-        const userGoogleValue = 'some-google-user-value';
-        const identifier = await profile.addGoogle(userGoogleValue);
-        expect(identifier).toBeDefined();
-        const identifiers = await profile.getIdentifiers();
-        expect(identifiers).toBeDefined();
-        expect(identifiers.length).toBe(2);
-        expect(identifiers[1].service).toBe('ts-sdk-google');
-        expect(identifiers[1].value).toBe(userGoogleValue);
+      describe.each([
+        [
+          StardustProfileIdentifierService.ExternalWallet,
+          'ts-sdk:external-wallet',
+          'some-external wallet value',
+        ],
+        [StardustProfileIdentifierService.Discord, 'ts-sdk:discord', 'some-discord-value'],
+        [StardustProfileIdentifierService.Apple, 'ts-sdk:apple', 'some-apple-value'],
+        [StardustProfileIdentifierService.Google, 'ts-sdk:google', 'some-google-value'],
+        [StardustProfileIdentifierService.Facebook, 'ts-sdk:facebook', 'some-facebook-value'],
+        [StardustProfileIdentifierService.Twitter, 'ts-sdk:twitter', 'some-twitter-value'],
+        [StardustProfileIdentifierService.Email, 'ts-sdk:email', 'some-email-value'],
+        [StardustProfileIdentifierService.Phone, 'ts-sdk:phone', 'some-phone-value'],
+        [StardustProfileIdentifierService.Custom, 'ts-sdk:custom', 'some-custom-value'],
+      ])('profile.addIdentifier(%s, %s, %s)', (service_enum, service_string, value) => {
+        it('should add an identifier to a profile', async () => {
+          const profile = await sdk.getProfile(profileId);
+          profile.stardustProfileIdentifierAPI = new StardustProfileIdentifierAPI(
+            DEV_SYSTEM_STARDUST_API_KEY,
+            DEV_SYSTEM_STARDUST_API_URL
+          );
+          const identifier = await profile.addIdentifier(service_enum, value);
+          expect(identifier).toBeDefined();
+          expect(identifier.service).toBe(service_string);
+          expect(identifier.value).toBe(value);
+        });
       });
 
-      describe('wallet.profile', () => {
-        it('should be able to use all profile directly off a wallet', async () => {});
+      describe('profile.wallet', () => {
+        it('should properly populate a profile with wallet and identifiers when using sdk.getProfile() call', async () => {
+          const profile = await sdk.getProfile(profileId);
+          expect(profile).toBeInstanceOf(StardustProfile);
+          expect(profile.wallet).toBeInstanceOf(StardustWallet);
+          expect(profile.identifiers![0]).toBeInstanceOf(StardustProfileIdentifier);
+          expect(profile.identifiers![1]).toBeInstanceOf(StardustProfileIdentifier);
+        });
       });
     });
-  });
 
-  describe('Wallets', () => {
-    let walletId: string;
-    let profileId: string;
-    it('should create a new wallet', async () => {
-      const wallet = await sdk.createWallet();
-      expect(wallet).toBeDefined();
-      walletId = wallet.id;
-      profileId = wallet.profileId;
-    });
+    describe('Wallets', () => {
+      let walletId: string;
+      let profileId: string;
+      it('should create a new wallet', async () => {
+        const wallet = await sdk.createWallet();
+        expect(wallet).toBeDefined();
+        walletId = wallet.id;
+        profileId = wallet.profileId;
+      });
 
-    it('should get a wallet', async () => {
-      const wallet = await sdk.getWallet(walletId);
-      expect(wallet).toBeDefined();
-    });
+      it('should get a wallet', async () => {
+        const wallet = await sdk.getWallet(walletId);
+        expect(wallet).toBeDefined();
+      });
 
-    describe('wallet.profile', () => {
-      it('should be able to use all profile apis directly off a wallet', async () => {
-        console.log('TODO');
+      describe('wallet.getProfile()', () => {
+        it('should be able to use all profile apis directly off a wallet.getProfile() call', async () => {
+          const wallet = await sdk.getWallet(walletId);
+          wallet.stardustProfileAPI = new StardustProfileAPI(
+            DEV_SYSTEM_STARDUST_API_KEY,
+            DEV_SYSTEM_STARDUST_API_URL
+          );
+          const profile = await wallet.getProfile();
+          expect(profile).toBeInstanceOf(StardustProfile);
+        });
       });
     });
-  });
 
-  describe('Application', () => {
-    it('should get the application associated with the api key', async () => {
-      const application: StardustApplication = await sdk.getApplication();
-      expect(application).toBeDefined();
-      expect(application.id).toBe(DEV_SYSTEM_STARDUST_APPLICATION_ID);
+    describe('Application', () => {
+      it('should get the application associated with the api key', async () => {
+        const application: StardustApplication = await sdk.getApplication();
+        expect(application).toBeDefined();
+        expect(application.id).toBe(DEV_SYSTEM_STARDUST_APPLICATION_ID);
+      });
     });
   });
 

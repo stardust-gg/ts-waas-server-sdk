@@ -1,7 +1,7 @@
 import BaseStardustAPI from '../BaseStardustAPI';
 import StardustProfileIdentifier from './StardustProfileIdentifier';
 import {
-  ProfileIdentifierData,
+  StardustProfileIdentifierData,
   StardustProfileIdentifierCreateParams,
   StardustProfileIdentifierListParams,
 } from './Types';
@@ -21,8 +21,8 @@ export default class StardustProfileIdentifierAPI extends BaseStardustAPI {
     params: StardustProfileIdentifierListParams
   ): Promise<StardustProfileIdentifier[]> {
     const profileIdentifiers = await this.apiGet('profile/identifier', params);
-    return profileIdentifiers.results.map((profileIdentifier: ProfileIdentifierData) =>
-      StardustProfileIdentifier.generate({ ...profileIdentifier, apiKey: this.apiKey })
+    return profileIdentifiers.results.map((profileIdentifier: StardustProfileIdentifierData) =>
+      StardustProfileIdentifier.generate({ ...profileIdentifier })
     );
   }
 }

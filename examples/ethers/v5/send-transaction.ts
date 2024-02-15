@@ -17,7 +17,7 @@ async function main() {
     // Initialize Stardust SDK
     const sdk = new StardustCustodialSDK(apiKey);
 
-    // Get Wallet
+    // Get Wallet from profile
     const wallet: StardustWallet = await sdk.getWallet(walletId);
 
     // Get V5 Signer

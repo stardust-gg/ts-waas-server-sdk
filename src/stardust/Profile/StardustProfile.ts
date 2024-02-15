@@ -2,7 +2,7 @@
 import StardustWallet from '../Wallet/StardustWallet';
 import StardustProfileIdentifier from './StardustProfileIdentifier';
 import StardustProfileIdentifierAPI from './StardustProfileIdentifierAPI';
-import { StardustProfileData } from './Types';
+import { StardustProfileData, StardustProfileIdentifierService } from './Types';
 
 export default class StardustProfile {
   public readonly wallet: StardustWallet;
@@ -23,11 +23,21 @@ export default class StardustProfile {
     this.stardustProfileIdentifierAPI = new StardustProfileIdentifierAPI(this.apiKey!);
   }
 
-  public async addGoogle(value: string): Promise<StardustProfileIdentifier> {
-    return this.addIdentifier('ts-sdk-google', value);
-  }
-
-  public async addIdentifier(service: string, value: string): Promise<StardustProfileIdentifier> {
+  /**
+   *
+   * For now this function call is the 'unverified' version of validation,
+   *
+   * @param service
+   * @param value
+   * @returns
+   */
+  public async addIdentifier(
+    service: StardustProfileIdentifierService,
+    value: string
+  ): Promise<StardustProfileIdentifier> {
+    if (!StardustProfileIdentifier.validateIdentifier(service, value)) {
+      throw new Error(`Invalid identifier ${value} for service ${service}`);
+    }
     return this.stardustProfileIdentifierAPI.create({
       profileId: this.id,
       service,
@@ -61,7 +71,7 @@ export default class StardustProfile {
         StardustWallet.generate({ ...walletData, apiKey: profileData.apiKey })
       ),
       profileData.identifiers?.map((profileIdentifierData) =>
-        StardustProfileIdentifier.generate({ ...profileIdentifierData, apiKey: profileData.apiKey })
+        StardustProfileIdentifier.generate({ ...profileIdentifierData })
       ),
       profileData.name,
       profileData.apiKey
