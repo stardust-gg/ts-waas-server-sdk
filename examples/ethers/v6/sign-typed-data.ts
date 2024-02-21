@@ -1,13 +1,13 @@
 import dotenv from 'dotenv';
 
 import { TypedDataDomain, TypedDataField, getDefaultProvider, ethers } from 'ethers_v6';
-import { StardustCustodialSDK, StardustWallet } from '@stardust-gg/stardust-custodial-sdk';
+import { StardustCustodialSDK } from '@stardust-gg/stardust-custodial-sdk';
 
 dotenv.config();
 
 // Setup constants
 const STARDUST_API_KEY = process.env.PROD_SYSTEM_STARDUST_API_KEY!;
-const STARDUST_WALLET_ID = process.env.PROD_SYSTEM_STARDUST_WALLET_ID!;
+const STARDUST_PROFILE_ID = process.env.PROD_SYSTEM_STARDUST_PROFILE_ID!;
 
 // Typed Data Domain and Types
 const domain: TypedDataDomain = {
@@ -44,7 +44,8 @@ async function main() {
     const sdk = new StardustCustodialSDK(STARDUST_API_KEY);
 
     // Get Wallet
-    const wallet: StardustWallet = await sdk.getWallet(STARDUST_WALLET_ID);
+    const profile = await sdk.getProfile(STARDUST_PROFILE_ID);
+    const { wallet } = profile;
 
     // Get V6 Signer
     const signer = wallet.ethers.v6.getSigner(provider);

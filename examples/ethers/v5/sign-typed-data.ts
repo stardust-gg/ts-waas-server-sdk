@@ -5,13 +5,13 @@ import { _TypedDataEncoder } from 'ethers/lib/utils';
 import { TypedDataDomain, TypedDataField } from 'ethers/lib/ethers';
 import { ethers } from 'ethers_v5';
 
-import { StardustCustodialSDK, StardustWallet } from '@stardust-gg/stardust-custodial-sdk';
+import { StardustCustodialSDK } from '@stardust-gg/stardust-custodial-sdk';
 
 dotenv.config();
 
 // Setup constants
 const STARDUST_API_KEY = process.env.PROD_SYSTEM_STARDUST_API_KEY!;
-const STARDUST_WALLET_ID = process.env.PROD_SYSTEM_STARDUST_WALLET_ID!;
+const STARDUST_PROFILE_ID = process.env.PROD_SYSTEM_STARDUST_PROFILE_ID!;
 const RPC_RUL = process.env.RPC_URL!;
 
 // Typed Data Domain and Types
@@ -49,7 +49,8 @@ async function main() {
     const sdk = new StardustCustodialSDK(STARDUST_API_KEY);
 
     // Get Wallet
-    const wallet: StardustWallet = await sdk.getWallet(STARDUST_WALLET_ID);
+    const profile = await sdk.getProfile(STARDUST_PROFILE_ID);
+    const { wallet } = profile;
 
     // Connect to Provider
     const signer = wallet.ethers.v5.getSigner().connect(provider);
@@ -75,6 +76,12 @@ async function main() {
     const sig = joinSignature(
       await signer.signRaw(_TypedDataEncoder.encode(populated.domain, types, populated.value))
     );
+
+    const sig2 = joinSignature(
+      '0x0e2753d0f0023c95afbb503e9b4725dc8ec48e16369b99785188baad01cf108a73129595b87f547bcfaf887898ed66f1d574628fbf0863fbbada235c6b6efb681b'
+    );
+
+    console.log('SHRAPNEL SIGNATUERE: ', sig2);
 
     // Recover the signer's address
     const recoveredAddress = recoverSigner(value, sig);

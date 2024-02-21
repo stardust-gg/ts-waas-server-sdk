@@ -1,15 +1,15 @@
 import dotenv from 'dotenv';
-import { StardustCustodialSDK } from '../../dist/index';
+import { StardustCustodialSDK } from '@stardust-gg/stardust-custodial-sdk';
 
 dotenv.config();
 
 // Configuration
-const apiKey = process.env.DEV_SYSTEM_STARDUST_API_KEY!;
+const apiKey = process.env.PROD_SYSTEM_STARDUST_API_KEY!;
 
 async function main() {
   try {
     // Initialize Stardust SDK
-    const sdk = new StardustCustodialSDK(apiKey);
+    const sdk = new StardustCustodialSDK(apiKey, process.env.PROD_SYSTEM_STARDUST_API_URL);
 
     // Get you application id
     const application = await sdk.getApplication();

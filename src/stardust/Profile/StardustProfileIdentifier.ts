@@ -27,6 +27,7 @@ export default class StardustProfileIdentifier {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public static validateIdentifier(service: StardustProfileIdentifierService, value: string) {
     switch (service) {
+      case StardustProfileIdentifierService.ExternalWallet:
       case StardustProfileIdentifierService.Email:
       case StardustProfileIdentifierService.Phone:
       case StardustProfileIdentifierService.Discord:
@@ -35,8 +36,9 @@ export default class StardustProfileIdentifier {
       case StardustProfileIdentifierService.Facebook:
       case StardustProfileIdentifierService.Twitter:
       case StardustProfileIdentifierService.Custom:
-      default:
         return true; // Default validation for services without specific rules
+      default:
+        return false; // Default validation for services without specific rules
     }
   }
 }

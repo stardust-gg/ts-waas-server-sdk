@@ -7,7 +7,7 @@ dotenv.config();
 
 // Setup constants
 const STARDUST_API_KEY = process.env.PROD_SYSTEM_STARDUST_API_KEY!;
-const STARDUST_WALLET_ID = process.env.PROD_SYSTEM_STARDUST_WALLET_ID!;
+const profileId = process.env.PROD_SYSTEM_STARDUST_PROFILE_ID!;
 
 async function main() {
   try {
@@ -15,7 +15,8 @@ async function main() {
     const stardust = new StardustCustodialSDK(STARDUST_API_KEY);
 
     // Grab the relevant wallet
-    const wallet = await stardust.getWallet(STARDUST_WALLET_ID);
+    const profile = await stardust.getProfile(profileId);
+    const { wallet } = profile;
 
     // Get the SUI address of the wallet (SUI specific)
     const address = await wallet.sui.getAddress();

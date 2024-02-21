@@ -36,7 +36,9 @@ export default class StardustProfile {
     value: string
   ): Promise<StardustProfileIdentifier> {
     if (!StardustProfileIdentifier.validateIdentifier(service, value)) {
-      throw new Error(`Invalid identifier ${value} for service ${service}`);
+      throw new Error(
+        `Invalid service ${service}, please use StardustProfileIdentifierService enums`
+      );
     }
     return this.stardustProfileIdentifierAPI.create({
       profileId: this.id,

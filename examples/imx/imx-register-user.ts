@@ -2,13 +2,13 @@ import dotenv from 'dotenv';
 
 import { Config, ImmutableX, StarkSigner, WalletConnection } from '@imtbl/core-sdk';
 import { ethers } from 'ethers_v5';
-import { StardustCustodialSDK, StardustWallet } from '@stardust-gg/stardust-custodial-sdk';
+import { StardustCustodialSDK } from '@stardust-gg/stardust-custodial-sdk';
 
 dotenv.config();
 
 // Configuration
 const apiKey = process.env.PROD_SYSTEM_STARDUST_API_KEY!;
-const walletId = process.env.PROD_SYSTEM_STARDUST_WALLET_ID!;
+const profileId = process.env.PROD_SYSTEM_STARDUST_PROFILE_ID!;
 const rpcUrl = process.env.SANDBOX_IMX_RPC_URL!; // SANDBOX: must match network for imx config
 
 async function main() {
@@ -20,7 +20,8 @@ async function main() {
     const sdk = new StardustCustodialSDK(apiKey);
 
     // Get wallet
-    const wallet: StardustWallet = await sdk.getWallet(walletId);
+    const profile = await sdk.getProfile(profileId);
+    const { wallet } = profile;
 
     // Obtain L1 Signer (ethers v5)
     const signer = wallet.ethers.v5.getSigner().connect(provider);
@@ -50,11 +51,10 @@ async function main() {
         response = await imxClient.getUser(ethAddress);
       }
     } catch (error) {
-      if ((error as Error).message.includes('User not found')) {
+      if ((error as any).code?.includes('not_found')) {
         console.log('User not found on ImmutableX. Registering them now.');
         await imxClient.registerOffchain(walletConnection);
         console.log('Successfully registered user with ImmutableX.');
-        response = await imxClient.getUser(ethAddress);
       } else {
         throw error;
       }
