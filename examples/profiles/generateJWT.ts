@@ -12,9 +12,7 @@ async function main() {
     // Initialize Stardust SDK
     const sdk = new StardustCustodialSDK(apiKey);
 
-    // Create a profile - naming is optional
-    const profile = await sdk.getProfile(profileId); // can save profile.id for later access
-    console.log(profile);
+    // generate a jwt for the profile with a ttl
     const jwt = await sdk.generateProfileJWT(profileId, 3600);
 
     // check out how to use wallets in the wallet example

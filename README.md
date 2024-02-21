@@ -43,9 +43,10 @@
 - Adds profiles and profile identifier management to the sdk
   - sdk.getProfile(profileId) has been added
   - sdk.createProfile(applicationId) has been added
-- Wallets are now accessible through wallets
+  - JWT generation for use client side with profile/wallet api
+- Wallets are now accessible through profiles
   - profile.wallet
-- Profiles are now accessible through the legacy wallet object via profileId
+- Profiles are now accessible through the legacy wallet object
   - wallet.getProfile()
 
 Releases can be found [here](https://github.com/stardust-gg/stardust-custodial-sdk/releases)
@@ -90,7 +91,7 @@ const profileIdentifier = profile.id;
 
 ```ts
 const duration = 600; // 10 mins
-const clientJWT = await profile.generateClientJWT(duration);
+const clientJWT = await sdk.generateProfileJWT(profileId, duration);
 ```
 
 > **Note**: These JWTs will allow operation over the profile, and therefore have standardized ttls that are configurable on generation up to 24 hours
