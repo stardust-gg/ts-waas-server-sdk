@@ -54,4 +54,8 @@ export default class StardustCustodialSdk {
   ): Promise<StardustProfileIdentifier> {
     return this.stardustProfileIdentifierAPI.get(profileIdentifierId);
   }
+
+  public async generateProfileJWT(profileId: string, duration: number): Promise<string> {
+    return this.stardustProfileAPI.generateClientJWT(profileId, duration);
+  }
 }

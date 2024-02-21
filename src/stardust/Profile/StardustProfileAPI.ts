@@ -13,4 +13,11 @@ export default class StardustProfileAPI extends BaseStardustAPI {
     const profileData = await this.apiGet(`profile/${profileId}?expand=identifiers,wallets`);
     return StardustProfile.generate({ ...profileData, apiKey: this.apiKey });
   }
+
+  public async generateClientJWT(profileId: string, duration: number): Promise<string> {
+    const generateClientJWTData = await this.apiPost(`profile/${profileId}/authenticate`, {
+      duration,
+    });
+    return generateClientJWTData.jwt;
+  }
 }

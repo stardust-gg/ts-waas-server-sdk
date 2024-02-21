@@ -5,22 +5,22 @@ dotenv.config();
 
 // Configuration
 const apiKey = process.env.PROD_SYSTEM_STARDUST_API_KEY!;
+const profileId = process.env.PROD_SYSTEM_STARDUST_PROFILE_ID!;
 
 async function main() {
   try {
     // Initialize Stardust SDK
     const sdk = new StardustCustodialSDK(apiKey);
 
-    // Get you application id
-    const application = await sdk.getApplication();
-
     // Create a profile - naming is optional
-    const profile = await sdk.createProfile(application.id, 'My Profile Name'); // can save profile.id for later access
+    const profile = await sdk.getProfile(profileId); // can save profile.id for later access
+    console.log(profile);
+    const jwt = await sdk.generateProfileJWT(profileId, 3600);
 
     // check out how to use wallets in the wallet example
-    console.log(`Profile created: ${JSON.stringify(profile)}`);
+    console.log(`Profile jwt created: ${JSON.stringify(jwt)}`);
   } catch (error) {
-    console.error(`Error: ${JSON.stringify(error)}`);
+    console.error(`Error: ${error}`);
   }
 }
 

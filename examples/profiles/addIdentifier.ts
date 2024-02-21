@@ -13,7 +13,7 @@ const profileId = process.env.PROD_SYSTEM_STARDUST_PROFILE_ID!;
 async function main() {
   try {
     // Initialize Stardust SDK
-    const sdk = new StardustCustodialSDK(apiKey, process.env.PROD_SYSTEM_STARDUST_API_URL);
+    const sdk = new StardustCustodialSDK(apiKey);
 
     // Create a profile - naming is optional
     const profile = await sdk.getProfile(profileId); // can save profile.id for later access

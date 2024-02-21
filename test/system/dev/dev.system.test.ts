@@ -128,6 +128,11 @@ describe('System: DEV Signing Parity', () => {
         });
       });
 
+      it('should generate a client jwt', async () => {
+        const jwt = await sdk.generateProfileJWT(profileId, 3600);
+        expect(jwt).toBeDefined();
+      });
+
       describe('profile.wallet', () => {
         it('should properly populate a profile with wallet and identifiers when using sdk.getProfile() call', async () => {
           const profile = await sdk.getProfile(profileId);

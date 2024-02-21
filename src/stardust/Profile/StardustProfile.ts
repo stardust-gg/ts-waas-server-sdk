@@ -1,5 +1,7 @@
 // eslint-disable-next-line import/no-cycle
 import StardustWallet from '../Wallet/StardustWallet';
+// eslint-disable-next-line import/no-cycle
+import StardustProfileAPI from './StardustProfileAPI';
 import StardustProfileIdentifier from './StardustProfileIdentifier';
 import StardustProfileIdentifierAPI from './StardustProfileIdentifierAPI';
 import { StardustProfileData, StardustProfileIdentifierService } from './Types';
@@ -8,6 +10,8 @@ export default class StardustProfile {
   public readonly wallet: StardustWallet;
 
   public stardustProfileIdentifierAPI: StardustProfileIdentifierAPI;
+
+  public stardustProfileAPI: StardustProfileAPI;
 
   constructor(
     public readonly id: string,
@@ -20,6 +24,7 @@ export default class StardustProfile {
     public readonly apiKey: string | null = null
   ) {
     [this.wallet] = wallets?.filter((wallet) => wallet.profileId === id) || [];
+    this.stardustProfileAPI = new StardustProfileAPI(this.apiKey!);
     this.stardustProfileIdentifierAPI = new StardustProfileIdentifierAPI(this.apiKey!);
   }
 

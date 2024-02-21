@@ -19,7 +19,7 @@ export default class BaseStardustAPI {
     const response = await axios.post(`${this.url}/${endpoint}`, data, {
       headers: { 'x-api-key': this.apiKey },
     });
-    if (response.status !== HttpStatusCode.Created)
+    if (response.status !== HttpStatusCode.Ok && response.status !== HttpStatusCode.Created)
       throw new Error(`Failed to POST to ${endpoint} with data: ${JSON.stringify(data)}`);
     return response.data;
   }
