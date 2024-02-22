@@ -113,7 +113,6 @@ describe('System: DEV Signing Parity', () => {
         [StardustProfileIdentifierService.Twitter, 'ts-sdk:twitter', 'some-twitter-value'],
         [StardustProfileIdentifierService.Email, 'ts-sdk:email', 'some-email-value'],
         [StardustProfileIdentifierService.Phone, 'ts-sdk:phone', 'some-phone-value'],
-        [StardustProfileIdentifierService.Custom, 'ts-sdk:custom', 'some-custom-value'],
       ])('profile.addIdentifier(%s, %s, %s)', (service_enum, service_string, value) => {
         it('should add an identifier to a profile', async () => {
           const profile = await sdk.getProfile(profileId);
@@ -126,6 +125,18 @@ describe('System: DEV Signing Parity', () => {
           expect(identifier.service).toBe(service_string);
           expect(identifier.value).toBe(value);
         });
+      });
+
+      it('shoud allow adding a custom identifier with arbitrary service name', async () => {
+        const profile = await sdk.getProfile(profileId);
+        profile.stardustProfileIdentifierAPI = new StardustProfileIdentifierAPI(
+          DEV_SYSTEM_STARDUST_API_KEY,
+          DEV_SYSTEM_STARDUST_API_URL
+        );
+        const identifier = await profile.addCustomIdentifier('custom-service', 'custom-value');
+        expect(identifier).toBeDefined();
+        expect(identifier.service).toBe('ts-sdk:custom:custom-service');
+        expect(identifier.value).toBe('custom-value');
       });
 
       it('should generate a client jwt', async () => {

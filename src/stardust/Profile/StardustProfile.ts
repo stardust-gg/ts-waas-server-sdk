@@ -52,6 +52,17 @@ export default class StardustProfile {
     });
   }
 
+  public async addCustomIdentifier(
+    service: string,
+    value: string
+  ): Promise<StardustProfileIdentifier> {
+    return this.stardustProfileIdentifierAPI.create({
+      profileId: this.id,
+      service: `ts-sdk:custom:${service}`,
+      value,
+    });
+  }
+
   /**
    *
    * @param start - the start index of the identifiers to return

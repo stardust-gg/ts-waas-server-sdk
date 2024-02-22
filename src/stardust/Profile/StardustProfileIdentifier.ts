@@ -35,7 +35,6 @@ export default class StardustProfileIdentifier {
       case StardustProfileIdentifierService.Google:
       case StardustProfileIdentifierService.Facebook:
       case StardustProfileIdentifierService.Twitter:
-      case StardustProfileIdentifierService.Custom:
         return true; // Default validation for services without specific rules
       default:
         return false; // Default validation for services without specific rules

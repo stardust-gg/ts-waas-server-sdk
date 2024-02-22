@@ -41,9 +41,13 @@
 #### Features
 
 - Adds profiles and profile identifier management to the sdk
+
   - sdk.getProfile(profileId) has been added
   - sdk.createProfile(applicationId) has been added
-  - JWT generation for use client side with profile/wallet api
+  - profile.addIdentifier(identifierService, value) has been added
+  - profile.addCustomIdentifier(value) has been added
+  - sdk.generateProfileJWT(profileId, duration) - JWT generation for use client side with profile/wallet api
+
 - Wallets are now accessible through profiles
   - profile.wallet
 - Profiles are now accessible through the legacy wallet object

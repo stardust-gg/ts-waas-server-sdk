@@ -45,5 +45,4 @@ export enum StardustProfileIdentifierService {
   Twitter = 'ts-sdk:twitter',
   Email = 'ts-sdk:email',
   Phone = 'ts-sdk:phone',
-  Custom = 'ts-sdk:custom',
 }
