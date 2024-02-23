@@ -1,7 +1,7 @@
-import ImxStardustSigner from '../../src/stardust/StardustSigners/imx/ImxStardustSigner';
+import ImxStardustSigner from '../../src/stardust/Signers/imx/ImxStardustSigner';
 import EthersV5Signer from '../../src/ethers/V5/EthersV5Signer';
 
-jest.mock('../../src/stardust/StardustSigners/evm/EvmStardustSigner', () => {
+jest.mock('../../src/stardust/Signers/evm/EvmStardustSigner', () => {
   return jest.fn().mockImplementation((walletId: string, apiKey: string) => {
     return {
       signMessage: jest.fn().mockResolvedValue(MOCKED_SIGNATURE),
@@ -9,7 +9,7 @@ jest.mock('../../src/stardust/StardustSigners/evm/EvmStardustSigner', () => {
     };
   });
 });
-import EvmStardustSigner from '../../src/stardust/StardustSigners/evm/EvmStardustSigner';
+import EvmStardustSigner from '../../src/stardust/Signers/evm/EvmStardustSigner';
 import { MOCKED_ADRESS, MOCKED_SIGNATURE } from './constants';
 
 const mockedWalletId = '';

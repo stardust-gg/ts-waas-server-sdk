@@ -3,7 +3,7 @@ dotenv.config();
 
 import { describe, expect, it } from '@jest/globals';
 import EthersV5Signer from '../../../src/ethers/V5/EthersV5Signer';
-import EvmStardustSigner from '../../../src/stardust/StardustSigners/evm/EvmStardustSigner';
+import EvmStardustSigner from '../../../src/stardust/Signers/evm/EvmStardustSigner';
 import * as ethers_v5 from 'ethers_v5';
 
 import {
@@ -14,7 +14,7 @@ import {
   MOCKED_ADDRESS,
 } from './constants';
 
-jest.mock('../../../src/stardust/StardustSigners/evm/EvmStardustSigner', () => {
+jest.mock('../../../src/stardust/Signers/evm/EvmStardustSigner', () => {
   return jest.fn().mockImplementation((walletId: string, apiKey: string) => {
     return {
       getAddress: jest.fn().mockResolvedValue(MOCKED_ADDRESS),

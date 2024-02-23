@@ -1,13 +1,13 @@
 import dotenv from 'dotenv';
 
 import { ethers, getDefaultProvider } from 'ethers_v6';
-import { StardustCustodialSDK, StardustWallet } from '@stardust-gg/stardust-custodial-sdk';
+import { StardustCustodialSDK } from '@stardust-gg/stardust-custodial-sdk';
 
 dotenv.config();
 
 // Configuration
 const apiKey = process.env.PROD_SYSTEM_STARDUST_API_KEY!;
-const walletId = process.env.PROD_SYSTEM_STARDUST_WALLET_ID!;
+const profileId = process.env.PROD_SYSTEM_STARDUST_PROFILE_ID!;
 
 // Main function
 async function main() {
@@ -19,7 +19,8 @@ async function main() {
     const sdk = new StardustCustodialSDK(apiKey);
 
     // Get wallet
-    const wallet: StardustWallet = await sdk.getWallet(walletId);
+    const profile = await sdk.getProfile(profileId);
+    const { wallet } = profile;
 
     // Get V6 Signer
     const signer = wallet.ethers.v6.getSigner(provider);

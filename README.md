@@ -32,16 +32,26 @@
 
 ## Introduction
 
-**Stardust-Custodial-SDK** is a TypeScript-based SDK specifically crafted to enable seamless integration with Stardust custodial Wallets as a Service (WaaS). This SDK is designed for developers seeking to incorporate advanced wallet management features into their TypeScript applications with minimal effort - whether they're building a new project or enhancing an existing one.
+**Stardust-Custodial-SDK** is a server side TypeScript-based SDK specifically crafted to enable seamless integration with Stardust custodial Wallets as a Service (WaaS). This SDK is designed for developers seeking to incorporate advanced wallet management features into their TypeScript applications with minimal effort - whether they're building a new project or enhancing an existing one.
 
 ## Changelog
 
-### Latest Version: 2.1.0 [12/18/2023]
+### Latest Version: 2.2.0 [02/22/2023]
 
-#### Fixes
+#### Features
 
-- Corrects an issue preventing the use of node 18.
-- Ethers v5 is now aliased within dependencies
+- Adds profiles and profile identifier management to the sdk
+
+  - sdk.getProfile(profileId) has been added
+  - sdk.createProfile(applicationId) has been added
+  - profile.addIdentifier(identifierService, value) has been added
+  - profile.addCustomIdentifier(value) has been added
+  - sdk.generateProfileJWT(profileId, duration) - JWT generation for use client side with profile/wallet api
+
+- Wallets are now accessible through profiles
+  - profile.wallet
+- Profiles are now accessible through the legacy wallet object
+  - wallet.getProfile()
 
 Releases can be found [here](https://github.com/stardust-gg/stardust-custodial-sdk/releases)
 
@@ -72,26 +82,30 @@ const myApiKey = '<your-api-key-here>';
 const sdk = new StardustCustodialSDK(myApiKey);\
 ```
 
-##### Creating a wallet
+##### Creating a profile
 
 ```ts
-// create a wallet
-const wallet = await sdk.createWallet();
-
-// get wallet identifier
-const walletIdentifier = wallet.id;
+const profile = await sdk.createProfile(applicationId);
+const profileIdentifier = profile.id;
 ```
 
-> **Note**: Store these wallet identifiers, they are unique to your players/users and are how you will manage them.
+> **Note**: Store these profile identifiers, they are unique to your players/users and are how you will manage them.
+
+##### Generate Client JWTs for client side operations
+
+```ts
+const duration = 600; // 10 mins
+const clientJWT = await sdk.generateProfileJWT(profileId, duration);
+```
+
+> **Note**: These JWTs will allow operation over the profile, and therefore have standardized ttls that are configurable on generation up to 24 hours
 
 ##### Getting a Wallet
 
 ```ts
-// wallet identifier
-const walletId = <your-saved-wallet-id>;
-
-// get a wallet
-const wallet = await sdk.getWallet(walletId);
+const profileId = <your-saved-profile-id>
+const profile = await sdk.getProfile(walletId);
+const { wallet } = profile
 ```
 
 ## Common Usage

@@ -3,7 +3,7 @@ dotenv.config();
 
 import { describe, expect, it } from '@jest/globals';
 import EthersV6Signer from '../../../src/ethers/V6/EthersV6Signer';
-import EvmStardustSigner from '../../../src/stardust/StardustSigners/evm/EvmStardustSigner';
+import EvmStardustSigner from '../../../src/stardust/Signers/evm/EvmStardustSigner';
 import * as ethers_v6 from 'ethers_v6';
 import { TypedDataDomain, TypedDataField, ethers } from 'ethers_v6';
 import {
@@ -16,7 +16,7 @@ import {
   MOCKED_SERIALIZED_TYPED_DATA_SIGNATURE,
 } from './constants';
 
-jest.mock('../../../src/stardust/StardustSigners/evm/EvmStardustSigner', () => {
+jest.mock('../../../src/stardust/Signers/evm/EvmStardustSigner', () => {
   return jest.fn().mockImplementation((walletId: string, apiKey: string) => {
     return {
       getAddress: jest.fn().mockResolvedValue(MOCKED_ADDRESS),

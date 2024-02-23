@@ -1,13 +1,12 @@
-import { StardustApp } from '../../src';
+import { StardustApplication } from '../../src';
 
-describe('StardustApp', () => {
+describe('StardustApplication', () => {
   it('Should allow creating with optional params', async () => {
-    const app = new StardustApp('name', 'email', 'description');
+    const app = new StardustApplication('id-here', 'name', 'email', 'description');
     expect(app).toBeDefined();
     expect(app.name).toEqual('name');
     expect(app.email).toEqual('email');
     expect(app.description).toEqual('description');
-    expect(app.id).toBeNull();
     expect(app.apiKey).toBeNull();
   });
 });

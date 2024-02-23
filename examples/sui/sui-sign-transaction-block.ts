@@ -13,8 +13,8 @@ const network: SuiNetwork = 'localnet';
 
 // Setup constants
 const STARDUST_API_KEY = process.env.PROD_SYSTEM_STARDUST_API_KEY!;
-const STARDUST_WALLET_ID = process.env.PROD_SYSTEM_STARDUST_WALLET_ID!;
-const STARDUST_WALLET_ID_2 = process.env.PROD_SYSTEM_STARDUST_WALLET_ID_2!;
+const profileId1 = process.env.PROD_SYSTEM_STARDUST_PROFILE_ID!;
+const profileId2 = process.env.PROD_SYSTEM_STARDUST_PROFILE_ID_2!;
 
 // This is currently an example set up to use a locally running validator test network
 // https://docs.sui.io/guides/developer/getting-started/local-network
@@ -27,8 +27,10 @@ async function main() {
     const stardust = new StardustCustodialSDK(STARDUST_API_KEY);
 
     // Grab relevant wallets
-    const wallet1 = await stardust.getWallet(STARDUST_WALLET_ID);
-    const wallet2 = await stardust.getWallet(STARDUST_WALLET_ID_2);
+    const profile1 = await stardust.getProfile(profileId1);
+    const wallet1 = profile1.wallet;
+    const profile2 = await stardust.getProfile(profileId2);
+    const wallet2 = profile2.wallet;
 
     // Get the SUI addresses of the wallets (SUI specific)
     const address1 = await wallet1.sui.getAddress();
@@ -58,7 +60,7 @@ async function main() {
     console.log(`Address 1: ${address1}`);
     console.log(`Recovered Address: ${recoveredAddress}`);
   } catch (error) {
-    console.error(`Error: ${JSON.stringify(error)}`);
+    console.error(`Error: ${error}`);
     process.exit(1);
   }
 }

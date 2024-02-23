@@ -2,7 +2,7 @@ import { IntentScope, messageWithIntent } from '@mysten/sui.js/cryptography';
 import { blake2b } from '@noble/hashes/blake2b';
 import { uint8ArrayToHexString } from '../../../utils';
 import { ApiRequestPayload, ChainType, SignRequestPayload } from '../../../types';
-import StardustSignerAPI from '../../StardustSignerAPI';
+import StardustSignerAPI from '../StardustSignerAPI';
 import AbstractStardustSigner from '../AbstractStardustSigner';
 
 export default class SuiStardustSigner implements AbstractStardustSigner {

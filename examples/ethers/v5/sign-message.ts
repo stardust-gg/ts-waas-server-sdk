@@ -1,13 +1,13 @@
 import dotenv from 'dotenv';
 
 import { ethers } from 'ethers_v5';
-import { StardustCustodialSDK, StardustWallet } from '@stardust-gg/stardust-custodial-sdk';
+import { StardustCustodialSDK } from '@stardust-gg/stardust-custodial-sdk';
 
 dotenv.config();
 
 // Configuration
 const apiKey = process.env.PROD_SYSTEM_STARDUST_API_KEY!;
-const walletId = process.env.PROD_SYSTEM_STARDUST_WALLET_ID!;
+const profileId = process.env.PROD_SYSTEM_STARDUST_PROFILE_ID!;
 const rpcUrl = process.env.RPC_URL!;
 
 async function main() {
@@ -19,7 +19,8 @@ async function main() {
     const sdk = new StardustCustodialSDK(apiKey);
 
     // Get Wallet
-    const wallet: StardustWallet = await sdk.getWallet(walletId);
+    const profile = await sdk.getProfile(profileId);
+    const { wallet } = profile;
 
     // Get V5 Signer
     const signer = wallet.ethers.v5.getSigner().connect(provider);
@@ -28,7 +29,7 @@ async function main() {
     const ethAddress = await signer.getAddress();
 
     // Sign a Message
-    const message = 'hi';
+    const message = 'dd745934ebca355dac9bb4ba11ff69c843fbdda6175dfb8352051fa63e3dee2a';
     const sig = await signer.signMessage(message);
 
     // Verify the message and get the recovered address

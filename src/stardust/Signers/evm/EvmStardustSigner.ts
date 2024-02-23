@@ -1,5 +1,5 @@
 import { ethers } from 'ethers_v6';
-import StardustSignerAPI from '../../StardustSignerAPI';
+import StardustSignerAPI from '../StardustSignerAPI';
 import { ApiRequestPayload, ChainType, SignRequestPayload } from '../../../types';
 import AbstractStardustSigner from '../AbstractStardustSigner';
 import HexString from '../../../utils/HexString';
