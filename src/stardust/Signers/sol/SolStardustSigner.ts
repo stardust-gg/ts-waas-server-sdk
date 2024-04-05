@@ -1,11 +1,9 @@
-import { ethers } from 'ethers_v6';
 import StardustSignerAPI from '../StardustSignerAPI';
 import { ApiRequestPayload, ChainType, SignRequestPayload } from '../../../types';
 import AbstractStardustSigner from '../AbstractStardustSigner';
-import HexString from '../../../utils/HexString';
-import { IsHexString, convertStringToHexString, uint8ArrayToHexString } from '../../../utils';
+import { convertStringToHexString, IsHexString, uint8ArrayToHexString } from '../../../utils';
 
-export default class EvmStardustSigner extends AbstractStardustSigner {
+export default class SolStardustSigner extends AbstractStardustSigner {
   public walletId;
 
   public api: StardustSignerAPI;
@@ -16,7 +14,7 @@ export default class EvmStardustSigner extends AbstractStardustSigner {
     super();
     this.walletId = walletId;
     this.api = new StardustSignerAPI(apiKey);
-    this.chainType = 'evm';
+    this.chainType = 'sol';
   }
 
   public async signRaw(digest: string | Uint8Array): Promise<string> {
@@ -39,7 +37,7 @@ export default class EvmStardustSigner extends AbstractStardustSigner {
       walletId: this.walletId,
       chainType: this.chainType,
     };
-    return ethers.getAddress(await this.api.getAddress(payload));
+    return this.api.getAddress(payload);
   }
 
   public async getPublicKey(): Promise<string> {
@@ -50,37 +48,25 @@ export default class EvmStardustSigner extends AbstractStardustSigner {
   }
 
   public async signMessage(message: string | Uint8Array): Promise<string> {
-    const prefixedMsg = this.createPrefixedMessage(message);
+    const parsedMessage = this.parseMessage(message);
     const payload: SignRequestPayload = {
       walletId: this.walletId,
       chainType: this.chainType,
-      message: prefixedMsg,
+      message: parsedMessage,
     };
 
     return this.api.signMessage(payload);
   }
 
-  public createPrefixedMessage(message: string | Uint8Array): string {
-    const messagePrefix = '\x19Ethereum Signed Message:\n';
-
+  private parseMessage(message: string | Uint8Array): string {
     let messageContent: string;
-    let messageLen: number;
-
     if (message instanceof Uint8Array) {
-      messageContent = uint8ArrayToHexString(message).replace(/^0x/, '');
-      messageLen = message.byteLength;
+      messageContent = uint8ArrayToHexString(message);
     } else {
       messageContent = IsHexString(message)
         ? message.replace(/^0x/, '')
-        : convertStringToHexString(message).replace(/^0x/, '');
-      messageLen = messageContent.length / 2; // Byte length for hex string
+        : convertStringToHexString(message);
     }
-
-    const prefixedMessage =
-      convertStringToHexString(messagePrefix) +
-      new HexString(convertStringToHexString(String(messageLen))).strip() +
-      new HexString(messageContent).strip();
-
-    return prefixedMessage;
+    return messageContent;
   }
 }

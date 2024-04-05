@@ -1,17 +1,16 @@
 // eslint-disable-next-line import/no-cycle
+import PrivatePropertiesManager from '../../utils/PrivatePropertiesManager';
+// eslint-disable-next-line import/no-cycle
 import StardustWallet from '../Wallet/StardustWallet';
 // eslint-disable-next-line import/no-cycle
 import StardustProfileAPI from './StardustProfileAPI';
 import StardustProfileIdentifier from './StardustProfileIdentifier';
 import StardustProfileIdentifierAPI from './StardustProfileIdentifierAPI';
 import { StardustProfileData, StardustProfileIdentifierService } from './Types';
+import { StardustWalletData } from '../Wallet/Types';
 
 export default class StardustProfile {
   public readonly wallet: StardustWallet;
-
-  public stardustProfileIdentifierAPI: StardustProfileIdentifierAPI;
-
-  public stardustProfileAPI: StardustProfileAPI;
 
   constructor(
     public readonly id: string,
@@ -21,11 +20,19 @@ export default class StardustProfile {
     public readonly wallets: StardustWallet[] | null = [],
     public readonly identifiers: StardustProfileIdentifier[] | null = [],
     public readonly name: string | null = null,
-    public readonly apiKey: string | null = null
+    apiKey: string | null = null
   ) {
     [this.wallet] = wallets?.filter((wallet) => wallet.profileId === id) || [];
-    this.stardustProfileAPI = new StardustProfileAPI(this.apiKey!);
-    this.stardustProfileIdentifierAPI = new StardustProfileIdentifierAPI(this.apiKey!);
+    PrivatePropertiesManager.setPrivateProperty(
+      this,
+      'stardustProfileAPI',
+      new StardustProfileAPI(apiKey!)
+    );
+    PrivatePropertiesManager.setPrivateProperty(
+      this,
+      'stardustProfileIdentifierAPI',
+      new StardustProfileIdentifierAPI(apiKey!)
+    );
   }
 
   /**
@@ -45,7 +52,7 @@ export default class StardustProfile {
         `Invalid service ${service}, please use StardustProfileIdentifierService enums`
       );
     }
-    return this.stardustProfileIdentifierAPI.create({
+    return this.StardustProfileIdentifierAPI.create({
       profileId: this.id,
       service,
       value,
@@ -56,11 +63,11 @@ export default class StardustProfile {
     service: string,
     value: string
   ): Promise<StardustProfileIdentifier> {
-    return this.stardustProfileIdentifierAPI.create({
+    return this.StardustProfileIdentifierAPI.create({
       profileId: this.id,
       service: `ts-sdk:custom:${service}`,
       value,
-    });
+    }) as Promise<StardustProfileIdentifier>;
   }
 
   /**
@@ -76,7 +83,8 @@ export default class StardustProfile {
     limit: number = 10
   ): Promise<StardustProfileIdentifier[]> {
     const params = { profileId: this.id, start, limit };
-    return this.stardustProfileIdentifierAPI.list(params);
+
+    return this.StardustProfileIdentifierAPI.list(params);
   }
 
   public static generate(profileData: StardustProfileData): StardustProfile {
@@ -85,7 +93,7 @@ export default class StardustProfile {
       profileData.rootUserId,
       profileData.applicationId,
       new Date(profileData.createdAt * 1000),
-      profileData.wallets?.map((walletData) =>
+      profileData.wallets?.map((walletData: StardustWalletData) =>
         StardustWallet.generate({ ...walletData, apiKey: profileData.apiKey })
       ),
       profileData.identifiers?.map((profileIdentifierData) =>
@@ -94,5 +102,21 @@ export default class StardustProfile {
       profileData.name,
       profileData.apiKey
     );
+  }
+
+  private get StardustProfileIdentifierAPI(): StardustProfileIdentifierAPI {
+    return PrivatePropertiesManager.getPrivateProperty<
+      this,
+      'stardustProfileIdentifierAPI',
+      StardustProfileIdentifierAPI
+    >(this, 'stardustProfileIdentifierAPI')!;
+  }
+
+  private get StardustProfileAPI(): StardustProfileAPI {
+    return PrivatePropertiesManager.getPrivateProperty<
+      this,
+      'stardustProfileAPI',
+      StardustProfileAPI
+    >(this, 'stardustProfileAPI')!;
   }
 }

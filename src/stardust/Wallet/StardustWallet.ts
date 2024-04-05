@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { Provider } from 'ethers_v6';
+import PrivatePropertiesManager from '../../utils/PrivatePropertiesManager';
 import EthersV5Signer from '../../ethers/V5/EthersV5Signer';
 import EthersV6Signer from '../../ethers/V6/EthersV6Signer';
 import SuiStardustSigner from '../Signers/sui/SuiStardustSigner';
@@ -10,6 +11,7 @@ import StardustApplication from '../Application/StardustApplication';
 import StardustProfileAPI from '../Profile/StardustProfileAPI';
 import StardustProfile from '../Profile/StardustProfile';
 import { StardustWalletData } from './Types';
+import SolStardustSigner from '../Signers/sol/SolStardustSigner';
 
 export default class StardustWallet {
   public ethers: {
@@ -25,9 +27,9 @@ export default class StardustWallet {
 
   public sui: SuiStardustSigner;
 
-  public imx: ImxStardustSigner;
+  public sol: SolStardustSigner;
 
-  public stardustProfileAPI: StardustProfileAPI;
+  public imx: ImxStardustSigner;
 
   constructor(
     public readonly id: string,
@@ -35,7 +37,7 @@ export default class StardustWallet {
     public readonly application: StardustApplication,
     public readonly createdAt: Date,
     public readonly lastUsedAt: Date | null = null,
-    public readonly apiKey: string | null = null
+    apiKey: string | null = null
   ) {
     this.ethers = {
       v5: {
@@ -46,10 +48,15 @@ export default class StardustWallet {
       },
     };
 
-    this.evm = new EvmStardustSigner(id, this.apiKey!);
-    this.sui = new SuiStardustSigner(id, this.apiKey!);
+    this.evm = new EvmStardustSigner(id, apiKey!);
+    this.sui = new SuiStardustSigner(id, apiKey!);
+    this.sol = new SolStardustSigner(id, apiKey!);
     this.imx = new ImxStardustSigner(this.ethers.v5.getSigner());
-    this.stardustProfileAPI = new StardustProfileAPI(this.apiKey!);
+    PrivatePropertiesManager.setPrivateProperty(
+      this,
+      'stardustProfileAPI',
+      new StardustProfileAPI(apiKey!)
+    );
   }
 
   public async getProfile(): Promise<StardustProfile> {
@@ -65,5 +72,13 @@ export default class StardustWallet {
       walletData.lastUsedAt ? new Date(walletData.lastUsedAt) : null,
       walletData.apiKey
     );
+  }
+
+  private get stardustProfileAPI(): StardustProfileAPI {
+    return PrivatePropertiesManager.getPrivateProperty<
+      this,
+      'stardustProfileAPI',
+      StardustProfileAPI
+    >(this, 'stardustProfileAPI')!;
   }
 }

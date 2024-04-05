@@ -22,7 +22,7 @@ export type StardustProfileIdentifierData = {
   service: string;
   value: string;
   createdAt: number;
-};
+} & { apiKey?: string };
 
 export type StardustProfileIdentifierCreateParams = {
   profileId: string;
