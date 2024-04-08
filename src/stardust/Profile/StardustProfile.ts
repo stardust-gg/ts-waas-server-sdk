@@ -6,7 +6,7 @@ import StardustWallet from '../Wallet/StardustWallet';
 import StardustProfileAPI from './StardustProfileAPI';
 import StardustProfileIdentifier from './StardustProfileIdentifier';
 import StardustProfileIdentifierAPI from './StardustProfileIdentifierAPI';
-import { StardustProfileData, StardustProfileIdentifierService } from './Types';
+import { StardustExternalWalletChainType, StardustProfileData } from './Types';
 import { StardustWalletData } from '../Wallet/Types';
 
 export default class StardustProfile {
@@ -35,37 +35,23 @@ export default class StardustProfile {
     );
   }
 
-  /**
-   *
-   * For now this function call is the 'unverified' version of validation,
-   *
-   * @param service
-   * @param value
-   * @returns
-   */
-  public async addIdentifier(
-    service: StardustProfileIdentifierService,
-    value: string
-  ): Promise<StardustProfileIdentifier> {
-    if (!StardustProfileIdentifier.validateIdentifier(service, value)) {
-      throw new Error(
-        `Invalid service ${service}, please use StardustProfileIdentifierService enums`
-      );
-    }
-    return this.StardustProfileIdentifierAPI.create({
-      profileId: this.id,
-      service,
-      value,
-    });
-  }
-
   public async addCustomIdentifier(
     service: string,
     value: string
   ): Promise<StardustProfileIdentifier> {
-    return this.StardustProfileIdentifierAPI.create({
+    return this.StardustProfileIdentifierAPI.createCustomIdentifier({
       profileId: this.id,
-      service: `ts-sdk:custom:${service}`,
+      service,
+      value,
+    }) as Promise<StardustProfileIdentifier>;
+  }
+
+  public async addExternalWalletIdentifier(
+    chainType: StardustExternalWalletChainType,
+    value: string
+  ): Promise<StardustProfileIdentifier> {
+    return this.StardustProfileIdentifierAPI.createExternalWalletIdentifier(chainType, {
+      profileId: this.id,
       value,
     }) as Promise<StardustProfileIdentifier>;
   }
@@ -104,7 +90,7 @@ export default class StardustProfile {
     );
   }
 
-  private get StardustProfileIdentifierAPI(): StardustProfileIdentifierAPI {
+  get StardustProfileIdentifierAPI(): StardustProfileIdentifierAPI {
     return PrivatePropertiesManager.getPrivateProperty<
       this,
       'stardustProfileIdentifierAPI',
@@ -112,7 +98,15 @@ export default class StardustProfile {
     >(this, 'stardustProfileIdentifierAPI')!;
   }
 
-  private get StardustProfileAPI(): StardustProfileAPI {
+  set StardustProfileIdentifierAPI(stardustProfileIdentifierAPI: StardustProfileIdentifierAPI) {
+    PrivatePropertiesManager.setPrivateProperty(
+      this,
+      'stardustProfileIdentifierAPI',
+      stardustProfileIdentifierAPI
+    );
+  }
+
+  get StardustProfileAPI(): StardustProfileAPI {
     return PrivatePropertiesManager.getPrivateProperty<
       this,
       'stardustProfileAPI',

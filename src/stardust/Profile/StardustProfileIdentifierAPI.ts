@@ -2,15 +2,31 @@ import BaseStardustAPI from '../Api/BaseStardustAPI';
 import StardustProfileIdentifier from './StardustProfileIdentifier';
 import {
   StardustProfileIdentifierData,
-  StardustProfileIdentifierCreateParams,
   StardustProfileIdentifierListParams,
+  StardustCustomProfileIdentifierCreateParams,
+  StardustExternalWalletProfileIdentifierCreateParams,
+  StardustExternalWalletChainType,
 } from './Types';
 
 export default class StardustProfileIdentifierAPI extends BaseStardustAPI {
-  public async create(
-    params: StardustProfileIdentifierCreateParams
+  public async createCustomIdentifier(
+    params: StardustCustomProfileIdentifierCreateParams
   ): Promise<StardustProfileIdentifier> {
     const profileIdentifier = await this.api.post('profile/identifier', params);
+    return StardustProfileIdentifier.generate({
+      ...profileIdentifier,
+      apiKey: this.api.apiKey,
+    });
+  }
+
+  public async createExternalWalletIdentifier(
+    chainType: StardustExternalWalletChainType,
+    params: StardustExternalWalletProfileIdentifierCreateParams
+  ): Promise<StardustProfileIdentifier> {
+    const profileIdentifier = await this.api.post(
+      `profile/identifier/external-wallet/${chainType}`,
+      params
+    );
     return StardustProfileIdentifier.generate({
       ...profileIdentifier,
       apiKey: this.api.apiKey,

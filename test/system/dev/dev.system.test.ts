@@ -1,10 +1,8 @@
 import StardustApplication from '../../../src/stardust/Application/StardustApplication';
-import BaseStardustAPI from '../../../src/stardust/BaseStardustAPI';
 import StardustProfile from '../../../src/stardust/Profile/StardustProfile';
 import StardustProfileAPI from '../../../src/stardust/Profile/StardustProfileAPI';
 import StardustProfileIdentifier from '../../../src/stardust/Profile/StardustProfileIdentifier';
 import StardustProfileIdentifierAPI from '../../../src/stardust/Profile/StardustProfileIdentifierAPI';
-import { StardustProfileIdentifierService } from '../../../src/stardust/Profile/Types';
 import StardustSignerAPI from '../../../src/stardust/Signers/StardustSignerAPI';
 import StardustCustodialSDK from '../../../src/stardust/StardustCustodialSDK';
 import StardustWallet from '../../../src/stardust/Wallet/StardustWallet';
@@ -63,14 +61,11 @@ describe('System: DEV Signing Parity', () => {
 
       it('should add a identifier to a profile', async () => {
         const profile = await sdk.getProfile(profileId);
-        profile.stardustProfileIdentifierAPI = new StardustProfileIdentifierAPI(
+        profile.StardustProfileIdentifierAPI = new StardustProfileIdentifierAPI(
           DEV_SYSTEM_STARDUST_API_KEY,
           DEV_SYSTEM_STARDUST_API_URL
         );
-        const identifier = await profile.addIdentifier(
-          StardustProfileIdentifierService.Email,
-          'test@test.com'
-        );
+        const identifier = await profile.addCustomIdentifier('email', 'test@test.com');
         profileIdentifierId = identifier.id;
         expect(identifier).toBeDefined();
         const identifiers = await profile.getIdentifiers();
@@ -86,18 +81,6 @@ describe('System: DEV Signing Parity', () => {
         expect(profileIdentifier).toBeDefined();
         expect(profileIdentifier.service).toBe('ts-sdk:email');
         expect(profileIdentifier.value).toBe('test@test.com');
-      });
-
-      it('should throw when attempting to get a profile identifier by an invalid service name id', async () => {
-        const invalidServiceId = 'invalid-service-id';
-        const profile = await sdk.getProfile(profileId);
-        try {
-          await profile.addIdentifier(invalidServiceId as any, 'some-custom-value');
-        } catch (e: any) {
-          expect(e.message).toBe(
-            'Invalid service invalid-service-id, please use StardustProfileIdentifierService enums'
-          );
-        }
       });
 
       describe.each([
@@ -129,7 +112,7 @@ describe('System: DEV Signing Parity', () => {
 
       it('shoud allow adding a custom identifier with arbitrary service name', async () => {
         const profile = await sdk.getProfile(profileId);
-        profile.stardustProfileIdentifierAPI = new StardustProfileIdentifierAPI(
+        profile.StardustProfileIdentifierAPI = new StardustProfileIdentifierAPI(
           DEV_SYSTEM_STARDUST_API_KEY,
           DEV_SYSTEM_STARDUST_API_URL
         );

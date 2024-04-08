@@ -1,8 +1,5 @@
 import dotenv from 'dotenv';
-import {
-  StardustCustodialSDK,
-  StardustProfileIdentifierService,
-} from '@stardust-gg/stardust-custodial-sdk';
+import { StardustCustodialSDK } from '@stardust-gg/stardust-custodial-sdk';
 
 dotenv.config();
 
@@ -23,10 +20,8 @@ async function main() {
 
     // add specific social
     const social = userInputGoogleId;
-    const profileIdentifier = await profile.addIdentifier(
-      StardustProfileIdentifierService.Google,
-      social
-    );
+    const serviceName = '<CUSTOM-SERVICE-NAME>';
+    const profileIdentifier = await profile.addCustomIdentifier(serviceName, social);
 
     // check out how to use wallets in the wallet example
     console.log(`Profile identifier created: ${JSON.stringify(profileIdentifier)}`);

@@ -13,6 +13,7 @@ export default function BaseStardustAPIFactory(
         headers: { 'x-api-key': apiKey },
         params: query,
       });
+
       if (response.status !== HttpStatusCode.Ok)
         throw new Error(`Failed to GET from ${endpoint} with query: ${JSON.stringify(query)}`);
       return response.data;
