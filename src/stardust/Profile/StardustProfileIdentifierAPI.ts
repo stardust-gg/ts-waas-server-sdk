@@ -13,7 +13,6 @@ export default class StardustProfileIdentifierAPI extends BaseStardustAPI {
     params: StardustCustomProfileIdentifierCreateParams
   ): Promise<StardustProfileIdentifier> {
     const profileIdentifier = await this.api.post('profile/identifier', params);
-    console.log('profileIdentifier', profileIdentifier);
     return StardustProfileIdentifier.generate({
       ...profileIdentifier,
       apiKey: this.api.apiKey,

@@ -335,7 +335,7 @@ describe('System: DEV Signing Parity', () => {
       expect(expandedWalletWithProfileResp.profile).toBeDefined();
     });
 
-    it('should return and expanded wallet with address attached', async () => {
+    it('should return an expanded wallet with address attached', async () => {
       const expandedWalletWithAddressResp = await baseAPI.api.get(
         `wallet/${DEV_SYSTEM_STARDUST_WALLET_ID}?includeAddresses=evm`
       );
