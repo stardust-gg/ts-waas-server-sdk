@@ -15,8 +15,8 @@ async function main() {
     // Create a profile - naming is optional
     const profile = await sdk.getProfile(profileId); // can save profile.id for later access
 
-    const userInputGoogleId = '1234567890';
     // PLAYER PROMPTED TO ADD SOCIAL
+    const userInputGoogleId = '1234567890';
 
     // add specific social
     const social = userInputGoogleId;
