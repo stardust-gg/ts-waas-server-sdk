@@ -1,3 +1,4 @@
+import PrivatePropertiesManager from '../../../utils/PrivatePropertiesManager';
 import StardustSignerAPI from '../StardustSignerAPI';
 import { ApiRequestPayload, ChainType, SignRequestPayload } from '../../../types';
 import AbstractStardustSigner from '../AbstractStardustSigner';
@@ -6,15 +7,17 @@ import { convertStringToHexString, IsHexString, uint8ArrayToHexString } from '..
 export default class SolStardustSigner extends AbstractStardustSigner {
   public walletId;
 
-  public api: StardustSignerAPI;
-
   public chainType: ChainType;
 
   constructor(walletId: string, apiKey: string) {
     super();
     this.walletId = walletId;
-    this.api = new StardustSignerAPI(apiKey);
     this.chainType = 'sol';
+    PrivatePropertiesManager.setPrivateProperty(
+      this,
+      'stardustSignerApi',
+      new StardustSignerAPI(apiKey)
+    );
   }
 
   public async signRaw(digest: string | Uint8Array): Promise<string> {
@@ -29,7 +32,7 @@ export default class SolStardustSigner extends AbstractStardustSigner {
       message: digest,
     };
 
-    return this.api.signMessage(payload);
+    return this.stardustSignerAPI.signMessage(payload);
   }
 
   public async getAddress(): Promise<string> {
@@ -37,11 +40,11 @@ export default class SolStardustSigner extends AbstractStardustSigner {
       walletId: this.walletId,
       chainType: this.chainType,
     };
-    return this.api.getAddress(payload);
+    return this.stardustSignerAPI.getAddress(payload);
   }
 
   public async getPublicKey(): Promise<string> {
-    return this.api.getPublicKey({
+    return this.stardustSignerAPI.getPublicKey({
       walletId: this.walletId,
       chainType: this.chainType,
     });
@@ -55,7 +58,7 @@ export default class SolStardustSigner extends AbstractStardustSigner {
       message: parsedMessage,
     };
 
-    return this.api.signMessage(payload);
+    return this.stardustSignerAPI.signMessage(payload);
   }
 
   private parseMessage(message: string | Uint8Array): string {
@@ -68,5 +71,17 @@ export default class SolStardustSigner extends AbstractStardustSigner {
         : convertStringToHexString(message);
     }
     return messageContent;
+  }
+
+  set stardustSignerAPI(stardustSignerAPI: StardustSignerAPI) {
+    PrivatePropertiesManager.setPrivateProperty(this, 'stardustSignerAPI', stardustSignerAPI);
+  }
+
+  get stardustSignerAPI(): StardustSignerAPI {
+    return PrivatePropertiesManager.getPrivateProperty<
+      this,
+      'stardustSignerAPI',
+      StardustSignerAPI
+    >(this, 'stardustSignerAPI')!;
   }
 }

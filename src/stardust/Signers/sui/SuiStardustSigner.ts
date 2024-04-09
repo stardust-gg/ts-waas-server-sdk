@@ -1,5 +1,6 @@
 import { IntentScope, messageWithIntent } from '@mysten/sui.js/cryptography';
 import { blake2b } from '@noble/hashes/blake2b';
+import PrivatePropertiesManager from '../../../utils/PrivatePropertiesManager';
 import { uint8ArrayToHexString } from '../../../utils';
 import { ApiRequestPayload, ChainType, SignRequestPayload } from '../../../types';
 import StardustSignerAPI from '../StardustSignerAPI';
@@ -8,14 +9,17 @@ import AbstractStardustSigner from '../AbstractStardustSigner';
 export default class SuiStardustSigner implements AbstractStardustSigner {
   public walletId;
 
-  public api: StardustSignerAPI;
-
   public chainType: ChainType;
 
   constructor(id: string, apiKey: string) {
     this.walletId = id;
-    this.api = new StardustSignerAPI(apiKey);
     this.chainType = 'sui';
+
+    PrivatePropertiesManager.setPrivateProperty(
+      this,
+      'stardustSignerAPI',
+      new StardustSignerAPI(apiKey)
+    );
   }
 
   public async getPublicKey(): Promise<string> {
@@ -23,7 +27,7 @@ export default class SuiStardustSigner implements AbstractStardustSigner {
       walletId: this.walletId,
       chainType: this.chainType,
     };
-    return this.api.getPublicKey(params);
+    return this.stardustSignerAPI.getPublicKey(params);
   }
 
   public async signRaw(digest: string | Uint8Array): Promise<string> {
@@ -37,7 +41,7 @@ export default class SuiStardustSigner implements AbstractStardustSigner {
       chainType: this.chainType,
       message: digest,
     };
-    return String(await this.api.signMessage(params));
+    return String(await this.stardustSignerAPI.signMessage(params));
   }
 
   public async signTransactionBlock(builtTx: Uint8Array): Promise<string> {
@@ -60,6 +64,18 @@ export default class SuiStardustSigner implements AbstractStardustSigner {
       walletId: this.walletId,
       chainType: this.chainType,
     };
-    return this.api.getAddress(params);
+    return this.stardustSignerAPI.getAddress(params);
+  }
+
+  get stardustSignerAPI(): StardustSignerAPI {
+    return PrivatePropertiesManager.getPrivateProperty<
+      this,
+      'stardustSignerAPI',
+      StardustSignerAPI
+    >(this, 'stardustSignerAPI')!;
+  }
+
+  set stardustSignerAPI(stardustSignerApi: StardustSignerAPI) {
+    PrivatePropertiesManager.setPrivateProperty(this, 'stardustSignerAPI', stardustSignerApi);
   }
 }

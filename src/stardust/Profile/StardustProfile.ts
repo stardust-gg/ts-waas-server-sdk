@@ -39,7 +39,7 @@ export default class StardustProfile {
     service: string,
     value: string
   ): Promise<StardustProfileIdentifier> {
-    return this.StardustProfileIdentifierAPI.createCustomIdentifier({
+    return this.stardustProfileIdentifierAPI.createCustomIdentifier({
       profileId: this.id,
       service,
       value,
@@ -50,7 +50,7 @@ export default class StardustProfile {
     chainType: StardustExternalWalletChainType,
     value: string
   ): Promise<StardustProfileIdentifier> {
-    return this.StardustProfileIdentifierAPI.createExternalWalletIdentifier(chainType, {
+    return this.stardustProfileIdentifierAPI.createExternalWalletIdentifier(chainType, {
       profileId: this.id,
       value,
     }) as Promise<StardustProfileIdentifier>;
@@ -70,7 +70,7 @@ export default class StardustProfile {
   ): Promise<StardustProfileIdentifier[]> {
     const params = { profileId: this.id, start, limit };
 
-    return this.StardustProfileIdentifierAPI.list(params);
+    return this.stardustProfileIdentifierAPI.list(params);
   }
 
   public static generate(profileData: StardustProfileData): StardustProfile {
@@ -90,7 +90,7 @@ export default class StardustProfile {
     );
   }
 
-  get StardustProfileIdentifierAPI(): StardustProfileIdentifierAPI {
+  get stardustProfileIdentifierAPI(): StardustProfileIdentifierAPI {
     return PrivatePropertiesManager.getPrivateProperty<
       this,
       'stardustProfileIdentifierAPI',
@@ -98,7 +98,7 @@ export default class StardustProfile {
     >(this, 'stardustProfileIdentifierAPI')!;
   }
 
-  set StardustProfileIdentifierAPI(stardustProfileIdentifierAPI: StardustProfileIdentifierAPI) {
+  set stardustProfileIdentifierAPI(stardustProfileIdentifierAPI: StardustProfileIdentifierAPI) {
     PrivatePropertiesManager.setPrivateProperty(
       this,
       'stardustProfileIdentifierAPI',
@@ -106,7 +106,7 @@ export default class StardustProfile {
     );
   }
 
-  get StardustProfileAPI(): StardustProfileAPI {
+  get stardustProfileAPI(): StardustProfileAPI {
     return PrivatePropertiesManager.getPrivateProperty<
       this,
       'stardustProfileAPI',

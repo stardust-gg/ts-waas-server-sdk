@@ -4,19 +4,23 @@ import { ApiRequestPayload, ChainType, SignRequestPayload } from '../../../types
 import AbstractStardustSigner from '../AbstractStardustSigner';
 import HexString from '../../../utils/HexString';
 import { IsHexString, convertStringToHexString, uint8ArrayToHexString } from '../../../utils';
+import PrivatePropertiesManager from '../../../utils/PrivatePropertiesManager';
 
 export default class EvmStardustSigner extends AbstractStardustSigner {
   public walletId;
-
-  public api: StardustSignerAPI;
 
   public chainType: ChainType;
 
   constructor(walletId: string, apiKey: string) {
     super();
     this.walletId = walletId;
-    this.api = new StardustSignerAPI(apiKey);
     this.chainType = 'evm';
+
+    PrivatePropertiesManager.setPrivateProperty(
+      this,
+      'stardustSignerApi',
+      new StardustSignerAPI(apiKey)
+    );
   }
 
   public async signRaw(digest: string | Uint8Array): Promise<string> {
@@ -31,7 +35,7 @@ export default class EvmStardustSigner extends AbstractStardustSigner {
       message: digest,
     };
 
-    return this.api.signMessage(payload);
+    return this.stardustSignerAPI.signMessage(payload);
   }
 
   public async getAddress(): Promise<string> {
@@ -39,11 +43,11 @@ export default class EvmStardustSigner extends AbstractStardustSigner {
       walletId: this.walletId,
       chainType: this.chainType,
     };
-    return ethers.getAddress(await this.api.getAddress(payload));
+    return ethers.getAddress(await this.stardustSignerAPI.getAddress(payload));
   }
 
   public async getPublicKey(): Promise<string> {
-    return this.api.getPublicKey({
+    return this.stardustSignerAPI.getPublicKey({
       walletId: this.walletId,
       chainType: this.chainType,
     });
@@ -57,7 +61,7 @@ export default class EvmStardustSigner extends AbstractStardustSigner {
       message: prefixedMsg,
     };
 
-    return this.api.signMessage(payload);
+    return this.stardustSignerAPI.signMessage(payload);
   }
 
   public createPrefixedMessage(message: string | Uint8Array): string {
@@ -82,5 +86,17 @@ export default class EvmStardustSigner extends AbstractStardustSigner {
       new HexString(messageContent).strip();
 
     return prefixedMessage;
+  }
+
+  get stardustSignerAPI(): StardustSignerAPI {
+    return PrivatePropertiesManager.getPrivateProperty<
+      this,
+      'stardustSignerAPI',
+      StardustSignerAPI
+    >(this, 'stardustSignerAPI')!;
+  }
+
+  set stardustSignerAPI(stardustSignerAPI: StardustSignerAPI) {
+    PrivatePropertiesManager.setPrivateProperty(this, 'stardustSignerAPI', stardustSignerAPI);
   }
 }

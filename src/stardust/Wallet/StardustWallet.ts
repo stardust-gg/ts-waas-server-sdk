@@ -74,11 +74,15 @@ export default class StardustWallet {
     );
   }
 
-  private get stardustProfileAPI(): StardustProfileAPI {
+  get stardustProfileAPI(): StardustProfileAPI {
     return PrivatePropertiesManager.getPrivateProperty<
       this,
       'stardustProfileAPI',
       StardustProfileAPI
     >(this, 'stardustProfileAPI')!;
+  }
+
+  set stardustProfileAPI(stardustProfileAPI: StardustProfileAPI) {
+    PrivatePropertiesManager.setPrivateProperty(this, 'stardustProfileAPI', stardustProfileAPI);
   }
 }
