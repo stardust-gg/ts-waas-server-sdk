@@ -37,7 +37,10 @@
 
 ## Changelog
 
-### Latest Version: 2.3.0 [04/10/2024]
+### Latest Version: 2.3.1 [04/10/2024]
+
+- getApplication
+- fix some api stuff
 
 #### Features
 

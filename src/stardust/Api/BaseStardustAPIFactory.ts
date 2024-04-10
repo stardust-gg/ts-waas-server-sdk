@@ -6,14 +6,11 @@ export default function BaseStardustAPIFactory(
   url: string
 ): BaseStardustAPIInterface {
   return new (class implements BaseStardustAPIInterface {
-    url = url;
-
     public async get(endpoint: string, query = {}) {
       const response = await axios.get(`${this.url}/${endpoint}`, {
         headers: { 'x-api-key': apiKey },
         params: query,
       });
-
       if (response.status !== HttpStatusCode.Ok)
         throw new Error(`Failed to GET from ${endpoint} with query: ${JSON.stringify(query)}`);
       return response.data;
@@ -30,6 +27,10 @@ export default function BaseStardustAPIFactory(
 
     get apiKey() {
       return apiKey;
+    }
+
+    get url() {
+      return url;
     }
   })();
 }

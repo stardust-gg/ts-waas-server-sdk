@@ -1,9 +1,6 @@
 // eslint-disable-next-line import/no-cycle
-import PrivatePropertiesManager from '../../utils/PrivatePropertiesManager';
-// eslint-disable-next-line import/no-cycle
 import StardustWallet from '../Wallet/StardustWallet';
 // eslint-disable-next-line import/no-cycle
-import StardustProfileAPI from './StardustProfileAPI';
 import StardustProfileIdentifier from './StardustProfileIdentifier';
 import StardustProfileIdentifierAPI from './StardustProfileIdentifierAPI';
 import { StardustExternalWalletChainType, StardustProfileData } from './Types';
@@ -11,6 +8,8 @@ import { StardustWalletData } from '../Wallet/Types';
 
 export default class StardustProfile {
   public readonly wallet: StardustWallet;
+
+  stardustProfileIdentifierAPI: StardustProfileIdentifierAPI;
 
   constructor(
     public readonly id: string,
@@ -23,16 +22,7 @@ export default class StardustProfile {
     apiKey: string | null = null
   ) {
     [this.wallet] = wallets?.filter((wallet) => wallet.profileId === id) || [];
-    PrivatePropertiesManager.setPrivateProperty(
-      this,
-      'stardustProfileAPI',
-      new StardustProfileAPI(apiKey!)
-    );
-    PrivatePropertiesManager.setPrivateProperty(
-      this,
-      'stardustProfileIdentifierAPI',
-      new StardustProfileIdentifierAPI(apiKey!)
-    );
+    this.stardustProfileIdentifierAPI = new StardustProfileIdentifierAPI(apiKey!);
   }
 
   public async addCustomIdentifier(
@@ -90,27 +80,8 @@ export default class StardustProfile {
     );
   }
 
-  get stardustProfileIdentifierAPI(): StardustProfileIdentifierAPI {
-    return PrivatePropertiesManager.getPrivateProperty<
-      this,
-      'stardustProfileIdentifierAPI',
-      StardustProfileIdentifierAPI
-    >(this, 'stardustProfileIdentifierAPI')!;
-  }
-
-  set stardustProfileIdentifierAPI(stardustProfileIdentifierAPI: StardustProfileIdentifierAPI) {
-    PrivatePropertiesManager.setPrivateProperty(
-      this,
-      'stardustProfileIdentifierAPI',
-      stardustProfileIdentifierAPI
-    );
-  }
-
-  get stardustProfileAPI(): StardustProfileAPI {
-    return PrivatePropertiesManager.getPrivateProperty<
-      this,
-      'stardustProfileAPI',
-      StardustProfileAPI
-    >(this, 'stardustProfileAPI')!;
+  public valueOf(): Object {
+    const { stardustProfileIdentifierAPI, ...rest } = this;
+    return rest;
   }
 }

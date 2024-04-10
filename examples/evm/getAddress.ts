@@ -11,10 +11,12 @@ async function main() {
   try {
     // Initialize Stardust SDK
     const sdk = new StardustCustodialSDK(apiKey);
-    // Create a profile - naming is optional
+
     const profile = await sdk.getProfile(profileId);
 
-    console.log(JSON.stringify(profile));
+    const address = await profile.wallets![0].evm.getAddress();
+
+    console.log(address);
   } catch (error) {
     console.error(`Error: ${JSON.stringify(error)}`);
   }

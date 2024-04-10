@@ -1,6 +1,5 @@
 /* eslint-disable no-unused-vars */
 import { Provider } from 'ethers_v6';
-import PrivatePropertiesManager from '../../utils/PrivatePropertiesManager';
 import EthersV5Signer from '../../ethers/V5/EthersV5Signer';
 import EthersV6Signer from '../../ethers/V6/EthersV6Signer';
 import SuiStardustSigner from '../Signers/sui/SuiStardustSigner';
@@ -31,6 +30,8 @@ export default class StardustWallet {
 
   public imx: ImxStardustSigner;
 
+  public stardustProfileAPI: StardustProfileAPI;
+
   constructor(
     public readonly id: string,
     public readonly profileId: string,
@@ -52,11 +53,7 @@ export default class StardustWallet {
     this.sui = new SuiStardustSigner(id, apiKey!);
     this.sol = new SolStardustSigner(id, apiKey!);
     this.imx = new ImxStardustSigner(this.ethers.v5.getSigner());
-    PrivatePropertiesManager.setPrivateProperty(
-      this,
-      'stardustProfileAPI',
-      new StardustProfileAPI(apiKey!)
-    );
+    this.stardustProfileAPI = new StardustProfileAPI(apiKey!);
   }
 
   public async getProfile(): Promise<StardustProfile> {
@@ -74,15 +71,13 @@ export default class StardustWallet {
     );
   }
 
-  get stardustProfileAPI(): StardustProfileAPI {
-    return PrivatePropertiesManager.getPrivateProperty<
-      this,
-      'stardustProfileAPI',
-      StardustProfileAPI
-    >(this, 'stardustProfileAPI')!;
+  public valueOf(): Object {
+    const { stardustProfileAPI, ...rest } = this;
+    return { ...rest };
   }
 
-  set stardustProfileAPI(stardustProfileAPI: StardustProfileAPI) {
-    PrivatePropertiesManager.setPrivateProperty(this, 'stardustProfileAPI', stardustProfileAPI);
+  public toString(): string {
+    const { stardustProfileAPI, ...rest } = this;
+    return JSON.stringify(rest);
   }
 }

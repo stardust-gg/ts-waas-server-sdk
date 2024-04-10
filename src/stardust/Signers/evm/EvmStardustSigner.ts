@@ -4,23 +4,19 @@ import { ApiRequestPayload, ChainType, SignRequestPayload } from '../../../types
 import AbstractStardustSigner from '../AbstractStardustSigner';
 import HexString from '../../../utils/HexString';
 import { IsHexString, convertStringToHexString, uint8ArrayToHexString } from '../../../utils';
-import PrivatePropertiesManager from '../../../utils/PrivatePropertiesManager';
 
 export default class EvmStardustSigner extends AbstractStardustSigner {
   public walletId;
 
   public chainType: ChainType;
 
+  public stardustSignerAPI: StardustSignerAPI;
+
   constructor(walletId: string, apiKey: string) {
     super();
     this.walletId = walletId;
     this.chainType = 'evm';
-
-    PrivatePropertiesManager.setPrivateProperty(
-      this,
-      'stardustSignerApi',
-      new StardustSignerAPI(apiKey)
-    );
+    this.stardustSignerAPI = new StardustSignerAPI(apiKey);
   }
 
   public async signRaw(digest: string | Uint8Array): Promise<string> {
@@ -88,15 +84,8 @@ export default class EvmStardustSigner extends AbstractStardustSigner {
     return prefixedMessage;
   }
 
-  get stardustSignerAPI(): StardustSignerAPI {
-    return PrivatePropertiesManager.getPrivateProperty<
-      this,
-      'stardustSignerAPI',
-      StardustSignerAPI
-    >(this, 'stardustSignerAPI')!;
-  }
-
-  set stardustSignerAPI(stardustSignerAPI: StardustSignerAPI) {
-    PrivatePropertiesManager.setPrivateProperty(this, 'stardustSignerAPI', stardustSignerAPI);
+  public toString(): string {
+    const { stardustSignerAPI, ...rest } = this;
+    return JSON.stringify(rest);
   }
 }
