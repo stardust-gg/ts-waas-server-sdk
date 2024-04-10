@@ -1,8 +1,6 @@
 import dotenv from 'dotenv';
-import {
-  StardustCustodialSDK,
-  StardustProfileIdentifierService,
-} from '@stardust-gg/stardust-custodial-sdk';
+import { StardustCustodialSDK } from '@stardust-gg/stardust-custodial-sdk';
+import { StardustExternalWalletChainType } from 'src/stardust/Profile/Types';
 
 dotenv.config();
 
@@ -15,17 +13,13 @@ async function main() {
     // Initialize Stardust SDK
     const sdk = new StardustCustodialSDK(apiKey);
 
-    // Create a profile - naming is optional
-    const profile = await sdk.getProfile(profileId); // can save profile.id for later access
+    const profile = await sdk.getProfile(profileId);
 
-    const userInputGoogleId = '1234567890';
-    // PLAYER PROMPTED TO ADD SOCIAL
+    const userInputAddress = '0x999999cf1046e68e36E1aA2E0E07105eDDD1f08E';
 
-    // add specific social
-    const social = userInputGoogleId;
-    const profileIdentifier = await profile.addIdentifier(
-      StardustProfileIdentifierService.Google,
-      social
+    const profileIdentifier = await profile.addExternalWalletIdentifier(
+      StardustExternalWalletChainType.EVM,
+      userInputAddress
     );
 
     // check out how to use wallets in the wallet example

@@ -22,11 +22,27 @@ export type StardustProfileIdentifierData = {
   service: string;
   value: string;
   createdAt: number;
-};
+  type: StardustProfileIdentifierType;
+} & { apiKey?: string };
 
-export type StardustProfileIdentifierCreateParams = {
+export enum StardustProfileIdentifierType {
+  Custom = 'custom',
+  ExternalWallet = 'external-wallet',
+}
+
+export enum StardustExternalWalletChainType {
+  EVM = 'evm',
+  SOL = 'sol',
+  SUI = 'sui',
+}
+
+export type StardustCustomProfileIdentifierCreateParams =
+  StardustExternalWalletProfileIdentifierCreateParams & {
+    service: string;
+  };
+
+export type StardustExternalWalletProfileIdentifierCreateParams = {
   profileId: string;
-  service: string;
   value: string;
 };
 
@@ -35,14 +51,3 @@ export type StardustProfileIdentifierListParams = {
   start: number;
   limit: number;
 };
-
-export enum StardustProfileIdentifierService {
-  ExternalWallet = 'ts-sdk:external-wallet',
-  Discord = 'ts-sdk:discord',
-  Apple = 'ts-sdk:apple',
-  Google = 'ts-sdk:google',
-  Facebook = 'ts-sdk:facebook',
-  Twitter = 'ts-sdk:twitter',
-  Email = 'ts-sdk:email',
-  Phone = 'ts-sdk:phone',
-}

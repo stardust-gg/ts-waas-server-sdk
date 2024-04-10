@@ -26,6 +26,7 @@
   - [IMX](#imx)
   - [EVM](#evm)
   - [SUI](#sui)
+  - [SOL](#sol)
 - [Contributing](#contributing)
 - [License](#license)
 - [Contact and Support](#contact-and-support)
@@ -36,22 +37,12 @@
 
 ## Changelog
 
-### Latest Version: 2.2.0 [02/22/2023]
+### Latest Version: 2.3.0 [04/10/2024]
 
 #### Features
 
-- Adds profiles and profile identifier management to the sdk
-
-  - sdk.getProfile(profileId) has been added
-  - sdk.createProfile(applicationId) has been added
-  - profile.addIdentifier(identifierService, value) has been added
-  - profile.addCustomIdentifier(value) has been added
-  - sdk.generateProfileJWT(profileId, duration) - JWT generation for use client side with profile/wallet api
-
-- Wallets are now accessible through profiles
-  - profile.wallet
-- Profiles are now accessible through the legacy wallet object
-  - wallet.getProfile()
+- Added profile identifier support for custom identifiers and external-wallet identifiers
+- Solana Stardust Signer is now accessible
 
 Releases can be found [here](https://github.com/stardust-gg/stardust-custodial-sdk/releases)
 
@@ -165,6 +156,15 @@ const signedTransactionBlock = await wallet1.sui.signTransactionBlock(builtTx);
 Reference [sui typescript sdk](https://github.com/MystenLabs/sui/blob/main/sdk/typescript/README.md) documentation for usage of Sui.
 
 Additionally, you can reference [examples](./examples/sui/) of use cases for Sui.
+
+### Solana
+
+```ts
+const userSOLAddress = await wallet.sol.getAddress();
+const userSOLPublicKey = await wallet.sol.getPublicKey();
+const rawSignedDigest = await wallet.sol.signRaw('0x010203');
+const signedMessage = await wallet.sol.signMessage('Hello World!');
+```
 
 ## Contributing
 

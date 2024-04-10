@@ -1,12 +1,10 @@
-import { ethers } from 'ethers_v6';
+import PrivatePropertiesManager from '../../../utils/PrivatePropertiesManager';
 import StardustSignerAPI from '../StardustSignerAPI';
 import { ApiRequestPayload, ChainType, SignRequestPayload } from '../../../types';
 import AbstractStardustSigner from '../AbstractStardustSigner';
-import HexString from '../../../utils/HexString';
-import { IsHexString, convertStringToHexString, uint8ArrayToHexString } from '../../../utils';
-import PrivatePropertiesManager from '../../../utils/PrivatePropertiesManager';
+import { convertStringToHexString, IsHexString, uint8ArrayToHexString } from '../../../utils';
 
-export default class EvmStardustSigner extends AbstractStardustSigner {
+export default class SolStardustSigner extends AbstractStardustSigner {
   public walletId;
 
   public chainType: ChainType;
@@ -14,8 +12,7 @@ export default class EvmStardustSigner extends AbstractStardustSigner {
   constructor(walletId: string, apiKey: string) {
     super();
     this.walletId = walletId;
-    this.chainType = 'evm';
-
+    this.chainType = 'sol';
     PrivatePropertiesManager.setPrivateProperty(
       this,
       'stardustSignerApi',
@@ -43,7 +40,7 @@ export default class EvmStardustSigner extends AbstractStardustSigner {
       walletId: this.walletId,
       chainType: this.chainType,
     };
-    return ethers.getAddress(await this.stardustSignerAPI.getAddress(payload));
+    return this.stardustSignerAPI.getAddress(payload);
   }
 
   public async getPublicKey(): Promise<string> {
@@ -54,38 +51,30 @@ export default class EvmStardustSigner extends AbstractStardustSigner {
   }
 
   public async signMessage(message: string | Uint8Array): Promise<string> {
-    const prefixedMsg = this.createPrefixedMessage(message);
+    const parsedMessage = this.parseMessage(message);
     const payload: SignRequestPayload = {
       walletId: this.walletId,
       chainType: this.chainType,
-      message: prefixedMsg,
+      message: parsedMessage,
     };
 
     return this.stardustSignerAPI.signMessage(payload);
   }
 
-  public createPrefixedMessage(message: string | Uint8Array): string {
-    const messagePrefix = '\x19Ethereum Signed Message:\n';
-
+  private parseMessage(message: string | Uint8Array): string {
     let messageContent: string;
-    let messageLen: number;
-
     if (message instanceof Uint8Array) {
-      messageContent = uint8ArrayToHexString(message).replace(/^0x/, '');
-      messageLen = message.byteLength;
+      messageContent = uint8ArrayToHexString(message);
     } else {
       messageContent = IsHexString(message)
         ? message.replace(/^0x/, '')
-        : convertStringToHexString(message).replace(/^0x/, '');
-      messageLen = messageContent.length / 2; // Byte length for hex string
+        : convertStringToHexString(message);
     }
+    return messageContent;
+  }
 
-    const prefixedMessage =
-      convertStringToHexString(messagePrefix) +
-      new HexString(convertStringToHexString(String(messageLen))).strip() +
-      new HexString(messageContent).strip();
-
-    return prefixedMessage;
+  set stardustSignerAPI(stardustSignerAPI: StardustSignerAPI) {
+    PrivatePropertiesManager.setPrivateProperty(this, 'stardustSignerAPI', stardustSignerAPI);
   }
 
   get stardustSignerAPI(): StardustSignerAPI {
@@ -94,9 +83,5 @@ export default class EvmStardustSigner extends AbstractStardustSigner {
       'stardustSignerAPI',
       StardustSignerAPI
     >(this, 'stardustSignerAPI')!;
-  }
-
-  set stardustSignerAPI(stardustSignerAPI: StardustSignerAPI) {
-    PrivatePropertiesManager.setPrivateProperty(this, 'stardustSignerAPI', stardustSignerAPI);
   }
 }

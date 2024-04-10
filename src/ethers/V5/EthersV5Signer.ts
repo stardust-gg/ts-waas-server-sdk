@@ -42,7 +42,7 @@ export default class EthersV5Signer extends Signer {
       chainType: 'evm',
       message,
     };
-    const signature = await this.evmStardustSigner.api.signTransaction(payload);
+    const signature = await this.evmStardustSigner.stardustSignerAPI.signTransaction(payload);
     return serialize(<UnsignedTransaction>tx, signature);
   }
 

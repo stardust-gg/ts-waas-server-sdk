@@ -8,7 +8,7 @@ import StardustWallet from './Wallet/StardustWallet';
 import StardustWalletAPI from './Wallet/StardustWalletAPI';
 
 export default class StardustCustodialSdk {
-  private StardustApplicationAPI: StardustApplicationAPI;
+  private stardustApplicationAPI: StardustApplicationAPI;
 
   private stardustWalletAPI: StardustWalletAPI;
 
@@ -17,14 +17,14 @@ export default class StardustCustodialSdk {
   private stardustProfileIdentifierAPI: StardustProfileIdentifierAPI;
 
   constructor(apiKey: string, url?: string) {
-    this.StardustApplicationAPI = new StardustApplicationAPI(apiKey, url);
+    this.stardustApplicationAPI = new StardustApplicationAPI(apiKey, url);
     this.stardustWalletAPI = new StardustWalletAPI(apiKey, url);
     this.stardustProfileAPI = new StardustProfileAPI(apiKey, url);
     this.stardustProfileIdentifierAPI = new StardustProfileIdentifierAPI(apiKey, url);
   }
 
   public async getApplication(): Promise<StardustApplication> {
-    return this.StardustApplicationAPI.get();
+    return this.stardustApplicationAPI.get();
   }
 
   /**

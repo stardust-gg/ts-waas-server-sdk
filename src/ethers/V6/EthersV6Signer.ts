@@ -62,7 +62,7 @@ export default class EthersV6Signer extends AbstractSigner {
       chainType: 'evm',
       message: unsignedSerialized,
     };
-    const signature = await this.evmStardustSigner.api.signTransaction(payload);
+    const signature = await this.evmStardustSigner.stardustSignerAPI.signTransaction(payload);
     builtTx.signature = signature;
     return builtTx.serialized;
   }
@@ -108,7 +108,7 @@ export default class EthersV6Signer extends AbstractSigner {
       message: encodedTypedData,
     };
 
-    const sig = await this.evmStardustSigner.api.signTransaction(payload);
+    const sig = await this.evmStardustSigner.stardustSignerAPI.signTransaction(payload);
     const splitSig = ethers.Signature.from(sig);
     return ethers.Signature.from(splitSig).serialized;
   }
