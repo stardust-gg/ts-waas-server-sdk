@@ -77,7 +77,7 @@ const sdk = new StardustCustodialSDK(myApiKey);\
 ##### Creating a profile
 
 ```ts
-const profile = await sdk.createProfile(applicationId);
+const profile = await sdk.createProfile();
 const profileIdentifier = profile.id;
 ```
 
