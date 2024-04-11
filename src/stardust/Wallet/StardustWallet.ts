@@ -71,13 +71,21 @@ export default class StardustWallet {
     );
   }
 
-  public valueOf(): Object {
-    const { stardustProfileAPI, ...rest } = this;
-    return { ...rest };
+  public toJson(): any {
+    return {
+      id: this.id,
+      profileId: this.profileId,
+      application: this.application.toJson(),
+      evm: this.evm.toJson(),
+      sui: this.sui.toJson(),
+      sol: this.sol.toJson(),
+      imx: this.imx.toJson(),
+      createdAt: this.createdAt,
+      lastUsedAt: this.lastUsedAt,
+    };
   }
 
   public toString(): string {
-    const { stardustProfileAPI, ...rest } = this;
-    return JSON.stringify(rest);
+    return JSON.stringify(this.toJson());
   }
 }

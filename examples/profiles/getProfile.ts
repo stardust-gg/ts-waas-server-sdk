@@ -14,7 +14,7 @@ async function main() {
     // Create a profile - naming is optional
     const profile = await sdk.getProfile(profileId);
 
-    console.log(JSON.stringify(profile));
+    console.log(profile.toString());
   } catch (error) {
     console.error(`Error: ${JSON.stringify(error)}`);
   }

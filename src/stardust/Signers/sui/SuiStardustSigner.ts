@@ -63,8 +63,14 @@ export default class SuiStardustSigner implements AbstractStardustSigner {
     return this.stardustSignerAPI.getAddress(params);
   }
 
+  public toJson() {
+    return {
+      walletId: this.walletId,
+      chainType: this.chainType,
+    };
+  }
+
   public toString(): string {
-    const { stardustSignerAPI, ...rest } = this;
-    return JSON.stringify(rest);
+    return JSON.stringify(this.toJson());
   }
 }

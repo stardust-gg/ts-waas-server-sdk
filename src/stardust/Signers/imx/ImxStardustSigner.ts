@@ -30,4 +30,14 @@ export default class ImxStardustSigner implements AbstractStardustSigner {
     // eslint-disable-next-line @typescript-eslint/no-throw-literal
     throw 'not implemented'; // unsupported - imx only uses signMessage and can be accessed via getSigner().signMessage
   }
+
+  public toJson() {
+    return {
+      chainType: 'imx',
+    };
+  }
+
+  public toString(): string {
+    return JSON.stringify(this.toJson());
+  }
 }

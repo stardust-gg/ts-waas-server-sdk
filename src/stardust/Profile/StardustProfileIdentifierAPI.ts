@@ -24,7 +24,7 @@ export default class StardustProfileIdentifierAPI extends BaseStardustAPI {
     params: StardustExternalWalletProfileIdentifierCreateParams
   ): Promise<StardustProfileIdentifier> {
     const profileIdentifier = await this.api.post(
-      `profile/identifier/external-wallet/${chainType}`,
+      `profile/identifier/external-wallet/${chainType.toLowerCase()}`,
       params
     );
     return StardustProfileIdentifier.generate({

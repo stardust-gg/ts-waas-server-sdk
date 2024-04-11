@@ -84,8 +84,14 @@ export default class EvmStardustSigner extends AbstractStardustSigner {
     return prefixedMessage;
   }
 
+  public toJson() {
+    return {
+      walletId: this.walletId,
+      chainType: this.chainType,
+    };
+  }
+
   public toString(): string {
-    const { stardustSignerAPI, ...rest } = this;
-    return JSON.stringify(rest);
+    return JSON.stringify(this.toJson());
   }
 }

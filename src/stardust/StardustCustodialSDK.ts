@@ -16,15 +16,20 @@ export default class StardustCustodialSdk {
 
   private stardustProfileIdentifierAPI: StardustProfileIdentifierAPI;
 
+  private applicationId: string | undefined;
+
   constructor(apiKey: string, url?: string) {
     this.stardustApplicationAPI = new StardustApplicationAPI(apiKey, url);
     this.stardustWalletAPI = new StardustWalletAPI(apiKey, url);
     this.stardustProfileAPI = new StardustProfileAPI(apiKey, url);
     this.stardustProfileIdentifierAPI = new StardustProfileIdentifierAPI(apiKey, url);
+    this.applicationId = undefined;
   }
 
   public async getApplication(): Promise<StardustApplication> {
-    return this.stardustApplicationAPI.get();
+    const application = await this.stardustApplicationAPI.get();
+    this.applicationId = application.id;
+    return application;
   }
 
   /**
@@ -41,7 +46,8 @@ export default class StardustCustodialSdk {
     return this.stardustWalletAPI.get(walletId);
   }
 
-  public async createProfile(applicationId: string, name?: string): Promise<StardustProfile> {
+  public async createProfile(name?: string): Promise<StardustProfile> {
+    const applicationId = this.applicationId ?? (await this.getApplication()).id;
     return this.stardustProfileAPI.create({ applicationId, name });
   }
 

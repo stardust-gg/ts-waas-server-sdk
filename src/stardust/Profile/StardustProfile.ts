@@ -3,7 +3,11 @@ import StardustWallet from '../Wallet/StardustWallet';
 // eslint-disable-next-line import/no-cycle
 import StardustProfileIdentifier from './StardustProfileIdentifier';
 import StardustProfileIdentifierAPI from './StardustProfileIdentifierAPI';
-import { StardustExternalWalletChainType, StardustProfileData } from './Types';
+import {
+  StardustExternalWalletChainType,
+  StardustProfileData,
+  StardustProfileIdentifierService,
+} from './Types';
 import { StardustWalletData } from '../Wallet/Types';
 
 export default class StardustProfile {
@@ -36,14 +40,62 @@ export default class StardustProfile {
     }) as Promise<StardustProfileIdentifier>;
   }
 
-  public async addExternalWalletIdentifier(
-    chainType: StardustExternalWalletChainType,
-    value: string
-  ): Promise<StardustProfileIdentifier> {
-    return this.stardustProfileIdentifierAPI.createExternalWalletIdentifier(chainType, {
-      profileId: this.id,
-      value,
-    }) as Promise<StardustProfileIdentifier>;
+  public async addEVMExternalWalletIdentifier(value: string): Promise<StardustProfileIdentifier> {
+    return this.stardustProfileIdentifierAPI.createExternalWalletIdentifier(
+      StardustExternalWalletChainType.EVM,
+      {
+        profileId: this.id,
+        value,
+      }
+    ) as Promise<StardustProfileIdentifier>;
+  }
+
+  public async addSUIExternalWalletIdentifier(value: string): Promise<StardustProfileIdentifier> {
+    return this.stardustProfileIdentifierAPI.createExternalWalletIdentifier(
+      StardustExternalWalletChainType.SUI,
+      {
+        profileId: this.id,
+        value,
+      }
+    ) as Promise<StardustProfileIdentifier>;
+  }
+
+  public async addSOLExternalWalletIdentifier(value: string): Promise<StardustProfileIdentifier> {
+    return this.stardustProfileIdentifierAPI.createExternalWalletIdentifier(
+      StardustExternalWalletChainType.SOL,
+      {
+        profileId: this.id,
+        value,
+      }
+    ) as Promise<StardustProfileIdentifier>;
+  }
+
+  public async addDiscordIdentifier(value: string): Promise<StardustProfileIdentifier> {
+    return this.addCustomIdentifier(StardustProfileIdentifierService.Discord, value);
+  }
+
+  public async addAppleIdentifier(value: string): Promise<StardustProfileIdentifier> {
+    return this.addCustomIdentifier(StardustProfileIdentifierService.Apple, value);
+  }
+
+  public async addGoogleIdentifier(value: string): Promise<StardustProfileIdentifier> {
+    return this.addCustomIdentifier(StardustProfileIdentifierService.Google, value);
+  }
+
+  public async addFacebookIdentifier(value: string): Promise<StardustProfileIdentifier> {
+    return this.addCustomIdentifier(StardustProfileIdentifierService.Facebook, value);
+  }
+
+  public async addTwitterIdentifier(value: string): Promise<StardustProfileIdentifier> {
+    return this.addCustomIdentifier(StardustProfileIdentifierService.Twitter, value);
+  }
+
+  public async addEmailIdentifier(value: string): Promise<StardustProfileIdentifier> {
+    return this.addCustomIdentifier(StardustProfileIdentifierService.Email, value);
+  }
+
+  public async addPhoneIdentifier(value: string): Promise<StardustProfileIdentifier> {
+    return this.addCustomIdentifier(StardustProfileIdentifierService.Phone, value);
   }
 
   /**
@@ -56,7 +108,7 @@ export default class StardustProfile {
    */
   public async getIdentifiers(
     start: number = 0,
-    limit: number = 10
+    limit: number = 20
   ): Promise<StardustProfileIdentifier[]> {
     const params = { profileId: this.id, start, limit };
 
@@ -80,8 +132,20 @@ export default class StardustProfile {
     );
   }
 
-  public valueOf(): Object {
-    const { stardustProfileIdentifierAPI, ...rest } = this;
-    return rest;
+  public toJson(): any {
+    return {
+      id: this.id,
+      rootUserId: this.rootUserId,
+      applicationId: this.applicationId,
+      createdAt: this.createdAt,
+      name: this.name,
+      wallets: this.wallets?.map((wallet) => wallet.toJson()),
+      identifiers: this.identifiers?.map((identifier) => identifier.toJson()),
+      wallet: this.wallet.toJson(),
+    };
+  }
+
+  public toString(): string {
+    return JSON.stringify(this.toJson());
   }
 }

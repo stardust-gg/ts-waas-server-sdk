@@ -70,8 +70,14 @@ export default class SolStardustSigner extends AbstractStardustSigner {
     return messageContent;
   }
 
+  public toJson() {
+    return {
+      walletId: this.walletId,
+      chainType: this.chainType,
+    };
+  }
+
   public toString(): string {
-    const { stardustSignerAPI, ...rest } = this;
-    return JSON.stringify(rest);
+    return JSON.stringify(this.toJson());
   }
 }
