@@ -43,9 +43,7 @@ describe('System: DEV Signing Parity', () => {
       let profileId: string;
       let profileIdentifierId: string;
       it('should create a new profile', async () => {
-        const profile: StardustProfile = await sdk.createProfile(
-          DEV_SYSTEM_STARDUST_APPLICATION_ID
-        );
+        const profile: StardustProfile = await sdk.createProfile();
         expect(profile).toBeDefined();
         profileId = profile.id;
       });
