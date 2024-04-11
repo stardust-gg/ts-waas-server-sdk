@@ -16,4 +16,17 @@ export default class StardustApplication {
       applicationData.description
     );
   }
+
+  public toJson(): any {
+    return {
+      id: this.id,
+      name: this.name,
+      email: this.email,
+      description: this.description,
+    };
+  }
+
+  public toString(): string {
+    return JSON.stringify(this.toJson());
+  }
 }

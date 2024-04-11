@@ -1,6 +1,5 @@
 import { IntentScope, messageWithIntent } from '@mysten/sui.js/cryptography';
 import { blake2b } from '@noble/hashes/blake2b';
-import PrivatePropertiesManager from '../../../utils/PrivatePropertiesManager';
 import { uint8ArrayToHexString } from '../../../utils';
 import { ApiRequestPayload, ChainType, SignRequestPayload } from '../../../types';
 import StardustSignerAPI from '../StardustSignerAPI';
@@ -11,15 +10,12 @@ export default class SuiStardustSigner implements AbstractStardustSigner {
 
   public chainType: ChainType;
 
+  public stardustSignerAPI: StardustSignerAPI;
+
   constructor(id: string, apiKey: string) {
     this.walletId = id;
     this.chainType = 'sui';
-
-    PrivatePropertiesManager.setPrivateProperty(
-      this,
-      'stardustSignerAPI',
-      new StardustSignerAPI(apiKey)
-    );
+    this.stardustSignerAPI = new StardustSignerAPI(apiKey);
   }
 
   public async getPublicKey(): Promise<string> {
@@ -67,15 +63,14 @@ export default class SuiStardustSigner implements AbstractStardustSigner {
     return this.stardustSignerAPI.getAddress(params);
   }
 
-  get stardustSignerAPI(): StardustSignerAPI {
-    return PrivatePropertiesManager.getPrivateProperty<
-      this,
-      'stardustSignerAPI',
-      StardustSignerAPI
-    >(this, 'stardustSignerAPI')!;
+  public toJson() {
+    return {
+      walletId: this.walletId,
+      chainType: this.chainType,
+    };
   }
 
-  set stardustSignerAPI(stardustSignerApi: StardustSignerAPI) {
-    PrivatePropertiesManager.setPrivateProperty(this, 'stardustSignerAPI', stardustSignerApi);
+  public toString(): string {
+    return JSON.stringify(this.toJson());
   }
 }

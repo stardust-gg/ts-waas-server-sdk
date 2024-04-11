@@ -15,6 +15,16 @@ export type StardustProfileCreateParams = {
   name?: string;
 };
 
+export enum StardustProfileIdentifierService {
+  Discord = 'ts-sdk:discord',
+  Apple = 'ts-sdk:apple',
+  Google = 'ts-sdk:google',
+  Facebook = 'ts-sdk:facebook',
+  Twitter = 'ts-sdk:twitter',
+  Email = 'ts-sdk:email',
+  Phone = 'ts-sdk:phone',
+}
+
 export type StardustProfileIdentifierData = {
   id: string;
   rootUserId: string;
@@ -32,7 +42,7 @@ export enum StardustProfileIdentifierType {
 
 export enum StardustExternalWalletChainType {
   EVM = 'evm',
-  SOL = 'sol',
+  SOL = 'solana',
   SUI = 'sui',
 }
 

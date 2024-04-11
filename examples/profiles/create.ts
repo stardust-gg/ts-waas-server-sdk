@@ -11,14 +11,11 @@ async function main() {
     // Initialize Stardust SDK
     const sdk = new StardustCustodialSDK(apiKey);
 
-    // Get you application id
-    const application = await sdk.getApplication();
-
     // Create a profile - naming is optional
-    const profile = await sdk.createProfile(application.id, 'My Profile Name'); // can save profile.id for later access
+    const profile = await sdk.createProfile('My Profile Name'); // can save profile.id for later access
 
     // check out how to use wallets in the wallet example
-    console.log(`Profile created: ${JSON.stringify(profile)}`);
+    console.log(`Profile created: ${profile}`);
   } catch (error) {
     console.error(`Error: ${JSON.stringify(error)}`);
   }

@@ -6,7 +6,7 @@ const URL = 'https://custodial-wallet.stardust.gg';
 export default class BaseStardustAPI {
   public readonly api: BaseStardustAPIInterface;
 
-  constructor(apiKey: string, protected url: string = URL) {
+  constructor(apiKey: string, url: string = URL) {
     this.api = BaseStardustAPIFactory(apiKey, url);
   }
 }

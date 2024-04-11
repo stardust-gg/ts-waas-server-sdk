@@ -1,4 +1,3 @@
-import PrivatePropertiesManager from '../../../utils/PrivatePropertiesManager';
 import StardustSignerAPI from '../StardustSignerAPI';
 import { ApiRequestPayload, ChainType, SignRequestPayload } from '../../../types';
 import AbstractStardustSigner from '../AbstractStardustSigner';
@@ -9,15 +8,13 @@ export default class SolStardustSigner extends AbstractStardustSigner {
 
   public chainType: ChainType;
 
+  public stardustSignerAPI: StardustSignerAPI;
+
   constructor(walletId: string, apiKey: string) {
     super();
     this.walletId = walletId;
     this.chainType = 'sol';
-    PrivatePropertiesManager.setPrivateProperty(
-      this,
-      'stardustSignerApi',
-      new StardustSignerAPI(apiKey)
-    );
+    this.stardustSignerAPI = new StardustSignerAPI(apiKey);
   }
 
   public async signRaw(digest: string | Uint8Array): Promise<string> {
@@ -73,15 +70,14 @@ export default class SolStardustSigner extends AbstractStardustSigner {
     return messageContent;
   }
 
-  set stardustSignerAPI(stardustSignerAPI: StardustSignerAPI) {
-    PrivatePropertiesManager.setPrivateProperty(this, 'stardustSignerAPI', stardustSignerAPI);
+  public toJson() {
+    return {
+      walletId: this.walletId,
+      chainType: this.chainType,
+    };
   }
 
-  get stardustSignerAPI(): StardustSignerAPI {
-    return PrivatePropertiesManager.getPrivateProperty<
-      this,
-      'stardustSignerAPI',
-      StardustSignerAPI
-    >(this, 'stardustSignerAPI')!;
+  public toString(): string {
+    return JSON.stringify(this.toJson());
   }
 }

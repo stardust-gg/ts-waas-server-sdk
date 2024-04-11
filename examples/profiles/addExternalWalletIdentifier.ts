@@ -1,6 +1,5 @@
 import dotenv from 'dotenv';
 import { StardustCustodialSDK } from '@stardust-gg/stardust-custodial-sdk';
-import { StardustExternalWalletChainType } from 'src/stardust/Profile/Types';
 
 dotenv.config();
 
@@ -17,10 +16,7 @@ async function main() {
 
     const userInputAddress = '0x999999cf1046e68e36E1aA2E0E07105eDDD1f08E';
 
-    const profileIdentifier = await profile.addExternalWalletIdentifier(
-      StardustExternalWalletChainType.EVM,
-      userInputAddress
-    );
+    const profileIdentifier = await profile.addEVMExternalWalletIdentifier(userInputAddress);
 
     // check out how to use wallets in the wallet example
     console.log(`Profile identifier created: ${JSON.stringify(profileIdentifier)}`);

@@ -24,4 +24,19 @@ export default class StardustProfileIdentifier {
       new Date(profileIdentifierData.createdAt * 1000)
     );
   }
+
+  public toJson(): any {
+    return {
+      id: this.id,
+      profileId: this.profileId,
+      service: this.service,
+      value: this.value,
+      type: this.type,
+      createdAt: this.createdAt,
+    };
+  }
+
+  public toString(): string {
+    return JSON.stringify(this.toJson());
+  }
 }

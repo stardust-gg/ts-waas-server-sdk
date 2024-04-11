@@ -37,12 +37,13 @@
 
 ## Changelog
 
-### Latest Version: 2.3.0 [04/10/2024]
+### Latest Version: 2.3.1 [04/11/2024]
 
 #### Features
 
-- Added profile identifier support for custom identifiers and external-wallet identifiers
-- Solana Stardust Signer is now accessible
+- Fixed getAddress api reference
+- Added explicit identifier apis to the sdk
+- Implemented toJson and toString methods for main classes
 
 Releases can be found [here](https://github.com/stardust-gg/stardust-custodial-sdk/releases)
 
