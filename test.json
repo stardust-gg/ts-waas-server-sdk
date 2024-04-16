@@ -1,89 +1,110 @@
 {
-  "id": "6cbdd1c0-4a8e-4eaf-aa52-ce0ba0b8ed2d",
-  "rootUserId": "5890e3e5-f0b5-4309-9c2c-59d530ebb396",
-  "applicationId": "bd004d41-5dfa-41e5-a94e-51ce580bd129",
-  "createdAt": "2024-04-11T16:55:06.000Z",
-  "wallets": [
-    {
-      "id": "6a49ace1-49c4-46e3-8efa-46573d2abfc8",
-      "profileId": "6cbdd1c0-4a8e-4eaf-aa52-ce0ba0b8ed2d",
-      "application": {
-        "id": "bd004d41-5dfa-41e5-a94e-51ce580bd129",
-        "name": "Prod Test",
-        "email": "brandon.null@stardust.gg",
-        "description": ""
-      },
-      "createdAt": "2024-04-11T16:55:06.625Z",
-      "lastUsedAt": null,
-      "ethers": { "v5": {}, "v6": {} },
-      "evm": {
-        "walletId": "6a49ace1-49c4-46e3-8efa-46573d2abfc8",
-        "chainType": "evm",
-        "stardustSignerAPI": { "api": {} }
-      },
-      "sui": {
-        "walletId": "6a49ace1-49c4-46e3-8efa-46573d2abfc8",
-        "chainType": "sui",
-        "stardustSignerAPI": { "api": {} }
-      },
-      "sol": {
-        "walletId": "6a49ace1-49c4-46e3-8efa-46573d2abfc8",
-        "chainType": "sol",
-        "stardustSignerAPI": { "api": {} }
-      },
-      "imx": {
-        "ethersV5signer": {
-          "_isSigner": true,
-          "evmStardustSigner": {
-            "walletId": "6a49ace1-49c4-46e3-8efa-46573d2abfc8",
-            "chainType": "evm",
-            "stardustSignerAPI": { "api": {} }
-          }
-        }
-      },
-      "stardustProfileAPI": { "api": {} }
-    }
-  ],
-  "identifiers": [],
-  "name": "My Profile Name",
-  "wallet": {
-    "id": "6a49ace1-49c4-46e3-8efa-46573d2abfc8",
-    "profileId": "6cbdd1c0-4a8e-4eaf-aa52-ce0ba0b8ed2d",
-    "application": {
-      "id": "bd004d41-5dfa-41e5-a94e-51ce580bd129",
-      "name": "Prod Test",
-      "email": "brandon.null@stardust.gg",
-      "description": ""
-    },
-    "createdAt": "2024-04-11T16:55:06.625Z",
-    "lastUsedAt": null,
-    "ethers": { "v5": {}, "v6": {} },
-    "evm": {
-      "walletId": "6a49ace1-49c4-46e3-8efa-46573d2abfc8",
-      "chainType": "evm",
-      "stardustSignerAPI": { "api": {} }
-    },
-    "sui": {
-      "walletId": "6a49ace1-49c4-46e3-8efa-46573d2abfc8",
-      "chainType": "sui",
-      "stardustSignerAPI": { "api": {} }
-    },
-    "sol": {
-      "walletId": "6a49ace1-49c4-46e3-8efa-46573d2abfc8",
-      "chainType": "sol",
-      "stardustSignerAPI": { "api": {} }
-    },
-    "imx": {
-      "ethersV5signer": {
-        "_isSigner": true,
-        "evmStardustSigner": {
-          "walletId": "6a49ace1-49c4-46e3-8efa-46573d2abfc8",
-          "chainType": "evm",
-          "stardustSignerAPI": { "api": {} }
-        }
+  "public_key": {
+    "key": {
+      "data": {
+        "0": 116,
+        "1": 136,
+        "2": 177,
+        "3": 110,
+        "4": 110,
+        "5": 48,
+        "6": 162,
+        "7": 151,
+        "8": 90,
+        "9": 77,
+        "10": 192,
+        "11": 247,
+        "12": 213,
+        "13": 16,
+        "14": 50,
+        "15": 186,
+        "16": 41,
+        "17": 100,
+        "18": 151,
+        "19": 142,
+        "20": 28,
+        "21": 123,
+        "22": 189,
+        "23": 107,
+        "24": 124,
+        "25": 11,
+        "26": 172,
+        "27": 132,
+        "28": 14,
+        "29": 178,
+        "30": 166,
+        "31": 221
       }
-    },
-    "stardustProfileAPI": { "api": {} }
+    }
   },
-  "stardustProfileIdentifierAPI": { "api": {} }
+  "signature": {
+    "data": {
+      "data": {
+        "0": 25,
+        "1": 128,
+        "2": 46,
+        "3": 62,
+        "4": 3,
+        "5": 112,
+        "6": 128,
+        "7": 192,
+        "8": 84,
+        "9": 62,
+        "10": 115,
+        "11": 172,
+        "12": 151,
+        "13": 161,
+        "14": 211,
+        "15": 224,
+        "16": 222,
+        "17": 153,
+        "18": 70,
+        "19": 141,
+        "20": 198,
+        "21": 177,
+        "22": 3,
+        "23": 136,
+        "24": 62,
+        "25": 47,
+        "26": 163,
+        "27": 100,
+        "28": 36,
+        "29": 13,
+        "30": 171,
+        "31": 165,
+        "32": 101,
+        "33": 234,
+        "34": 75,
+        "35": 19,
+        "36": 145,
+        "37": 96,
+        "38": 226,
+        "39": 21,
+        "40": 122,
+        "41": 235,
+        "42": 62,
+        "43": 80,
+        "44": 27,
+        "45": 211,
+        "46": 211,
+        "47": 232,
+        "48": 76,
+        "49": 217,
+        "50": 97,
+        "51": 240,
+        "52": 162,
+        "53": 149,
+        "54": 163,
+        "55": 189,
+        "56": 60,
+        "57": 117,
+        "58": 184,
+        "59": 138,
+        "60": 222,
+        "61": 195,
+        "62": 226,
+        "63": 8
+      }
+    }
+  }
 }
