@@ -1,6 +1,6 @@
 {
   "name": "@stardust-gg/stardust-custodial-sdk",
-  "version": "2.3.1",
+  "version": "2.4.0",
   "description": "The Stardust Custodial Wallet SDK, written in TypeScript, is a versatile and user-friendly tool designed for integration with various blockchain platforms, including Immutable X (IMX), Sui, and evm-compatible networks. It streamlines the process of creating and managing custodial wallets, allowing developers to efficiently and agnostically instantiate wallet objects. The SDK features an EthersSigner, compliant with Ethers.js's Signer standards, ensuring compatibility and ease of replacement for existing Ethers signers. Aimed at enhancing blockchain application development, this SDK is a key component of the Stardust Wallet as a Service (Waas) offering, catering to the evolving needs of the blockchain ecosystem with its TypeScript-based architecture and comprehensive documentation.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
