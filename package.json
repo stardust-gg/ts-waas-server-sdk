@@ -29,7 +29,6 @@
     "run-example": "ts-node -r tsconfig-paths/register"
   },
   "dependencies": {
-    "@aptos-labs/ts-sdk": "^1.12.2",
     "@ethersproject/abstract-provider": "^5.7.0",
     "@ethersproject/abstract-signer": "^5.7.0",
     "@ethersproject/bytes": "^5.7.0",
@@ -45,6 +44,7 @@
   },
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.2.2",
+    "@aptos-labs/ts-sdk": "^1.12.2",
     "@types/jest": "^29.4.0",
     "@typescript-eslint/eslint-plugin": "^5.53.0",
     "@typescript-eslint/parser": "^5.53.0",

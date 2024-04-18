@@ -27,6 +27,7 @@
   - [EVM](#evm)
   - [SUI](#sui)
   - [SOL](#sol)
+  - [APTOS](#aptos)
 - [Contributing](#contributing)
 - [License](#license)
 - [Contact and Support](#contact-and-support)
@@ -37,13 +38,11 @@
 
 ## Changelog
 
-### Latest Version: 2.3.1 [04/11/2024]
+### Latest Version: 2.4.0 [04/XX/2024]
 
 #### Features
 
-- Fixed getAddress api reference
-- Added explicit identifier apis to the sdk
-- Implemented toJson and toString methods for main classes
+- Aptos support
 
 Releases can be found [here](https://github.com/stardust-gg/stardust-custodial-sdk/releases)
 
@@ -166,6 +165,17 @@ const userSOLPublicKey = await wallet.sol.getPublicKey();
 const rawSignedDigest = await wallet.sol.signRaw('0x010203');
 const signedMessage = await wallet.sol.signMessage('Hello World!');
 ```
+
+### Aptos
+
+```ts
+const userAptosAddress = await wallet.aptos.getAddress();
+const userAptosPublicKey = await wallet.aptos.getPublicKey();
+const rawSignedDigest = await wallet.aptos.signRaw('0x010203');
+const signedMessage = await wallet.aptos.signMessage('Hello World!');
+```
+
+Please reference the example and aptos ts sdk in order to send transactions.
 
 ## Contributing
 
