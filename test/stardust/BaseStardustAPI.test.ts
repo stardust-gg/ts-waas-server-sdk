@@ -1,5 +1,5 @@
 import axios from 'axios';
-import BaseStardustAPI from '../../src/stardust/BaseStardustAPI';
+import BaseStardustAPI from '../../src/stardust/Api/BaseStardustAPI';
 import { HttpStatusCode } from 'axios';
 
 jest.mock('axios');
@@ -17,7 +17,7 @@ describe('BaseStardustAPI', () => {
 
   it('should call axios.get with the correct params', async () => {
     mockedAxios.get.mockResolvedValue({ status: HttpStatusCode.Ok, data: {} });
-    await api.apiGet('endpoint', { query: 'test' });
+    await api.api.get('endpoint', { query: 'test' });
     expect(mockedAxios.get).toHaveBeenCalledWith(`${baseUrl}/endpoint`, {
       headers: { 'x-api-key': 'test-api-key' },
       params: { query: 'test' },
@@ -26,7 +26,7 @@ describe('BaseStardustAPI', () => {
 
   it('should throw an error if the response status is not 200 on get', async () => {
     mockedAxios.get.mockResolvedValue({ status: HttpStatusCode.BadRequest, data: {} });
-    await expect(api.apiGet('endpoint')).rejects.toThrow(
+    await expect(api.api.get('endpoint')).rejects.toThrow(
       'Failed to GET from endpoint with query: {}'
     );
   });
@@ -34,7 +34,7 @@ describe('BaseStardustAPI', () => {
   it('should call axios.post with the correct params', async () => {
     const postData = { postDataKey: 'postDataValue' };
     mockedAxios.post.mockResolvedValue({ status: HttpStatusCode.Created, data: postData });
-    const resp = await api.apiPost('endpoint', postData);
+    const resp = await api.api.post('endpoint', postData);
     expect(mockedAxios.post).toHaveBeenCalledWith(`${baseUrl}/endpoint`, postData, {
       headers: { 'x-api-key': 'test-api-key' },
     });
@@ -43,7 +43,7 @@ describe('BaseStardustAPI', () => {
 
   it('should throw an error if the response status is not 200 on post', async () => {
     mockedAxios.post.mockResolvedValue({ status: HttpStatusCode.BadRequest, data: {} });
-    await expect(api.apiPost('endpoint')).rejects.toThrow(
+    await expect(api.api.post('endpoint')).rejects.toThrow(
       'Failed to POST to endpoint with data: {}'
     );
   });
