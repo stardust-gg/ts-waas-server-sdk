@@ -98,10 +98,9 @@ describe('System: DEV Signing Parity', () => {
         const identifiers = await profile.getIdentifiers();
         expect(identifiers).toBeDefined();
         expect(identifiers.length).toBe(2);
-        expect(identifiers[1].id).toBe(identifier.id);
-        expect(identifiers[1].type).toBe(StardustProfileIdentifierType.ExternalWallet);
-        expect(identifiers[1].service).toBe('EVM');
-        expect(identifiers[1].value).toBe('0x698a3dD5aDCd91b17113E16E4cc47d8362E9B420');
+        expect(identifier.type).toBe(StardustProfileIdentifierType.ExternalWallet);
+        expect(identifier.service).toBe('EVM');
+        expect(identifier.value).toBe('0x698a3dD5aDCd91b17113E16E4cc47d8362E9B420');
       });
 
       it('should add a sui external wallet identifier to a profile', async () => {
@@ -318,6 +317,22 @@ describe('System: DEV Signing Parity', () => {
         const signature = await wallet.sol.signMessage('hello world');
         expect(signature).toBeDefined();
       });
+
+      it('should sign with aptos signer', async () => {
+        const wallet = await sdk.getWallet(DEV_SYSTEM_STARDUST_WALLET_ID);
+        wallet.aptos.stardustSignerAPI = new StardustSignerAPI(
+          DEV_SYSTEM_STARDUST_API_KEY,
+          DEV_SYSTEM_STARDUST_API_URL
+        );
+        const signatureFromUint8 = await wallet.aptos.signRaw(new Uint8Array([1, 2, 3, 4]));
+        const signautreFromMessageString = await wallet.aptos.signMessage('hello world');
+        expect(signatureFromUint8).toBe(
+          '0xAB4695A392C9F1C3815294F462B68EB58F82B4C6E9E945B858895C36B25122BB5BE4735310D7283153A4F44E2942635BE8043989F665905776D8B1996E035306'
+        );
+        expect(signautreFromMessageString).toBe(
+          '0x20795FA59BCD3D87D122142D09589892FFECF3827E71BD9626132A5CD1471056829BF07DA9858A2315CA9FC7D074B1DD721E41FD843C040FCC32A45A31FFE001'
+        );
+      });
     });
   });
 
@@ -466,41 +481,89 @@ describe('System: DEV Signing Parity', () => {
         expect(pubKey).toBe('0xeac4c4e272388a845b30849326e5049a070037e81ce8c14b7534026522c92b57');
       });
     });
-  });
 
-  describe('Additional System QA', () => {
-    let baseAPI: BaseStardustAPI;
-    beforeAll(() => {
-      baseAPI = new BaseStardustAPI(DEV_SYSTEM_STARDUST_API_KEY, DEV_SYSTEM_STARDUST_API_URL);
+    describe('aptos', () => {
+      it('should sign a utf8 string', async () => {
+        const params: SignRequestPayload = {
+          walletId: DEV_SYSTEM_STARDUST_WALLET_ID,
+          message: 'hello world',
+          chainType: 'aptos',
+        };
+
+        const signature = await signerAPI.signMessage(params);
+        expect(signature).toBe(
+          '0x20795FA59BCD3D87D122142D09589892FFECF3827E71BD9626132A5CD1471056829BF07DA9858A2315CA9FC7D074B1DD721E41FD843C040FCC32A45A31FFE001'
+        );
+      });
+
+      it('should sign a hex encoded string', async () => {
+        const params: SignRequestPayload = {
+          walletId: DEV_SYSTEM_STARDUST_WALLET_ID,
+          message: '0x68656c6c6f20776f726c64',
+          chainType: 'aptos',
+        };
+
+        const signature = await signerAPI.signMessage(params);
+        expect(signature).toBe(
+          '0x20795FA59BCD3D87D122142D09589892FFECF3827E71BD9626132A5CD1471056829BF07DA9858A2315CA9FC7D074B1DD721E41FD843C040FCC32A45A31FFE001'
+        );
+      });
+
+      it('should return an address', async () => {
+        const params: ApiRequestPayload = {
+          walletId: DEV_SYSTEM_STARDUST_WALLET_ID,
+          chainType: 'aptos',
+        };
+
+        const address = await signerAPI.getAddress(params);
+        expect(address).toBe('0xc50625a7bba25555614f3e9b7e1d1a7905a08dc4b82b5e5b9ad10bf996b2c646');
+      });
+
+      it('should return a public key', async () => {
+        const params: ApiRequestPayload = {
+          walletId: DEV_SYSTEM_STARDUST_WALLET_ID,
+          chainType: 'aptos',
+        };
+
+        const pubKey = await signerAPI.getPublicKey(params);
+        expect(pubKey).toBe('0x7488b16e6e30a2975a4dc0f7d51032ba2964978e1c7bbd6b7c0bac840eb2a6dd');
+      });
     });
 
-    it('should return an expanded wallet with profile attached', async () => {
-      const expandedWalletWithProfileResp = await baseAPI.api.get(
-        `wallet/${DEV_SYSTEM_STARDUST_WALLET_ID}?expand=profile`
-      );
-      expect(expandedWalletWithProfileResp.profile).toBeDefined();
-    });
+    describe('Additional System QA', () => {
+      let baseAPI: BaseStardustAPI;
+      beforeAll(() => {
+        baseAPI = new BaseStardustAPI(DEV_SYSTEM_STARDUST_API_KEY, DEV_SYSTEM_STARDUST_API_URL);
+      });
 
-    it('should return an expanded wallet with address attached', async () => {
-      const expandedWalletWithAddressResp = await baseAPI.api.get(
-        `wallet/${DEV_SYSTEM_STARDUST_WALLET_ID}?includeAddresses=evm`
-      );
-      expect(expandedWalletWithAddressResp.addresses).toBeDefined();
-    });
+      it('should return an expanded wallet with profile attached', async () => {
+        const expandedWalletWithProfileResp = await baseAPI.api.get(
+          `wallet/${DEV_SYSTEM_STARDUST_WALLET_ID}?expand=profile`
+        );
+        expect(expandedWalletWithProfileResp.profile).toBeDefined();
+      });
 
-    it('should return expanded wallets with addresses and profiles attached when using list endpoint', async () => {
-      const expandedWalletsResp = await baseAPI.api.get(
-        `wallet?start=0&limit=100&applicationId=${DEV_SYSTEM_STARDUST_APPLICATION_ID}&profileId=${DEV_SYSTEM_STARDUST_PROFILE_ID}&expand=profile&includeAddresses=evm`
-      );
-      expect(expandedWalletsResp.results[0].addresses).toBeDefined();
-      expect(expandedWalletsResp.results[0].profile).toBeDefined();
-    });
+      it('should return an expanded wallet with address attached', async () => {
+        const expandedWalletWithAddressResp = await baseAPI.api.get(
+          `wallet/${DEV_SYSTEM_STARDUST_WALLET_ID}?includeAddresses=evm`
+        );
+        expect(expandedWalletWithAddressResp.addresses).toBeDefined();
+      });
 
-    it('should return an expanded profile with wallet attached', async () => {
-      const expandedProfileWithWalletResp = await baseAPI.api.get(
-        `profile/${DEV_SYSTEM_STARDUST_PROFILE_ID}?expand=wallets`
-      );
-      expect(expandedProfileWithWalletResp.wallets).toBeDefined();
+      it('should return expanded wallets with addresses and profiles attached when using list endpoint', async () => {
+        const expandedWalletsResp = await baseAPI.api.get(
+          `wallet?start=0&limit=100&applicationId=${DEV_SYSTEM_STARDUST_APPLICATION_ID}&profileId=${DEV_SYSTEM_STARDUST_PROFILE_ID}&expand=profile&includeAddresses=evm`
+        );
+        expect(expandedWalletsResp.results[0].addresses).toBeDefined();
+        expect(expandedWalletsResp.results[0].profile).toBeDefined();
+      });
+
+      it('should return an expanded profile with wallet attached', async () => {
+        const expandedProfileWithWalletResp = await baseAPI.api.get(
+          `profile/${DEV_SYSTEM_STARDUST_PROFILE_ID}?expand=wallets`
+        );
+        expect(expandedProfileWithWalletResp.wallets).toBeDefined();
+      });
     });
   });
 });

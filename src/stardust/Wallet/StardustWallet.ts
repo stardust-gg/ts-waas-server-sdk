@@ -11,6 +11,7 @@ import StardustProfileAPI from '../Profile/StardustProfileAPI';
 import StardustProfile from '../Profile/StardustProfile';
 import { StardustWalletData } from './Types';
 import SolStardustSigner from '../Signers/sol/SolStardustSigner';
+import AptosStardustSigner from '../Signers/aptos/AptosStardustSigner';
 
 export default class StardustWallet {
   public ethers: {
@@ -27,6 +28,8 @@ export default class StardustWallet {
   public sui: SuiStardustSigner;
 
   public sol: SolStardustSigner;
+
+  public aptos: AptosStardustSigner;
 
   public imx: ImxStardustSigner;
 
@@ -52,6 +55,7 @@ export default class StardustWallet {
     this.evm = new EvmStardustSigner(id, apiKey!);
     this.sui = new SuiStardustSigner(id, apiKey!);
     this.sol = new SolStardustSigner(id, apiKey!);
+    this.aptos = new AptosStardustSigner(id, apiKey!);
     this.imx = new ImxStardustSigner(this.ethers.v5.getSigner());
     this.stardustProfileAPI = new StardustProfileAPI(apiKey!);
   }
@@ -79,6 +83,7 @@ export default class StardustWallet {
       evm: this.evm.toJson(),
       sui: this.sui.toJson(),
       sol: this.sol.toJson(),
+      aptos: this.aptos.toJson(),
       imx: this.imx.toJson(),
       createdAt: this.createdAt,
       lastUsedAt: this.lastUsedAt,

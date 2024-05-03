@@ -20,7 +20,7 @@ jest.mock('../../../src/stardust/Signers/evm/EvmStardustSigner', () => {
       getAddress: jest.fn().mockResolvedValue(MOCKED_ADDRESS),
       signMessage: jest.fn().mockResolvedValue('mockedSignature'),
       signRaw: jest.fn().mockResolvedValue('mockedRawSignature'),
-      api: {
+      stardustSignerAPI: {
         signTransaction: jest.fn().mockResolvedValue(MOCKED_API_SIGNAURE),
       },
       walletId: 'mockedWalletId',

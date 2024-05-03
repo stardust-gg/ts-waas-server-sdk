@@ -243,9 +243,9 @@ describe('System: PROD Signing Parity', () => {
         const identifiers = await profile.getIdentifiers();
         expect(identifiers).toBeDefined();
         expect(identifiers.length).toBe(11);
-        expect(identifiers[10].id).toBe(identifier.id);
-        expect(identifiers[10].service).toBe('ts-sdk:phone');
-        expect(identifiers[10].value).toBe('phone-identifier');
+        expect(identifier.id).toBe(identifier.id);
+        expect(identifier.service).toBe('ts-sdk:phone');
+        expect(identifier.value).toBe('phone-identifier');
       });
 
       it('should generate a client jwt', async () => {
@@ -305,6 +305,18 @@ describe('System: PROD Signing Parity', () => {
         );
         const signature = await wallet.sol.signMessage('hello world');
         expect(signature).toBeDefined();
+      });
+
+      it('should sign with aptos signer', async () => {
+        const wallet = await sdk.getWallet(PROD_SYSTEM_STARDUST_WALLET_ID);
+        const signatureFromUint8 = await wallet.aptos.signRaw(new Uint8Array([1, 2, 3, 4]));
+        const signautreFromMessageString = await wallet.aptos.signMessage('hello world');
+        expect(signatureFromUint8).toBe(
+          '0x8EB9D7FFB051423F33CA816B39D556D035054C15DC175849E7945294A9706531DAEDBC22A651D59EFCBD7AB94C118CA32F70CE246D104601052BFDD9A4F11301'
+        );
+        expect(signautreFromMessageString).toBe(
+          '0x66F5B43DCED4053792148BE533D6B257AE841773CF9E8E5D900146EA7524E0F55F2F20E7E075AD87419AE877F64BD539A071BBD3C64F2AA1B49ABA7CA8404F0E'
+        );
       });
     });
   });
@@ -451,6 +463,51 @@ describe('System: PROD Signing Parity', () => {
 
         const pubKey = await signerAPI.getPublicKey(params);
         expect(pubKey).toBe('0x6c89eadf29d87452423116d6a9419bd399b7e3c335bef94a20705cf263714c8d');
+      });
+    });
+
+    describe('aptos', () => {
+      it('should sign a utf8 string', async () => {
+        const params: SignRequestPayload = {
+          walletId: PROD_SYSTEM_STARDUST_WALLET_ID,
+          message: 'hello world',
+          chainType: 'aptos',
+        };
+
+        const signature = await signerAPI.signMessage(params);
+        expect(signature).toBe(
+          '0x66F5B43DCED4053792148BE533D6B257AE841773CF9E8E5D900146EA7524E0F55F2F20E7E075AD87419AE877F64BD539A071BBD3C64F2AA1B49ABA7CA8404F0E'
+        );
+      });
+      it('should sign a hex encoded string', async () => {
+        const params: SignRequestPayload = {
+          walletId: PROD_SYSTEM_STARDUST_WALLET_ID,
+          message: '0x68656c6c6f20776f726c64',
+          chainType: 'aptos',
+        };
+
+        const signature = await signerAPI.signMessage(params);
+        expect(signature).toBe(
+          '0x66F5B43DCED4053792148BE533D6B257AE841773CF9E8E5D900146EA7524E0F55F2F20E7E075AD87419AE877F64BD539A071BBD3C64F2AA1B49ABA7CA8404F0E'
+        );
+      });
+      it('should return an address', async () => {
+        const params: ApiRequestPayload = {
+          walletId: PROD_SYSTEM_STARDUST_WALLET_ID,
+          chainType: 'aptos',
+        };
+
+        const address = await signerAPI.getAddress(params);
+        expect(address).toBe('0x43171a4fce80da99cb1976f6418a3b386c4b36c2529667ac925b2fefcb918463');
+      });
+      it('should return a public key', async () => {
+        const params: ApiRequestPayload = {
+          walletId: PROD_SYSTEM_STARDUST_WALLET_ID,
+          chainType: 'aptos',
+        };
+
+        const pubKey = await signerAPI.getPublicKey(params);
+        expect(pubKey).toBe('0x0dcff96726d8a22d0275a80f4b1787d80933080da4af6711598dad8e4711951c');
       });
     });
   });

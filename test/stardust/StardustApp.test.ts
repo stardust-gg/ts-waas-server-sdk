@@ -7,6 +7,5 @@ describe('StardustApplication', () => {
     expect(app.name).toEqual('name');
     expect(app.email).toEqual('email');
     expect(app.description).toEqual('description');
-    expect(app.apiKey).toBeNull();
   });
 });

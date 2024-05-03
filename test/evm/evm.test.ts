@@ -31,7 +31,7 @@ describe('EvmStardustSigner', () => {
     const digest = 'mock-digest';
     const mockedRawSignature = await evmStardustSigner.signRaw(digest);
     expect(mockedRawSignature).toBe('mockedSignature');
-    expect(evmStardustSigner.api.signMessage).toHaveBeenCalledWith({
+    expect(evmStardustSigner.stardustSignerAPI.signMessage).toHaveBeenCalledWith({
       walletId: mockWalletId,
       chainType: 'evm',
       message: digest,
@@ -42,7 +42,7 @@ describe('EvmStardustSigner', () => {
     const digest = new Uint8Array([1, 2, 3]);
     const mockedRawSignature = await evmStardustSigner.signRaw(digest);
     expect(mockedRawSignature).toBe('mockedSignature');
-    expect(evmStardustSigner.api.signMessage).toHaveBeenCalledWith({
+    expect(evmStardustSigner.stardustSignerAPI.signMessage).toHaveBeenCalledWith({
       walletId: mockWalletId,
       chainType: 'evm',
       message: '0x010203',
@@ -52,7 +52,7 @@ describe('EvmStardustSigner', () => {
   it('should return the address', async () => {
     const mockedAddress = await evmStardustSigner.getAddress();
     expect(mockedAddress).toBe(MOCKED_ADRESS);
-    expect(evmStardustSigner.api.getAddress).toHaveBeenCalledWith({
+    expect(evmStardustSigner.stardustSignerAPI.getAddress).toHaveBeenCalledWith({
       walletId: mockWalletId,
       chainType: 'evm',
     });
@@ -61,7 +61,7 @@ describe('EvmStardustSigner', () => {
   it('should return the public key', async () => {
     const mockedPublicKey = await evmStardustSigner.getPublicKey();
     expect(mockedPublicKey).toBe('mockedPublicKey');
-    expect(evmStardustSigner.api.getPublicKey).toHaveBeenCalledWith({
+    expect(evmStardustSigner.stardustSignerAPI.getPublicKey).toHaveBeenCalledWith({
       walletId: mockWalletId,
       chainType: 'evm',
     });
@@ -70,7 +70,7 @@ describe('EvmStardustSigner', () => {
   it('should sign an EIP 191 prefixed message', async () => {
     const mockedSignature = await evmStardustSigner.signMessage(MOCKED_MESSAGE);
     expect(mockedSignature).toBe('mockedSignature');
-    expect(evmStardustSigner.api.signMessage).toHaveBeenCalledWith({
+    expect(evmStardustSigner.stardustSignerAPI.signMessage).toHaveBeenCalledWith({
       walletId: mockWalletId,
       chainType: 'evm',
       message: MOCKED_EIP191_MESSAGE,
@@ -81,7 +81,7 @@ describe('EvmStardustSigner', () => {
     const mockedMessage = new Uint8Array(Buffer.from(MOCKED_MESSAGE, 'utf8'));
     const mockedSignature = await evmStardustSigner.signMessage(mockedMessage);
     expect(mockedSignature).toBe('mockedSignature');
-    expect(evmStardustSigner.api.signMessage).toHaveBeenCalledWith({
+    expect(evmStardustSigner.stardustSignerAPI.signMessage).toHaveBeenCalledWith({
       walletId: mockWalletId,
       chainType: 'evm',
       message: MOCKED_EIP191_MESSAGE,
@@ -92,7 +92,7 @@ describe('EvmStardustSigner', () => {
     const mockedMessage = String(new HexString(Buffer.from(MOCKED_MESSAGE, 'utf8')));
     const mockedSignature = await evmStardustSigner.signMessage(mockedMessage);
     expect(mockedSignature).toBe('mockedSignature');
-    expect(evmStardustSigner.api.signMessage).toHaveBeenCalledWith({
+    expect(evmStardustSigner.stardustSignerAPI.signMessage).toHaveBeenCalledWith({
       walletId: mockWalletId,
       chainType: 'evm',
       message: MOCKED_EIP191_MESSAGE,
@@ -103,7 +103,7 @@ describe('EvmStardustSigner', () => {
     const digest = `Only sign this request if you’ve initiated an action with Immutable X.`;
 
     const mockedRawSignature = await evmStardustSigner.signMessage(digest);
-    expect(evmStardustSigner.api.signMessage).toHaveBeenCalledWith({
+    expect(evmStardustSigner.stardustSignerAPI.signMessage).toHaveBeenCalledWith({
       walletId: mockWalletId,
       chainType: 'evm',
       message:
@@ -114,7 +114,7 @@ describe('EvmStardustSigner', () => {
   it('should sign a message for imx with unicode characters', async () => {
     const digest = `Only sign this request if you\u2019ve initiated an action with Immutable X.`;
     const mockedRawSignature = await evmStardustSigner.signMessage(digest);
-    expect(evmStardustSigner.api.signMessage).toHaveBeenCalledWith({
+    expect(evmStardustSigner.stardustSignerAPI.signMessage).toHaveBeenCalledWith({
       walletId: mockWalletId,
       chainType: 'evm',
       message:
