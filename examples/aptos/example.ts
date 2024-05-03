@@ -13,33 +13,23 @@ import {
 
 import dotenv from 'dotenv';
 import { StardustCustodialSDK } from '@stardust-gg/stardust-custodial-sdk';
-import StardustProfileAPI from 'src/stardust/Profile/StardustProfileAPI';
-import StardustSignerAPI from 'src/stardust/Signers/StardustSignerAPI';
 
 dotenv.config();
 
 // Configuration
-const apiKey = process.env.DEV_SYSTEM_STARDUST_API_KEY!;
-const profileId = process.env.DEV_SYSTEM_STARDUST_PROFILE_ID!;
+const apiKey = process.env.PROD_SYSTEM_STARDUST_API_KEY!;
+const profileId = process.env.PROD_SYSTEM_STARDUST_PROFILE_ID!;
 
 // Default to devnet, but allow for overriding
 const APTOS_NETWORK: Network = Network.DEVNET;
 
 const main = async () => {
   // Initialize Stardust SDK
-  const sdk = new StardustCustodialSDK(apiKey, process.env.DEV_SYSTEM_STARDUST_API_URL!);
+  const sdk = new StardustCustodialSDK(apiKey);
 
   // get the stardust profile/wallet/address for a player
   const profile = await sdk.getProfile(profileId);
   const { wallet } = profile;
-  wallet.stardustProfileAPI = new StardustProfileAPI(
-    apiKey,
-    process.env.DEV_SYSTEM_STARDUST_API_URL!
-  );
-  wallet.aptos.stardustSignerAPI = new StardustSignerAPI(
-    apiKey,
-    process.env.DEV_SYSTEM_STARDUST_API_URL!
-  );
   const stardustAddress = await wallet.aptos.getAddress();
   console.log('stardust address', stardustAddress);
 
@@ -47,10 +37,10 @@ const main = async () => {
   const config = new AptosConfig({ network: APTOS_NETWORK });
   const aptos = new Aptos(config);
 
-  // create a second account
+  // generate an account for sending
   const bob = Account.generate();
 
-  // Get funds for stardust account
+  // Get funds for your account
   console.log('Funding stardust account');
   await aptos.faucet.fundAccount({
     accountAddress: stardustAddress,
