@@ -38,7 +38,7 @@
 
 ## Changelog
 
-### Latest Version: 2.4.0 [04/XX/2024]
+### Latest Version: 2.4.0 [05/03/2024]
 
 #### Features
 
