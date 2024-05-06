@@ -122,7 +122,10 @@ export default class StardustProfile {
       profileData.applicationId,
       new Date(profileData.createdAt * 1000),
       profileData.wallets?.map((walletData: StardustWalletData) =>
-        StardustWallet.generate({ ...walletData, apiKey: profileData.apiKey })
+        StardustWallet.generate({
+          ...walletData,
+          apiKey: profileData.apiKey,
+        })
       ),
       profileData.identifiers?.map((profileIdentifierData) =>
         StardustProfileIdentifier.generate({ ...profileIdentifierData })

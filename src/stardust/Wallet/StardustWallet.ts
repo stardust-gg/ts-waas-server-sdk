@@ -5,7 +5,6 @@ import EthersV6Signer from '../../ethers/V6/EthersV6Signer';
 import SuiStardustSigner from '../Signers/sui/SuiStardustSigner';
 import ImxStardustSigner from '../Signers/imx/ImxStardustSigner';
 import EvmStardustSigner from '../Signers/evm/EvmStardustSigner';
-import StardustApplication from '../Application/StardustApplication';
 // eslint-disable-next-line import/no-cycle
 import StardustProfileAPI from '../Profile/StardustProfileAPI';
 import StardustProfile from '../Profile/StardustProfile';
@@ -38,7 +37,7 @@ export default class StardustWallet {
   constructor(
     public readonly id: string,
     public readonly profileId: string,
-    public readonly application: StardustApplication,
+    public readonly applicationId: string,
     public readonly createdAt: Date,
     public readonly lastUsedAt: Date | null = null,
     apiKey: string | null = null
@@ -68,7 +67,7 @@ export default class StardustWallet {
     return new StardustWallet(
       walletData.id,
       walletData.profileId,
-      StardustApplication.generate({ ...walletData.application, apiKey: walletData.apiKey }),
+      walletData.applicationId,
       new Date(walletData.createdAt),
       walletData.lastUsedAt ? new Date(walletData.lastUsedAt) : null,
       walletData.apiKey
@@ -79,7 +78,7 @@ export default class StardustWallet {
     return {
       id: this.id,
       profileId: this.profileId,
-      application: this.application.toJson(),
+      applicationId: this.applicationId,
       evm: this.evm.toJson(),
       sui: this.sui.toJson(),
       sol: this.sol.toJson(),

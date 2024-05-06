@@ -1,9 +1,7 @@
-import { StardustApplicationData } from '../Application/Types';
-
 export type StardustWalletData = {
   id: string;
   profileId: string;
-  application: StardustApplicationData;
+  applicationId: string;
   createdAt: number;
   lastUsedAt: number | null;
 } & { apiKey?: string };
