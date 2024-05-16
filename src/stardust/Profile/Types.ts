@@ -16,13 +16,13 @@ export type StardustProfileCreateParams = {
 };
 
 export enum StardustProfileIdentifierService {
-  Discord = 'ts-sdk:discord',
-  Apple = 'ts-sdk:apple',
-  Google = 'ts-sdk:google',
-  Facebook = 'ts-sdk:facebook',
-  Twitter = 'ts-sdk:twitter',
-  Email = 'ts-sdk:email',
-  Phone = 'ts-sdk:phone',
+  Discord = 'discord',
+  Apple = 'apple',
+  Google = 'google',
+  Facebook = 'facebook',
+  Twitter = 'twitter',
+  Email = 'email',
+  Phone = 'phone',
 }
 
 export type StardustProfileIdentifierData = {

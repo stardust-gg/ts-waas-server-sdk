@@ -155,7 +155,7 @@ describe('System: DEV Signing Parity', () => {
         expect(identifiers).toBeDefined();
         expect(identifiers.length).toBe(5);
         expect(identifiers[4].id).toBe(identifier.id);
-        expect(identifiers[4].service).toBe('ts-sdk:discord');
+        expect(identifiers[4].service).toBe('discord');
         expect(identifiers[4].value).toBe('123456789');
       });
 
@@ -171,7 +171,7 @@ describe('System: DEV Signing Parity', () => {
         expect(identifiers).toBeDefined();
         expect(identifiers.length).toBe(6);
         expect(identifiers[5].id).toBe(identifier.id);
-        expect(identifiers[5].service).toBe('ts-sdk:apple');
+        expect(identifiers[5].service).toBe('apple');
         expect(identifiers[5].value).toBe('apple-identifier');
       });
 
@@ -187,7 +187,7 @@ describe('System: DEV Signing Parity', () => {
         expect(identifiers).toBeDefined();
         expect(identifiers.length).toBe(7);
         expect(identifiers[6].id).toBe(identifier.id);
-        expect(identifiers[6].service).toBe('ts-sdk:google');
+        expect(identifiers[6].service).toBe('google');
         expect(identifiers[6].value).toBe('google-identifier');
       });
 
@@ -203,7 +203,7 @@ describe('System: DEV Signing Parity', () => {
         expect(identifiers).toBeDefined();
         expect(identifiers.length).toBe(8);
         expect(identifiers[7].id).toBe(identifier.id);
-        expect(identifiers[7].service).toBe('ts-sdk:facebook');
+        expect(identifiers[7].service).toBe('facebook');
         expect(identifiers[7].value).toBe('facebook-identifier');
       });
 
@@ -219,7 +219,7 @@ describe('System: DEV Signing Parity', () => {
         expect(identifiers).toBeDefined();
         expect(identifiers.length).toBe(9);
         expect(identifiers[8].id).toBe(identifier.id);
-        expect(identifiers[8].service).toBe('ts-sdk:twitter');
+        expect(identifiers[8].service).toBe('twitter');
         expect(identifiers[8].value).toBe('twitter-identifier');
       });
 
@@ -235,7 +235,7 @@ describe('System: DEV Signing Parity', () => {
         expect(identifiers).toBeDefined();
         expect(identifiers.length).toBe(10);
         expect(identifiers[9].id).toBe(identifier.id);
-        expect(identifiers[9].service).toBe('ts-sdk:email');
+        expect(identifiers[9].service).toBe('email');
         expect(identifiers[9].value).toBe('email-identifier');
       });
 
@@ -251,7 +251,7 @@ describe('System: DEV Signing Parity', () => {
         expect(identifiers).toBeDefined();
         expect(identifiers.length).toBe(11);
         expect(identifiers[10].id).toBe(identifier.id);
-        expect(identifiers[10].service).toBe('ts-sdk:phone');
+        expect(identifiers[10].service).toBe('phone');
         expect(identifiers[10].value).toBe('phone-identifier');
       });
 
