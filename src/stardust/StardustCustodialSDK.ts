@@ -36,7 +36,8 @@ export default class StardustCustodialSdk {
    * @deprecated Please create a profile and use the wallet generated for the profile via profile.wallet or profile.wallets
    */
   public async createWallet(): Promise<StardustWallet> {
-    return this.stardustWalletAPI.create();
+    const applicationId = this.applicationId ?? (await this.getApplication()).id;
+    return this.stardustWalletAPI.create(applicationId);
   }
 
   /**

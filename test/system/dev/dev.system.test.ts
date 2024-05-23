@@ -4,10 +4,7 @@ import StardustProfile from '../../../src/stardust/Profile/StardustProfile';
 import StardustProfileAPI from '../../../src/stardust/Profile/StardustProfileAPI';
 import StardustProfileIdentifier from '../../../src/stardust/Profile/StardustProfileIdentifier';
 import StardustProfileIdentifierAPI from '../../../src/stardust/Profile/StardustProfileIdentifierAPI';
-import {
-  StardustExternalWalletChainType,
-  StardustProfileIdentifierType,
-} from '../../../src/stardust/Profile/Types';
+import { StardustProfileIdentifierType } from '../../../src/stardust/Profile/Types';
 import StardustSignerAPI from '../../../src/stardust/Signers/StardustSignerAPI';
 import StardustCustodialSDK from '../../../src/stardust/StardustCustodialSDK';
 import StardustWallet from '../../../src/stardust/Wallet/StardustWallet';
