@@ -9,11 +9,14 @@ import {
   StardustProfileIdentifierService,
 } from './Types';
 import { StardustWalletData } from '../Wallet/Types';
+import StardustProfileEvent from './events/StardustProfileEvent';
 
 export default class StardustProfile {
   public readonly wallet: StardustWallet;
 
   stardustProfileIdentifierAPI: StardustProfileIdentifierAPI;
+
+  events: StardustProfileEvent;
 
   constructor(
     public readonly id: string,
@@ -27,6 +30,7 @@ export default class StardustProfile {
   ) {
     [this.wallet] = wallets?.filter((wallet) => wallet.profileId === id) || [];
     this.stardustProfileIdentifierAPI = new StardustProfileIdentifierAPI(apiKey!);
+    this.events = new StardustProfileEvent(applicationId, id);
   }
 
   public async addCustomIdentifier(
@@ -96,6 +100,18 @@ export default class StardustProfile {
 
   public async addPhoneIdentifier(value: string): Promise<StardustProfileIdentifier> {
     return this.addCustomIdentifier(StardustProfileIdentifierService.Phone, value);
+  }
+
+  public async addSteamIdentifier(value: string): Promise<StardustProfileIdentifier> {
+    return this.addCustomIdentifier(StardustProfileIdentifierService.Steam, value);
+  }
+
+  public async addTwitchIdentifier(value: string): Promise<StardustProfileIdentifier> {
+    return this.addCustomIdentifier(StardustProfileIdentifierService.Twitch, value);
+  }
+
+  public async addEpicIdentifier(value: string): Promise<StardustProfileIdentifier> {
+    return this.addCustomIdentifier(StardustProfileIdentifierService.Epic, value);
   }
 
   /**

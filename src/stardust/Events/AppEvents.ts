@@ -1,0 +1,25 @@
+export enum StandardAppEvents {
+  install = 'install',
+  launch = 'launch',
+  login = 'login',
+  complete_registration = 'complete_registration',
+  complete_tutorial = 'complete_tutorial',
+  share = 'share',
+  invite_friend = 'invite_friend',
+  earn_currency = 'earn_currency',
+  complete_level = 'complete_level',
+  purchase = 'purchase',
+  initiate_checkout = 'initiate_checkout',
+  add_to_cart = 'add_to_cart',
+  ad_impression = 'ad_impression',
+  ad_click = 'ad_click',
+  withdraw_item = 'withdraw_item',
+  deposit_item = 'deposit_item',
+  mint_item = 'mint_item',
+  search = 'search',
+  subscribe = 'subscribe',
+  view_content = 'view_content',
+  identify = 'identify',
+}
+
+export const STANDARD_APP_EVENT_PREFIX = 'star_';

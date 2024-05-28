@@ -2,8 +2,8 @@ import BaseStardustAPI from '../Api/BaseStardustAPI';
 import StardustWallet from './StardustWallet';
 
 export default class StardustWalletAPI extends BaseStardustAPI {
-  public async create(profileId?: string): Promise<StardustWallet> {
-    const walletData = await this.api.post('wallet', { profileId });
+  public async create(applicationId?: string): Promise<StardustWallet> {
+    const walletData = await this.api.post('wallet', { applicationId });
     return StardustWallet.generate({ ...walletData, apiKey: this.api.apiKey });
   }
 
