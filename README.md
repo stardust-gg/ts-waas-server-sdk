@@ -38,11 +38,15 @@
 
 ## Changelog
 
-### Latest Version: 2.4.0 [05/03/2024]
+### Latest Version: 2.6.0 [05/28/2024]
 
 #### Features
 
-- Aptos support
+- Added event emission module to profiles
+- Immediate support for two new profile events:
+  addIp
+  addPurchaseable
+- Added three new static social identifiers: twitch, epic, steam
 
 Releases can be found [here](https://github.com/stardust-gg/stardust-custodial-sdk/releases)
 

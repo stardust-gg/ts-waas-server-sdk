@@ -25,6 +25,13 @@ export default function BaseStardustAPIFactory(
       return response.data;
     }
 
+    public async unauthenticatedPost(endpoint: string, data = {}) {
+      const response = await axios.post(`${this.url}/${endpoint}`, data);
+      if (response.status !== HttpStatusCode.Ok && response.status !== HttpStatusCode.Created)
+        throw new Error(`Failed to POST to ${endpoint} with data: ${JSON.stringify(data)}`);
+      return response.data;
+    }
+
     get apiKey() {
       return apiKey;
     }

@@ -1,4 +1,5 @@
 import BaseStardustAPI from '../../../src/stardust/Api/BaseStardustAPI';
+import StardustEventsAPI from '../../../src/stardust/Api/StardustEventsAPI';
 import StardustApplication from '../../../src/stardust/Application/StardustApplication';
 import StardustProfile from '../../../src/stardust/Profile/StardustProfile';
 import StardustProfileAPI from '../../../src/stardust/Profile/StardustProfileAPI';
@@ -20,6 +21,7 @@ describe('System: DEV Signing Parity', () => {
   let DEV_SYSTEM_STARDUST_WALLET_ID: string;
   let DEV_SYSTEM_STARDUST_APPLICATION_ID: string;
   let DEV_SYSTEM_STARDUST_PROFILE_ID: string;
+  let DEV_SYSTEM_STARDUST_TRACK_API_URL: string;
 
   let signerAPI: StardustSignerAPI;
   let sdk: StardustCustodialSDK;
@@ -30,6 +32,7 @@ describe('System: DEV Signing Parity', () => {
     DEV_SYSTEM_STARDUST_WALLET_ID = String(process.env.DEV_SYSTEM_STARDUST_WALLET_ID);
     DEV_SYSTEM_STARDUST_APPLICATION_ID = String(process.env.DEV_SYSTEM_STARDUST_APPLICATION_ID);
     DEV_SYSTEM_STARDUST_PROFILE_ID = String(process.env.DEV_SYSTEM_STARDUST_PROFILE_ID);
+    DEV_SYSTEM_STARDUST_TRACK_API_URL = String(process.env.DEV_SYSTEM_STARDUST_TRACK_API_URL);
 
     signerAPI = new StardustSignerAPI(DEV_SYSTEM_STARDUST_API_KEY, DEV_SYSTEM_STARDUST_API_URL);
     sdk = new StardustCustodialSDK(DEV_SYSTEM_STARDUST_API_KEY, DEV_SYSTEM_STARDUST_API_URL);
@@ -69,10 +72,10 @@ describe('System: DEV Signing Parity', () => {
         const identifiers = await profile.getIdentifiers();
         expect(identifiers).toBeDefined();
         expect(identifiers.length).toBe(1);
-        expect(identifiers[0].type).toBe(StardustProfileIdentifierType.Custom);
-        expect(identifiers[0].id).toBe(identifier.id);
-        expect(identifiers[0].service).toBe('email');
-        expect(identifiers[0].value).toBe('test@test.com');
+        expect(identifier.type).toBe(StardustProfileIdentifierType.Custom);
+        expect(identifier.id).toBe(identifier.id);
+        expect(identifier.service).toBe('email');
+        expect(identifier.value).toBe('test@test.com');
       });
 
       it('should get a profile identifier by identifier id', async () => {
@@ -113,10 +116,10 @@ describe('System: DEV Signing Parity', () => {
         const identifiers = await profile.getIdentifiers();
         expect(identifiers).toBeDefined();
         expect(identifiers.length).toBe(3);
-        expect(identifiers[2].id).toBe(identifier.id);
-        expect(identifiers[2].type).toBe(StardustProfileIdentifierType.ExternalWallet);
-        expect(identifiers[2].service).toBe('SUI');
-        expect(identifiers[2].value).toBe(
+        expect(identifier.id).toBe(identifier.id);
+        expect(identifier.type).toBe(StardustProfileIdentifierType.ExternalWallet);
+        expect(identifier.service).toBe('SUI');
+        expect(identifier.value).toBe(
           '0x6be1c919bb05ba60d30731a1cbcb1d0f5943e6ef2a200563b50f104f9efae866'
         );
       });
@@ -134,10 +137,10 @@ describe('System: DEV Signing Parity', () => {
         const identifiers = await profile.getIdentifiers();
         expect(identifiers).toBeDefined();
         expect(identifiers.length).toBe(4);
-        expect(identifiers[3].id).toBe(identifier.id);
-        expect(identifiers[3].type).toBe(StardustProfileIdentifierType.ExternalWallet);
-        expect(identifiers[3].service).toBe('SOL');
-        expect(identifiers[3].value).toBe('GoSReBzRojaCqMYhDK2ZzerqCVjyzeVuefwYrx8eZuqx');
+        expect(identifier.id).toBe(identifier.id);
+        expect(identifier.type).toBe(StardustProfileIdentifierType.ExternalWallet);
+        expect(identifier.service).toBe('SOL');
+        expect(identifier.value).toBe('GoSReBzRojaCqMYhDK2ZzerqCVjyzeVuefwYrx8eZuqx');
       });
 
       it('should add a discord identifier to a profile', async () => {
@@ -151,9 +154,9 @@ describe('System: DEV Signing Parity', () => {
         const identifiers = await profile.getIdentifiers();
         expect(identifiers).toBeDefined();
         expect(identifiers.length).toBe(5);
-        expect(identifiers[4].id).toBe(identifier.id);
-        expect(identifiers[4].service).toBe('discord');
-        expect(identifiers[4].value).toBe('123456789');
+        expect(identifier.id).toBe(identifier.id);
+        expect(identifier.service).toBe('discord');
+        expect(identifier.value).toBe('123456789');
       });
 
       it('should add an apple identifier to a profile', async () => {
@@ -167,9 +170,9 @@ describe('System: DEV Signing Parity', () => {
         const identifiers = await profile.getIdentifiers();
         expect(identifiers).toBeDefined();
         expect(identifiers.length).toBe(6);
-        expect(identifiers[5].id).toBe(identifier.id);
-        expect(identifiers[5].service).toBe('apple');
-        expect(identifiers[5].value).toBe('apple-identifier');
+        expect(identifier.id).toBe(identifier.id);
+        expect(identifier.service).toBe('apple');
+        expect(identifier.value).toBe('apple-identifier');
       });
 
       it('should add a google identifier to a profile', async () => {
@@ -183,9 +186,9 @@ describe('System: DEV Signing Parity', () => {
         const identifiers = await profile.getIdentifiers();
         expect(identifiers).toBeDefined();
         expect(identifiers.length).toBe(7);
-        expect(identifiers[6].id).toBe(identifier.id);
-        expect(identifiers[6].service).toBe('google');
-        expect(identifiers[6].value).toBe('google-identifier');
+        expect(identifier.id).toBe(identifier.id);
+        expect(identifier.service).toBe('google');
+        expect(identifier.value).toBe('google-identifier');
       });
 
       it('should add a facebook identifier to a profile', async () => {
@@ -199,9 +202,9 @@ describe('System: DEV Signing Parity', () => {
         const identifiers = await profile.getIdentifiers();
         expect(identifiers).toBeDefined();
         expect(identifiers.length).toBe(8);
-        expect(identifiers[7].id).toBe(identifier.id);
-        expect(identifiers[7].service).toBe('facebook');
-        expect(identifiers[7].value).toBe('facebook-identifier');
+        expect(identifier.id).toBe(identifier.id);
+        expect(identifier.service).toBe('facebook');
+        expect(identifier.value).toBe('facebook-identifier');
       });
 
       it('should add a twitter identifier to a profile', async () => {
@@ -215,9 +218,9 @@ describe('System: DEV Signing Parity', () => {
         const identifiers = await profile.getIdentifiers();
         expect(identifiers).toBeDefined();
         expect(identifiers.length).toBe(9);
-        expect(identifiers[8].id).toBe(identifier.id);
-        expect(identifiers[8].service).toBe('twitter');
-        expect(identifiers[8].value).toBe('twitter-identifier');
+        expect(identifier.id).toBe(identifier.id);
+        expect(identifier.service).toBe('twitter');
+        expect(identifier.value).toBe('twitter-identifier');
       });
 
       it('should add an email identifier to a profile', async () => {
@@ -231,9 +234,9 @@ describe('System: DEV Signing Parity', () => {
         const identifiers = await profile.getIdentifiers();
         expect(identifiers).toBeDefined();
         expect(identifiers.length).toBe(10);
-        expect(identifiers[9].id).toBe(identifier.id);
-        expect(identifiers[9].service).toBe('email');
-        expect(identifiers[9].value).toBe('email-identifier');
+        expect(identifier.id).toBe(identifier.id);
+        expect(identifier.service).toBe('email');
+        expect(identifier.value).toBe('email-identifier');
       });
 
       it('should add a phone identifier to a profile', async () => {
@@ -247,9 +250,57 @@ describe('System: DEV Signing Parity', () => {
         const identifiers = await profile.getIdentifiers();
         expect(identifiers).toBeDefined();
         expect(identifiers.length).toBe(11);
-        expect(identifiers[10].id).toBe(identifier.id);
-        expect(identifiers[10].service).toBe('phone');
-        expect(identifiers[10].value).toBe('phone-identifier');
+        expect(identifier.id).toBe(identifier.id);
+        expect(identifier.service).toBe('phone');
+        expect(identifier.value).toBe('phone-identifier');
+      });
+
+      it('should add a steam identifier to a profile', async () => {
+        const profile = await sdk.getProfile(profileId);
+        profile.stardustProfileIdentifierAPI = new StardustProfileIdentifierAPI(
+          DEV_SYSTEM_STARDUST_API_KEY,
+          DEV_SYSTEM_STARDUST_API_URL
+        );
+        const identifier = await profile.addSteamIdentifier('steam-identifier');
+        expect(identifier).toBeDefined();
+        const identifiers = await profile.getIdentifiers();
+        expect(identifiers).toBeDefined();
+        expect(identifiers.length).toBe(12);
+        expect(identifier.id).toBe(identifier.id);
+        expect(identifier.service).toBe('steam');
+        expect(identifier.value).toBe('steam-identifier');
+      });
+
+      it('should add a twitch identifier to a profile', async () => {
+        const profile = await sdk.getProfile(profileId);
+        profile.stardustProfileIdentifierAPI = new StardustProfileIdentifierAPI(
+          DEV_SYSTEM_STARDUST_API_KEY,
+          DEV_SYSTEM_STARDUST_API_URL
+        );
+        const identifier = await profile.addTwitchIdentifier('twitch-identifier');
+        expect(identifier).toBeDefined();
+        const identifiers = await profile.getIdentifiers();
+        expect(identifiers).toBeDefined();
+        expect(identifiers.length).toBe(13);
+        expect(identifier.id).toBe(identifier.id);
+        expect(identifier.service).toBe('twitch');
+        expect(identifier.value).toBe('twitch-identifier');
+      });
+
+      it('should add a epic identifier to a profile', async () => {
+        const profile = await sdk.getProfile(profileId);
+        profile.stardustProfileIdentifierAPI = new StardustProfileIdentifierAPI(
+          DEV_SYSTEM_STARDUST_API_KEY,
+          DEV_SYSTEM_STARDUST_API_URL
+        );
+        const identifier = await profile.addEpicIdentifier('epic-identifier');
+        expect(identifier).toBeDefined();
+        const identifiers = await profile.getIdentifiers();
+        expect(identifiers).toBeDefined();
+        expect(identifiers.length).toBe(14);
+        expect(identifier.id).toBe(identifier.id);
+        expect(identifier.service).toBe('epic');
+        expect(identifier.value).toBe('epic-identifier');
       });
 
       it('should generate a client jwt', async () => {
@@ -264,6 +315,27 @@ describe('System: DEV Signing Parity', () => {
           expect(profile.wallet).toBeInstanceOf(StardustWallet);
           expect(profile.identifiers![0]).toBeInstanceOf(StardustProfileIdentifier);
           expect(profile.identifiers![1]).toBeInstanceOf(StardustProfileIdentifier);
+        });
+      });
+    });
+
+    describe('Profile events', () => {
+      it('should fire an event to add an ip to a profile', async () => {
+        const profile = await sdk.getProfile(DEV_SYSTEM_STARDUST_PROFILE_ID);
+        profile.events.eventsApi = new StardustEventsAPI(DEV_SYSTEM_STARDUST_TRACK_API_URL);
+        await profile.events.addIp('97.197.26.199');
+        await profile.events.addIp('2602:2c7:4381:6160:9ee8:f957:8f2:a109');
+        await expect(profile.events.addIp('invalid-ip')).rejects.toThrowError();
+      });
+
+      it('should fire an event to add a purchase to a profile', async () => {
+        const profile = await sdk.getProfile(DEV_SYSTEM_STARDUST_PROFILE_ID);
+        profile.events.eventsApi = new StardustEventsAPI(DEV_SYSTEM_STARDUST_TRACK_API_URL);
+        await profile.events.addPurchase({
+          itemId: 'arbitrary-id',
+          amount: '100',
+          currency: 'USD',
+          anotherArbitraryProperty: 'yep',
         });
       });
     });

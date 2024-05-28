@@ -17,6 +17,9 @@ export type StardustProfileCreateParams = {
 
 export enum StardustProfileIdentifierService {
   Discord = 'discord',
+  Steam = 'steam',
+  Twitch = 'twitch',
+  Epic = 'epic',
   Apple = 'apple',
   Google = 'google',
   Facebook = 'facebook',
